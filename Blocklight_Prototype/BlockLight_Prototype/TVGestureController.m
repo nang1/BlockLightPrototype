@@ -1,0 +1,225 @@
+//
+//  TVGestureController.m
+//  Prototype
+//
+//  Created by nang1 on 9/24/13.
+//  Copyright (c) 2013 nang1. All rights reserved.
+//
+
+#import "TVGestureController.h"
+
+@implementation TVGestureController
+
+@synthesize frame = _frame;
+@synthesize quickStageView = _quickStageView;
+
+-(id) initWithFrame2:(Frame*)frame withStageView:(QuickStageView *)stageView
+{
+    self = [super init];
+    if(self == nil)
+    {
+        return nil;
+    }
+    // else
+    
+    _frame = frame;
+    _quickStageView = stageView;
+    return self;
+}
+
+-(void) changeFrame:(Frame*)frame
+{
+    _frame = frame;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
+}
+
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        UIView *piece = gestureRecognizer.view;
+        CGPoint locationInView = [gestureRecognizer locationInView:piece];
+        CGPoint locationInSuperview = [gestureRecognizer locationInView:[[UIApplication sharedApplication] keyWindow].inputView];
+        [[[UIApplication sharedApplication] keyWindow] addSubview:piece];
+        [[[UIApplication sharedApplication] keyWindow] bringSubviewToFront:piece];
+        
+        piece.transform = CGAffineTransformMakeRotation(M_PI+M_PI_2);
+        piece.layer.anchorPoint = CGPointMake( locationInView.x / piece.bounds.size.width, locationInView.y / piece.bounds.size.height);
+        piece.center = locationInSuperview;
+    }
+}
+
+-(void)panGestureMoveAround:(UIPanGestureRecognizer*) gesture
+{
+    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    if (orientation==UIInterfaceOrientationLandscapeLeft) // rightside up
+    {
+        NSLog(@"left");
+    }
+    else if(orientation == UIInterfaceOrientationLandscapeRight) // upside down
+    {
+        NSLog(@"right");
+    }
+    
+    UIView *piece = [gesture view];
+    //float curX = [piece center].x;
+    //float curY = [piece center].y;
+    
+    //We pass in the gesture to a method that will help us align our touches so that the pan and pinch will seems to originate between the fingers instead of other points or center point of the UIView
+    [self adjustAnchorPointForGestureRecognizer:gesture];
+    
+    if ([gesture state] == UIGestureRecognizerStateChanged)
+    {
+        CGPoint translation = [gesture translationInView:[piece superview]];
+        
+        // x should be between 100 and 650
+        float newX = MAX([piece center].x + lroundf(translation.x), 100);
+        newX = MIN(newX, 650);
+        
+        // y should be between 100 and 950
+        //float newY = MAX([piece center].y + lroundf(translation.y), 100);
+        //newY = MIN(newY, 950);
+        
+        [piece setCenter:CGPointMake(newX, [piece center].y + lroundf(translation.y))];
+        [gesture setTranslation:CGPointZero inView:[piece superview]];
+        //NSLog(@"Piece center: %d, %d\n",(int)[piece center].x, (int)[piece center].y);
+    }
+    else if([gesture state] == UIGestureRecognizerStateEnded)
+    {
+        //Put the code that you may want to execute when the UIView became larger than certain value or just to reset them back to their original transform scale
+        
+        if([piece isMemberOfClass:[UILabel class]])
+        {            
+            Note* tempNote = [[Note alloc] init];
+            
+            int index = 0;
+            for(UILabel *lbl in _quickStageView.noteLabels)
+            {
+                if([lbl isEqual:(UILabel*)piece])
+                {
+                    tempNote = [_frame.notes objectAtIndex:index];
+                    break;
+                }
+                else
+                {
+                    index++;
+                }
+            }
+            
+            Position *pos = tempNote.notePosition;
+            if(pos == nil) // should probably set to something once created
+            {
+                pos = [[Position alloc] init];
+                pos.xCoordinate = [piece center].x;
+                pos.yCoordinate = [piece center].y;
+            }
+            else if([self isOnTrashCan:piece])
+            {
+                NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away a note, \"%@.\" Are you sure you want to continue?", tempNote.noteStr];
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+                alert.tag = index;
+                [alert show];
+
+            }
+            else
+            {
+                CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
+                //CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
+                
+                // 64px because: 20px for the status bar, and 44px for the navigation bar
+                [pos updateX:(int)(height - [piece center].y) Y:(int)[piece center].x-64];
+                /*
+                 pos.xCoordinate = [piece center].x;
+                 pos.yCoordinate = [piece center].y;
+                 
+                 NSLog(@"Moved %@\n",tempNote.noteStr);
+                 NSLog(@"Moved note to: %d, %d\n",tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
+                 //*/
+            }
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
+    {
+        //NSLog(@"Throw in trash can");
+        [self removeNoteAtIndex:alertView.tag];
+    }
+}
+
+-(BOOL)isOnTrashCan:(UIView*)piece
+{
+    // trash can created at (0,320,64,64)
+    if((384 < [piece center].x) && ([piece center].x < 448)
+            &&(960 < [piece center].y) && ([piece center].y < 1024))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+-(void) removeNoteAtIndex:(int)i
+{
+    if((i < 0) || (i >= [_frame.notes count]))
+    {
+        // [_frame.notes count] == [_quickStageView.noteLabels count] // should always apply
+        NSLog(@"Out of bounds error while removing note");
+        return;
+    }
+    [[_quickStageView.noteLabels objectAtIndex:i] removeFromSuperview];
+    [_quickStageView.noteLabels removeObjectAtIndex:i];
+    [_frame.notes removeObjectAtIndex:i];
+    [_quickStageView setNeedsDisplay];
+}
+
+-(void) removeActorAtIndex:(int)i
+{
+    if((i < 0) || (i >= [_frame.actorsOnStage count]))
+    {
+        // [_frame.actorsOnStage count] == [_quickStageView.actorIcons count] // should always apply
+        NSLog(@"Out of bounds error while removing actor");
+        return;
+    }
+    //[[_quickStageView.actorIcons objectAtIndex:i] removeFromSuperview];
+    //[_quickStageView.actorIcons removeObjectAtIndex:i];
+    [_frame.actorsOnStage removeObjectAtIndex:i];
+    [_quickStageView setNeedsDisplay];
+}
+
+-(void) removeSetPieceAtIndex:(int)i
+{
+    if((i < 0) || (i >= [_frame.props count]))
+    {
+        // [_frame.props count] == [_quickStageView.propIcons count] // should always apply
+        NSLog(@"Out of bounds error while removing set piece");
+        return;
+    }
+    //[[_quickStageView.propIcons objectAtIndex:i] removeFromSuperview];
+    //[_quickStageView.propIcons removeObjectAtIndex:i];
+    [_frame.props removeObjectAtIndex:i];
+    [_quickStageView setNeedsDisplay];
+    //_frame.props
+}
+
+@end
