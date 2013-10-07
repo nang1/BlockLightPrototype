@@ -55,7 +55,7 @@
             self.title = @"View Options";
             
             // create starting view to disply view options
-            ViewView* _viewView = [[ViewView alloc] init];
+            ViewView* _viewView = [[ViewView alloc] initWithViewController:self];
             self.view = _viewView;
         }
             break;
@@ -95,6 +95,19 @@
             UIView* _sceneView = [[UIView alloc] init];
             _sceneView.backgroundColor = [UIColor blueColor];
             self.view = _sceneView;
+        }
+            break;
+            
+        case GRID:
+        { // This is called only when user clicks Grid Options in VIEWS
+            // set size and title
+            self.contentSizeForViewInPopover = CGSizeMake(320, 300);
+            self.title = @"Grid Options";
+            
+            // create view to select a scene
+            UIView* _gridView = [[UIView alloc] init];
+            _gridView.backgroundColor = [UIColor orangeColor];
+            self.view = _gridView;
         }
             break;
     }
