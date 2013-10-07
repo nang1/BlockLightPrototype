@@ -7,12 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TVPopoverViewController.h"
+#import "Defaults.h"
+
+@class TVPopoverViewController;
 
 @interface ViewView : UITableView <UITableViewDataSource, UITableViewDelegate> {
+    TVPopoverViewController* _popoverCtrl;
 }
 
+@property (strong) TVPopoverViewController* popoverCtrl;
+
 // These methods may need to be modified as we add the implementation
-- (id)init;
+- (id)initWithViewController:(TVPopoverViewController*)viewController;
 - (void)gridSwitch;
 - (void)noteSwitch;
 

@@ -307,12 +307,17 @@
         case SCENES:
             [_btnPopover presentPopoverFromBarButtonItem:_sceneButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             break;
+        case GRID:
+            // This is here to stop the warning, but GridOptionsView shouldn't be
+            // called from here, its a sub-view of ViewView
+            break;
     }
     // array of views that user can interact w/ while popover is visible
     _btnPopover.passthroughViews = [[NSArray alloc] init];
     _btnPopover.delegate = self;
     // need to set this to dismiss popover
     _popoverViewCtrl.popover = _btnPopover;
+    _popoverViewCtrl.popoverNav = _popoverNavCtrl;
 }
 
 -(NSInteger) tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section{
