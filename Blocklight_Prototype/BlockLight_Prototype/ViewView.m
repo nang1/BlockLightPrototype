@@ -154,6 +154,7 @@
         
         //create a new one with the same information
         TVPopoverViewController* newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)GRID withStage:tempView withProduction:tempProduction];
+        newPopViewCtrl.popover = _popoverCtrl.popover;
         
         // push to navigation controller
         [_popoverCtrl.popoverNav pushViewController:newPopViewCtrl animated:YES];
