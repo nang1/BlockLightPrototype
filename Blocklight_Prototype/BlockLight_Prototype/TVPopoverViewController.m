@@ -109,7 +109,7 @@
             
             // create view to select a scene
             UIView* _gridView = [[UIView alloc] init];
-            _gridView.backgroundColor = [UIColor orangeColor];
+            _gridView.backgroundColor = [UIColor cyanColor];
             self.view = _gridView;
         }
             break;

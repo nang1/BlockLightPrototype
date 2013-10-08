@@ -40,7 +40,6 @@
 		86572CB217E8BA040081513F /* Performer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9817E8BA040081513F /* Performer.m */; };
 		86572CB317E8BA040081513F /* Position.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9A17E8BA040081513F /* Position.m */; };
 		86572CB417E8BA040081513F /* Production.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9C17E8BA040081513F /* Production.m */; };
-		86572CB517E8BA040081513F /* Prop.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9E17E8BA040081513F /* Prop.m */; };
 		86572CB617E8BA040081513F /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA017E8BA040081513F /* Scene.m */; };
 		86572CB717E8BA040081513F /* SetPiece.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA217E8BA040081513F /* SetPiece.m */; };
 		86572CB817E8BA040081513F /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA417E8BA040081513F /* Stage.m */; };
@@ -56,7 +55,6 @@
 		86572CC617E8BC2B0081513F /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA417E8BA040081513F /* Stage.m */; };
 		86572CC717E8BC310081513F /* SetPiece.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA217E8BA040081513F /* SetPiece.m */; };
 		86572CC817E8BC370081513F /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA017E8BA040081513F /* Scene.m */; };
-		86572CC917E8BC400081513F /* Prop.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9E17E8BA040081513F /* Prop.m */; };
 		86572CCA17E8BC480081513F /* Production.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9C17E8BA040081513F /* Production.m */; };
 		86572CCB17E8BC4E0081513F /* Position.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9A17E8BA040081513F /* Position.m */; };
 		86572CCC17E8BC550081513F /* Performer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9817E8BA040081513F /* Performer.m */; };
@@ -135,8 +133,6 @@
 		86572C9A17E8BA040081513F /* Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Position.m; sourceTree = "<group>"; };
 		86572C9B17E8BA040081513F /* Production.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Production.h; sourceTree = "<group>"; };
 		86572C9C17E8BA040081513F /* Production.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Production.m; sourceTree = "<group>"; };
-		86572C9D17E8BA040081513F /* Prop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prop.h; sourceTree = "<group>"; };
-		86572C9E17E8BA040081513F /* Prop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Prop.m; sourceTree = "<group>"; };
 		86572C9F17E8BA040081513F /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		86572CA017E8BA040081513F /* Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scene.m; sourceTree = "<group>"; };
 		86572CA117E8BA040081513F /* SetPiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetPiece.h; sourceTree = "<group>"; };
@@ -328,8 +324,6 @@
 				86572C9A17E8BA040081513F /* Position.m */,
 				86572C9B17E8BA040081513F /* Production.h */,
 				86572C9C17E8BA040081513F /* Production.m */,
-				86572C9D17E8BA040081513F /* Prop.h */,
-				86572C9E17E8BA040081513F /* Prop.m */,
 				86572C9F17E8BA040081513F /* Scene.h */,
 				86572CA017E8BA040081513F /* Scene.m */,
 				86572CA117E8BA040081513F /* SetPiece.h */,
@@ -480,7 +474,6 @@
 				86572CCC17E8BC550081513F /* Performer.m in Sources */,
 				86572CCB17E8BC4E0081513F /* Position.m in Sources */,
 				86572CCA17E8BC480081513F /* Production.m in Sources */,
-				86572CC917E8BC400081513F /* Prop.m in Sources */,
 				86572CC817E8BC370081513F /* Scene.m in Sources */,
 				86572CC717E8BC310081513F /* SetPiece.m in Sources */,
 				86572CC617E8BC2B0081513F /* Stage.m in Sources */,
@@ -518,7 +511,6 @@
 				86572CB217E8BA040081513F /* Performer.m in Sources */,
 				86572CB317E8BA040081513F /* Position.m in Sources */,
 				86572CB417E8BA040081513F /* Production.m in Sources */,
-				86572CB517E8BA040081513F /* Prop.m in Sources */,
 				86572CB617E8BA040081513F /* Scene.m in Sources */,
 				86572CB717E8BA040081513F /* SetPiece.m in Sources */,
 				86572CB817E8BA040081513F /* Stage.m in Sources */,

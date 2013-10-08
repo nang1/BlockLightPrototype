@@ -351,9 +351,11 @@
 		{
 			//if ([lbl isKindOfClass:[UILabel class]]){
 				[lbl removeFromSuperview];
+            
 			//}
 			
 		}
+        
 //	NSInteger i = 0;
 //		for (UILabel* lbl in self.view.
 			
@@ -367,6 +369,15 @@
         {
             [self addNoteToStage:note];
 		}
+        
+        // remove all props in current view
+        [[self contentView].propsArray removeAllObjects];
+        
+        // add new props
+        for(SetPiece* piece in frame.props){
+            [self addSetPieceToStage:piece];
+        }
+        
 		[self.view setNeedsDisplay];
 	}
 }
@@ -423,17 +434,28 @@
     // TODO: logic for adding actors to stage
 }
 
-- (void)addSetPieceToStage:(UILabel*)imageLabel
-{
-    /*
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Add a tree" message:@"Almost there. Just need to figure out get image." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
-     //*/
+- (void)addSetPieceToStage:(SetPiece*)newPiece
+{    
+    // assign the note a UIPanGesture Recognizer so that it can move around on stage
+    UIPanGestureRecognizer * iconMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [iconMover setDelegate:_gestureCtrl];
     
-    ///*
-    // some of this needs to be moved to AllSetPieceView file
-    UIImage* newIcon = [UIImage imageNamed:@"tree"];
-    //*/
+    // create create image for prop - made it possible to set gesture recognizer to SetPiece
+    //[newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    //[newPiece setDelegate:_gestureCtrl];
+    
+    UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];
+    //[newIconView addGestureRecognizer:newPiece];
+    [newIconView addGestureRecognizer:iconMover];
+    [newIconView setUserInteractionEnabled:YES];
+    [newIconView sizeToFit];
+    [newIconView setCenter:CGPointMake(100, 100)];
+    
+    // save icon to quickstageview
+    [[self contentView].propsArray addObject:newIconView];
+    
+    // add icon as subview to make it appear on the stage
+    [[self contentView] addSubview:newIconView];
 }
 
 @end

@@ -10,15 +10,34 @@
 
 @implementation SetPiece
 
-@synthesize name = _name;
-@synthesize uniqueID = _uniqueID;
 @synthesize icon = _icon;
+@synthesize piecePosition = _piecePosition;
 
+/*
 -(id) init{
     self = [super init];
     
     if(self == nil)
         return nil;
+    
+    _piecePosition = [[Position alloc] init];
+    
+    return self;
+}
+ */
+
+- (id) initWithImage:(NSString *)type {
+    self = [super init];
+    
+    if(self == nil)
+        return nil;
+    
+    _piecePosition = [[Position alloc] init];
+    
+    if([type isEqualToString:@"tree"]){
+        _icon = [UIImage imageNamed:@"trash1"];
+        // trash is one of few images that show, don't know why
+    }
     
     return self;
 }

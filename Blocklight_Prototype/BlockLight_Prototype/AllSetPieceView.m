@@ -97,12 +97,19 @@
 }
 
 - (void)addNewSetPiece:(NSString*)imageType {
+    /*
     UILabel* temp = [[UILabel alloc] init];
     if([imageType isEqual: @"tree"]){
         temp.text = @"tree";
     }
     
     [_frame.props addObject:temp];
+    */
+    
+    SetPiece* newProp = [[SetPiece alloc] initWithImage:imageType];
+    
+    [_frame.props addObject:newProp];
+    
     [_popoverCtrl dismissPopoverView];
 }
 
