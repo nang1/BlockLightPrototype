@@ -10,22 +10,25 @@
 
 @implementation SetPieceView
 
-/* Auto-generated code
- - (id)initWithFrame:(CGRect)frame
- {
- self = [super initWithFrame:frame];
- if (self) {
- // Initialization code
- }
- return self;
- }
- */
+@synthesize popoverCtrl = _popoverCtrl;
 
-- (id)init {
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 216) style:UITableViewStyleGrouped];
-    
+ - (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame withProductionFrame:(Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController {
+    self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     if(self == nil)
         return nil;
+    
+    // else continue intialization
+    _frame = currentFrame;
+    _popoverCtrl = viewController;
     
     self.dataSource = self;
     self.delegate = self;
@@ -185,8 +188,20 @@
             switch (row) {
                 case 0:
                 {
+                    /*
                     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"All" message:@"May create another view to list all set pieces" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
                     [alert show];
+                     */
+                    // access info of tvpopoverviewcontroller
+                    QuickStageView* tempView = _popoverCtrl.quickView;
+                    Production* tempProduction = _popoverCtrl.production;
+                    
+                    //create a new one with the same information
+                    TVPopoverViewController* newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)ALLPROPS withStage:tempView withProduction:tempProduction];
+                    newPopViewCtrl.popover = _popoverCtrl.popover;
+                    
+                    // push to navigation controller
+                    [_popoverCtrl.popoverNav pushViewController:newPopViewCtrl animated:YES];
                 }
                     break;
                     

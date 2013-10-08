@@ -55,7 +55,7 @@
             self.title = @"View Options";
             
             // create starting view to disply view options
-            ViewView* _viewView = [[ViewView alloc] init];
+            ViewView* _viewView = [[ViewView alloc] initWithViewController:self];
             self.view = _viewView;
         }
             break;
@@ -66,8 +66,11 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 550);
             self.title = @"Props";
             
+            Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
+            Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+            
             // create view to select a set piece
-            SetPieceView* _setPieceView = [[SetPieceView alloc] init];
+            SetPieceView* _setPieceView = [[SetPieceView alloc] initWithFrame:CGRectMake(0,0,320,216) withProductionFrame:tempFrame withViewController:self];
             self.view = _setPieceView;
         }
             break;
@@ -95,6 +98,34 @@
             UIView* _sceneView = [[UIView alloc] init];
             _sceneView.backgroundColor = [UIColor blueColor];
             self.view = _sceneView;
+        }
+            break;
+            
+        case GRID:
+        { // This is called only when user clicks Grid Options in VIEWS
+            // set size and title
+            self.contentSizeForViewInPopover = CGSizeMake(320, 300);
+            self.title = @"Grid Options";
+            
+            // create view to select a scene
+            UIView* _gridView = [[UIView alloc] init];
+            _gridView.backgroundColor = [UIColor orangeColor];
+            self.view = _gridView;
+        }
+            break;
+            
+        case ALLPROPS: // This called when user clicks "All"
+        {
+            // set size and title
+            self.contentSizeForViewInPopover = CGSizeMake(320, 550);
+            self.title = @"All Props";
+            
+            Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
+            Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+            
+            // create view to select a set piece
+            AllSetPieceView* _allSetPieceView = [[AllSetPieceView alloc] initWithFrame:CGRectMake(0,0,320,216) withProductionFrame:tempFrame withViewController:self];
+            self.view = _allSetPieceView;
         }
             break;
     }

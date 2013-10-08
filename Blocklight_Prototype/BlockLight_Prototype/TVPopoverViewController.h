@@ -15,6 +15,7 @@
 #import "NoteView.h"
 #import "ViewView.h"
 #import "SetPieceView.h"
+#import "AllSetPieceView.h"
 
 @interface TVPopoverViewController : UIViewController
 {
