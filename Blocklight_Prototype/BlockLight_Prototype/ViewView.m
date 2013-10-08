@@ -64,7 +64,16 @@
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
                     break;
+                case 2:
+                {
+                    cell.textLabel.text = @"Show Notes";
+                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [switchview addTarget:self action:@selector(noteSwitch) forControlEvents:UIControlEventValueChanged];
+                    [switchview setOn:true];
+                    //[switchview setOn:[self contentView].grid animated:NO];
                     
+                    cell.accessoryView = switchview;
+                }
                 default:
                     break;
             }
@@ -78,17 +87,7 @@
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
         }
             break;
-            
-        case 2: // Make notes visible or not
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Notes";
-            cell.textLabel.textColor=[UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
-            break;
-            
-        case 3: // lines w/ numbers that indicate the length of something
+        case 2: // lines w/ numbers that indicate the length of something
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Ruler";
@@ -97,7 +96,7 @@
         }
             break;
             
-        case 4: // Something to do with the audience
+        case 3: // Something to do with the audience
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Audience View";
@@ -123,16 +122,20 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
     if(section == 0)
-        rows = 2;
+    {
+        rows = 3;
+    }
     else if(section < 6)
+    {
         rows = 1;
+    }
     
     return rows;
 }
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 5;
+    NSInteger section = 4;
     return section;
 }
 
@@ -167,6 +170,13 @@
 // User clicked the switch for showing/hiding grid lines
 - (void)gridSwitch {
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Grid Switch" message:@"Will show or hide the grid lines." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
+
+// User clicked the switch for showing/hiding notes
+- (void)noteSwitch
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Note Switch" message:@"Will show or hide the notes." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
     [alert show];
 }
 

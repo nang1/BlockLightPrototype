@@ -14,5 +14,6 @@
 // These methods may need to be modified as we add the implementation
 - (id)init;
 - (void)gridSwitch;
+- (void)noteSwitch;
 
 @end
