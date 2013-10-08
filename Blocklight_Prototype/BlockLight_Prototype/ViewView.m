@@ -10,6 +10,8 @@
 
 @implementation ViewView
 
+@synthesize popoverCtrl = _popoverCtrl;
+
 /* Auto-generated code
  - (id)initWithFrame:(CGRect)frame
  {
@@ -21,7 +23,7 @@
  }
  */
 
-- (id)init{
+- (id)initWithViewController:(TVPopoverViewController *)viewController{
     self = [super initWithFrame:CGRectMake(0, 0, 320, 216) style:UITableViewStyleGrouped];
     
     if(self == nil)
@@ -31,6 +33,8 @@
     
     self.dataSource = self;
     self.delegate = self;
+    
+    _popoverCtrl = viewController;
     
     return self;
 }
@@ -141,10 +145,19 @@
     NSInteger section = [indexPath section];
     NSInteger row = [indexPath row];
     
-    if(section == 0 && row == 1) { // Gride Options
+    if(section == 0 && row == 1) { // Grid Options
         // Push grid options view onto nav controller to allow user to change grid appearance
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Grid Options" message:@"Supposed to move to a popover that allows configuration of grid lines." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
+        
+        // access info of tvpopoverviewcontroller
+        QuickStageView* tempView = _popoverCtrl.quickView;
+        Production* tempProduction = _popoverCtrl.production;
+        
+        //create a new one with the same information
+        TVPopoverViewController* newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)GRID withStage:tempView withProduction:tempProduction];
+        newPopViewCtrl.popover = _popoverCtrl.popover;
+        
+        // push to navigation controller
+        [_popoverCtrl.popoverNav pushViewController:newPopViewCtrl animated:YES];
     }
     else if(section == 1){ // Traffic Patterns
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Traffic Patterns" message:@"Will show or hide the traffic patterns." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];

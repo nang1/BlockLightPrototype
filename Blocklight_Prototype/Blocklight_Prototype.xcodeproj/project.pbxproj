@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34995AB11803499200887496 /* AllSetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34995AB01803499200887496 /* AllSetPieceView.m */; };
 		861C2BA817FB9734006FC951 /* trash1.png in Resources */ = {isa = PBXBuildFile; fileRef = 861C2BA717FB9734006FC951 /* trash1.png */; };
 		861C2BAF17FCE521006FC951 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 861C2BAE17FCE521006FC951 /* trash.png */; };
 		86572C4117E8B9A70081513F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C4017E8B9A70081513F /* UIKit.framework */; };
@@ -84,6 +85,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		34995AAF1803499200887496 /* AllSetPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AllSetPieceView.h; path = BlockLight_Prototype/AllSetPieceView.h; sourceTree = SOURCE_ROOT; };
+		34995AB01803499200887496 /* AllSetPieceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AllSetPieceView.m; path = BlockLight_Prototype/AllSetPieceView.m; sourceTree = SOURCE_ROOT; };
 		861C2BA717FB9734006FC951 /* trash1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash1.png; sourceTree = "<group>"; };
 		861C2BAE17FCE521006FC951 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
 		86572C3C17E8B9A70081513F /* Blocklight_Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocklight_Prototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,6 +295,8 @@
 				8BC8BB8717F3A2B100E949B1 /* ViewView.m */,
 				8BC8BB8917F3A2F900E949B1 /* SetPieceView.h */,
 				8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */,
+				34995AAF1803499200887496 /* AllSetPieceView.h */,
+				34995AB01803499200887496 /* AllSetPieceView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -492,6 +497,7 @@
 				867CB8F817F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld in Sources */,
 				8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */,
 				8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */,
+				34995AB11803499200887496 /* AllSetPieceView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
