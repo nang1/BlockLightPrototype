@@ -19,6 +19,7 @@
 @synthesize brushPattern = _brushPattern;
 @synthesize noteLabels = _noteLabels;
 @synthesize first = _first;
+@synthesize propsArray = _propsArray;
 
 #pragma mark Constructors
 - (id)initWithFrame:(CGRect)frame andViewController:(id)viewController {
@@ -42,6 +43,9 @@
     _brushPattern = [UIColor redColor];
     _first = YES;
     //_spikeTape = YES; // had just put this line to make sure drawing lines worked
+    
+    // array to hold set pieces
+    _propsArray = [[NSMutableArray alloc] init];
     
     return self;
 }

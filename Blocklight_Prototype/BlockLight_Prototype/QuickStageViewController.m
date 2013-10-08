@@ -249,7 +249,12 @@
     }
     
     // if actor was added
+    
+    
     // if setpiece was added
+    if([tempFrame.props count] > [[self contentView].propsArray count]){
+        [self addSetPieceToStage:[tempFrame.props lastObject]];
+    }
     
     [[self view] setNeedsDisplay]; // refreshes the view
 }
@@ -257,34 +262,7 @@
 // Create popover to display views that allow user to edit stage
 - (void)createPopover:(TVPopoverViewController*)_popoverViewCtrl withType:(EditTools)_type{
     _popoverNavCtrl = [[UINavigationController alloc] initWithRootViewController:_popoverViewCtrl];
-    _btnPopover = [[UIPopoverController alloc] initWithContentViewController:_popoverNavCtrl];
-    
-    /* for testing
-    if([_popoverViewCtrl.view isMemberOfClass:[NoteView class]])
-    {
-        NSLog(@"has note view\n");
-    }
-    else
-    {
-        NSLog(@"missing note view\n");
-    }
-    NSLog(@"Object: %@\n", _popoverViewCtrl);
-    NSLog(@"Object: %@\n", _btnPopover.contentViewController);
-    NSLog(@"Object: %@\n", _popoverViewCtrl.view);
-    NSLog(@"Object: %@\n", _btnPopover.contentViewController.view);
-    NSLog(@"read all objects\n");
-    //*/
-        
-    /*
-    NoteView *temp = (NoteView*)_popoverViewCtrl.view;
-    NSLog(@"%@\n", temp.noteTextBox.text);
-    NSLog(@"%@\n", temp.frame);
-    NSLog(@"%@\n", temp.frame.notes.lastObject);
-    NSLog(@"%@\n", temp.popoverCtrl);
-    NSLog(@"%@\n", temp.gestureCtrl);
-    NSLog(@"%@\n", temp.gestureCtrl.frame);
-    // if all null, means wasn't initialized */
-    
+    _btnPopover = [[UIPopoverController alloc] initWithContentViewController:_popoverNavCtrl];    
     
     // assign popover to appear over a tool bar button
     switch(_type){
@@ -310,6 +288,9 @@
         case GRID:
             // This is here to stop the warning, but GridOptionsView shouldn't be
             // called from here, its a sub-view of ViewView
+        case ALLPROPS:
+            // This is here to stop the warning, but this view shouldn't be called
+            // from here, it is a sub-view of SetPieceView
             break;
     }
     // array of views that user can interact w/ while popover is visible
@@ -442,9 +423,17 @@
     // TODO: logic for adding actors to stage
 }
 
-- (void)addSetPieceToStageFromFrame
+- (void)addSetPieceToStage:(UILabel*)imageLabel
 {
-    // TODO: logic for adding set pieces to stage
+    /*
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Add a tree" message:@"Almost there. Just need to figure out get image." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alert show];
+     //*/
+    
+    ///*
+    // some of this needs to be moved to AllSetPieceView file
+    UIImage* newIcon = [UIImage imageNamed:@"tree"];
+    //*/
 }
 
 @end
