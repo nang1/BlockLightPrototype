@@ -389,6 +389,13 @@
 		cell.backgroundColor = [UIColor colorWithPatternImage:frame.frameIcon];
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		
+        // put a label on each frame of the timeline
+        int myInteger = indexPath.row;
+        myInteger++;
+        NSString* myNewString = [NSString stringWithFormat:@"%i", myInteger];
+        cell.textLabel.text = myNewString;
+        [cell.textLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+        
 		return cell;
 	}
 	else{

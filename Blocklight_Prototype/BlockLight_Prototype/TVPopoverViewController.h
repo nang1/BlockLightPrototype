@@ -16,6 +16,7 @@
 #import "ViewView.h"
 #import "SetPieceView.h"
 #import "AllSetPieceView.h"
+#import "GridOptionsView.h"
 
 @interface TVPopoverViewController : UIViewController
 {

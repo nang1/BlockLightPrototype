@@ -73,6 +73,7 @@
 		8BB977D0180F00A6001C1EDE /* Tree.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977CF180F00A6001C1EDE /* Tree.png */; };
 		8BB977D2180F00B3001C1EDE /* startScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977D1180F00B3001C1EDE /* startScreen.png */; };
 		8BB977D4180F00BB001C1EDE /* startScreen2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977D3180F00BB001C1EDE /* startScreen2.png */; };
+		8BB977D7180F1A52001C1EDE /* GridOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB977D6180F1A52001C1EDE /* GridOptionsView.m */; };
 		8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8717F3A2B100E949B1 /* ViewView.m */; };
 		8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */; };
 /* End PBXBuildFile section */
@@ -161,6 +162,8 @@
 		8BB977CF180F00A6001C1EDE /* Tree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tree.png; path = BlockLight_Prototype/Tree.png; sourceTree = SOURCE_ROOT; };
 		8BB977D1180F00B3001C1EDE /* startScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startScreen.png; path = BlockLight_Prototype/startScreen.png; sourceTree = SOURCE_ROOT; };
 		8BB977D3180F00BB001C1EDE /* startScreen2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startScreen2.png; path = BlockLight_Prototype/startScreen2.png; sourceTree = SOURCE_ROOT; };
+		8BB977D5180F1A51001C1EDE /* GridOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GridOptionsView.h; path = BlockLight_Prototype/GridOptionsView.h; sourceTree = SOURCE_ROOT; };
+		8BB977D6180F1A52001C1EDE /* GridOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GridOptionsView.m; path = BlockLight_Prototype/GridOptionsView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8617F3A2B100E949B1 /* ViewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewView.h; path = BlockLight_Prototype/ViewView.h; sourceTree = SOURCE_ROOT; };
 		8BC8BB8717F3A2B100E949B1 /* ViewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewView.m; path = BlockLight_Prototype/ViewView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8917F3A2F900E949B1 /* SetPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetPieceView.h; path = BlockLight_Prototype/SetPieceView.h; sourceTree = SOURCE_ROOT; };
@@ -308,6 +311,8 @@
 				8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */,
 				34995AAF1803499200887496 /* AllSetPieceView.h */,
 				34995AB01803499200887496 /* AllSetPieceView.m */,
+				8BB977D5180F1A51001C1EDE /* GridOptionsView.h */,
+				8BB977D6180F1A52001C1EDE /* GridOptionsView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 				8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */,
 				8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */,
 				34995AB11803499200887496 /* AllSetPieceView.m in Sources */,
+				8BB977D7180F1A52001C1EDE /* GridOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
