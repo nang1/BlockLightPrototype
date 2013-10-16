@@ -134,25 +134,25 @@
 	[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
 	
 	// Creating the Production options button
-	//_productionOptions = [UIButton buttonWithType:UIButtonTypeCustom];
-	//_productionOptions.frame = CGRectMake(960, 640, 65, 65);
-	//UIImage* productionImage = [UIImage imageNamed:@"production-settings"];
-	//UIImageView* productionView = [[UIImageView alloc] initWithImage:productionImage];
-	//productionView.frame = CGRectMake(18, 5, 28, 31);
+	_productionOptions = [UIButton buttonWithType:UIButtonTypeCustom];
+	_productionOptions.frame = CGRectMake(960, 640, 65, 65);
+	UIImage* productionImage = [UIImage imageNamed:@"production-settings"];
+	UIImageView* productionView = [[UIImageView alloc] initWithImage:productionImage];
+	productionView.frame = CGRectMake(18, 5, 28, 31);
 	//label sits on top of button
-	//UILabel* productionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 35, 65, 15)];
-	//productionLabel.text = @"Production";
-	//productionLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:10];
-	//productionLabel.backgroundColor = [UIColor clearColor];
+	UILabel* productionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 35, 65, 15)];
+	productionLabel.text = @"Production";
+	productionLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:10];
+	productionLabel.backgroundColor = [UIColor clearColor];
 	
-	//_productionOptions.backgroundColor = [UIColor lightTextColor];
-	//[_productionOptions addSubview:productionView];
-	//[_productionOptions addSubview:productionLabel];
-	//[_productionOptions addTarget:self action:@selector(productionOptionsAS) forControlEvents:UIControlEventTouchUpInside];
-	
-	
+	_productionOptions.backgroundColor = [UIColor lightTextColor];
+	[_productionOptions addSubview:productionView];
+	[_productionOptions addSubview:productionLabel];
+	[_productionOptions addTarget:self action:@selector(productionOptionsAS) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 	// Add button and table to view
-	//[[self contentView] addSubview:_productionOptions];
+	[[self contentView] addSubview:_productionOptions];
 	[[self contentView] addSubview:_timeline];
 
     
@@ -203,8 +203,6 @@
 - (void)showStageEditor {
     _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)SETTINGS withStage:[self contentView] withProduction:_quickProduction];
     [self createPopover:_tvPopoverCtrl withType:(EditTools)SETTINGS];
-    /*    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Edit Stage Button" message:@"This button will create a popup to let you edit stage width and height. Will implement edit stage button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show]; //*/
 }
 
 // Shows view options such as grid lines, opacity, etc.
@@ -392,6 +390,74 @@
 	}
 	else{
 		return cell;
+	}
+}
+
+- (void)productionOptionsAS{
+	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy Previous Frame", @"New Frame", nil];
+	
+	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
+	
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+	if ([actionSheet isEqual:_productionSheet]){
+		Frame* newFrame = [[Frame alloc] init];
+		//[self contentView].noteLabel.text = @"";
+		switch (buttonIndex) {
+				
+				//'copy' BUTTON
+			case 0:{
+				Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
+				Frame* newFrame = [[Frame alloc]init];
+				newFrame.spikePath = [UIBezierPath bezierPathWithCGPath:curFrame.spikePath.CGPath];
+				newFrame.spikePath.lineCapStyle = kCGLineCapRound;
+				newFrame.spikePath.miterLimit = 0;
+				newFrame.spikePath.lineWidth =5 ;
+				scene.curFrame = scene.curFrame +1;
+				[scene.frames insertObject:newFrame atIndex:scene.curFrame ];
+				[self contentView].myPath = newFrame.spikePath;
+				[[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
+				//[self saveIcon];
+                
+			}
+				break;
+			case 1:{/*
+                     //'new frame' BUTTON
+                     Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+                     Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
+                     
+                     for( Performer* p in _group.performers){
+                     NSString* key = [NSString stringWithFormat:@"%d",p.uniqueID.intValue];
+                     Position* pos = [curFrame.performerPositions objectForKey:key];
+                     
+                     if(pos != nil){
+                     [p.view removeFromSuperview];
+                     }
+                     }
+                     
+                     [self contentView].myPath = [[UIBezierPath alloc] init];
+                     [self contentView].myPath.lineCapStyle=kCGLineCapRound;
+                     [self contentView].myPath.miterLimit=0;
+                     [self contentView].myPath.lineWidth=5;
+                     
+                     scene.curFrame = scene.curFrame +1;
+                     [scene.frames insertObject:newFrame atIndex:scene.curFrame ];
+                     [[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
+                     //[self saveIcon];*/
+				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+				[scene.frames addObject:[[Frame alloc] init]];
+				[_timeline reloadData];
+				
+				NSIndexPath *ip=[NSIndexPath indexPathForRow:scene.curFrame inSection:0];
+				[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
+				[[self view] setNeedsDisplay];
+			}
+				
+			default:
+				break;
+		}
 	}
 }
 
