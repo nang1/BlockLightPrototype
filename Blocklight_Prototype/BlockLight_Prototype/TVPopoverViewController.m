@@ -107,9 +107,8 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 300);
             self.title = @"Grid Options";
             
-            // create view to select a scene
-            UIView* _gridView = [[UIView alloc] init];
-            _gridView.backgroundColor = [UIColor cyanColor];
+            // create view to adjust grid lines
+            GridOptionsView* _gridView = [[GridOptionsView alloc] initWithViewController:self];
             self.view = _gridView;
         }
             break;

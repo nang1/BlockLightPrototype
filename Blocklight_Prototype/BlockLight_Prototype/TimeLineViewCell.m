@@ -25,11 +25,20 @@
 	
 	
 	// Configure the view for the selected state
-	if(selected)
+	/*if(selected)
 		self.backgroundColor =[self.backgroundColor colorWithAlphaComponent:1.0f];
 	else
 		self.backgroundColor =[self.backgroundColor colorWithAlphaComponent:0.4f];
-	
+     */
+    
+    // This is in Andrew's code, need to ask about difference from code above
+    if(selected){
+        
+    }
+    else {
+        self.backgroundColor = [self.backgroundColor colorWithAlphaComponent:0.4f];
+        self.imageView.image = NULL;
+    }
 }
 
 @end
