@@ -394,7 +394,7 @@
 }
 
 - (void)productionOptionsAS{
-	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy Previous Frame", @"New Frame", nil];
+	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Current Frame", @"Copy Current Frame", @"New Frame", nil];
 	
 	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
 	
@@ -405,10 +405,21 @@
 		Frame* newFrame = [[Frame alloc] init];
 		//[self contentView].noteLabel.text = @"";
 		switch (buttonIndex) {
-				
+
+                // 'delete button'
+			case 0:
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete Frame" message:@"This will delete the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            }
+                break;
+                
 				//'copy' BUTTON
-			case 0:{
-				Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+			case 1:{
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+				/*
+                Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
 				Frame* newFrame = [[Frame alloc]init];
 				newFrame.spikePath = [UIBezierPath bezierPathWithCGPath:curFrame.spikePath.CGPath];
@@ -420,10 +431,11 @@
 				[self contentView].myPath = newFrame.spikePath;
 				[[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
 				//[self saveIcon];
+                //*/
                 
 			}
 				break;
-			case 1:{/*
+			case 2:{/*
                      //'new frame' BUTTON
                      Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
                      Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
@@ -464,7 +476,7 @@
 - (void)addNoteToStage:(Note*)note
 {
     // create label for the note
-    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 100, 300)];
+    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 200, 300)];
     //UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate, 100,50)];
     tempLabel.text = note.noteStr;
     //tempLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -473,7 +485,6 @@
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
     //tempLabel.center = CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate);
-    tempLabel.hidden = [self contentView].hiddenNotes;
     
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
     UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
@@ -488,6 +499,9 @@
     [[self contentView].noteLabels addObject:tempLabel];
     //[self.view addSubview:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
+    
+    // give an alert if notes are hidden
+    tempLabel.hidden = [self contentView].hiddenNotes;
 }
 
 - (void)addActorToStageFromFrame

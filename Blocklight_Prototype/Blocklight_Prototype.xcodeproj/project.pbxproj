@@ -71,6 +71,7 @@
 		867CB8F717F2393900E8B0F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F417F2393900E8B0F5 /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		867CB8F817F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F517F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld */; };
 		86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EA9CB6180EF4CA00D030C0 /* SettingsView.m */; };
+		86EA9CBA180F091100D030C0 /* production-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 86EA9CB9180F091100D030C0 /* production-settings.png */; };
 		8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8717F3A2B100E949B1 /* ViewView.m */; };
 		8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */; };
 /* End PBXBuildFile section */
@@ -158,6 +159,7 @@
 		867CB8F617F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Blocklight_Prototype.xcdatamodel; sourceTree = "<group>"; };
 		86EA9CB5180EF4CA00D030C0 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = BlockLight_Prototype/SettingsView.h; sourceTree = SOURCE_ROOT; };
 		86EA9CB6180EF4CA00D030C0 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = BlockLight_Prototype/SettingsView.m; sourceTree = SOURCE_ROOT; };
+		86EA9CB9180F091100D030C0 /* production-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "production-settings.png"; sourceTree = "<group>"; };
 		8BC8BB8617F3A2B100E949B1 /* ViewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewView.h; path = BlockLight_Prototype/ViewView.h; sourceTree = SOURCE_ROOT; };
 		8BC8BB8717F3A2B100E949B1 /* ViewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewView.m; path = BlockLight_Prototype/ViewView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8917F3A2F900E949B1 /* SetPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetPieceView.h; path = BlockLight_Prototype/SetPieceView.h; sourceTree = SOURCE_ROOT; };
@@ -275,6 +277,7 @@
 		86572CBA17E8BA140081513F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				86EA9CB9180F091100D030C0 /* production-settings.png */,
 				861C2BAE17FCE521006FC951 /* trash.png */,
 				861C2BA717FB9734006FC951 /* trash1.png */,
 				86572C8317E8BA040081513F /* bg-main.png */,
@@ -440,6 +443,7 @@
 				86572CD017E8BC950081513F /* bg-production.jpg in Resources */,
 				861C2BA817FB9734006FC951 /* trash1.png in Resources */,
 				861C2BAF17FCE521006FC951 /* trash.png in Resources */,
+				86EA9CBA180F091100D030C0 /* production-settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
