@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Position.h"
 
-@interface SetPiece : NSObject {
+@interface SetPiece : UIPanGestureRecognizer {
     // set piece attributes
-    NSString* _name;
-    NSNumber* _uniqueID;
     UIImage * _icon;
+    Position* _piecePosition;
 }
 
-@property (strong) NSString* name;
-@property (strong) NSNumber* uniqueID;
-@property (strong) UIImage * icon;
+@property (strong) UIImage* icon;
+@property (strong) Position* piecePosition;
+
+- (id)initWithImage:(NSString*)type;
 
 @end

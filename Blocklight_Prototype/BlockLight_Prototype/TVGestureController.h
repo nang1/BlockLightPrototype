@@ -12,6 +12,7 @@
 #import "QuickStageView.h"
 #import "Frame.h"
 #import "Note.h"
+#import "SetPiece.h"
 
 @interface TVGestureController : UIViewController<UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
