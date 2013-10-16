@@ -13,7 +13,6 @@
 @synthesize icon = _icon;
 @synthesize piecePosition = _piecePosition;
 
-/*
 -(id) init{
     self = [super init];
     
@@ -24,7 +23,6 @@
     
     return self;
 }
- */
 
 - (id) initWithImage:(NSString *)type {
     self = [super init];
@@ -35,8 +33,13 @@
     _piecePosition = [[Position alloc] init];
     
     if([type isEqualToString:@"tree"]){
-        _icon = [UIImage imageNamed:@"trash1"];
-        // trash is one of few images that show, don't know why
+        _icon = [UIImage imageNamed:@"Tree"];
+    }
+    else if([type isEqualToString:@"Door"]){
+        _icon = [UIImage imageNamed:@"Door"];
+    }
+    else if([type isEqualToString:@"trash"]){
+        _icon = [UIImage imageNamed:@"trash"];
     }
     
     return self;

@@ -39,6 +39,8 @@
 }
 
 // UITableView Datasource for All Set Pieces Popover
+// NOTE: Be sure to change numberOfRowsInSection() when adding/deleting
+//       cases in switch statement
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [indexPath row];
     //NSInteger section = [indexPath section];
@@ -51,10 +53,20 @@
         {
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = @"Tree";
-            
         }
             break;
-            
+        case 1:
+        {
+            cell.textLabel.textColor = [UIColor blackColor];
+            cell.textLabel.text = @"Door";
+        }
+            break;
+        case 2:
+        {
+            cell.textLabel.textColor = [UIColor blackColor];
+            cell.textLabel.text = @"Recycle Bin";
+        }
+            break;
         default:
             break;
     }
@@ -70,7 +82,7 @@
 
 // Determines the number of rows in a section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows = 1;
+    NSInteger rows = 3;
     return rows;
 }
 
@@ -90,6 +102,12 @@
             [self addNewSetPiece:@"tree"];
         }
             break;
+        case 1:
+            [self addNewSetPiece:@"Door"];
+            break;
+        case 2:
+            [self addNewSetPiece:@"trash"];
+            break;
             
         default:
             break;
@@ -97,15 +115,6 @@
 }
 
 - (void)addNewSetPiece:(NSString*)imageType {
-    /*
-    UILabel* temp = [[UILabel alloc] init];
-    if([imageType isEqual: @"tree"]){
-        temp.text = @"tree";
-    }
-    
-    [_frame.props addObject:temp];
-    */
-    
     SetPiece* newProp = [[SetPiece alloc] initWithImage:imageType];
     
     [_frame.props addObject:newProp];

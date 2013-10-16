@@ -347,21 +347,17 @@
         [_gestureCtrl changeFrame:frame]; // the frame had changed
 
 
+        // remove current objects from view
 		for (UILabel *lbl in [self contentView].noteLabels)
 		{
-			//if ([lbl isKindOfClass:[UILabel class]]){
 				[lbl removeFromSuperview];
-            
-			//}
-			
 		}
         
-//	NSInteger i = 0;
-//		for (UILabel* lbl in self.view.
-			
-//		}
+        for(UIImageView *tempView in [self contentView].propsArray){
+            [tempView removeFromSuperview];
+        }
 
-		// remove all notes in current view
+		// remove all notes in current view notes array
 		[[self contentView].noteLabels removeAllObjects];
 		
 		// add new notes
@@ -370,7 +366,7 @@
             [self addNoteToStage:note];
 		}
         
-        // remove all props in current view
+        // remove all props in current view props array
         [[self contentView].propsArray removeAllObjects];
         
         // add new props
@@ -437,25 +433,25 @@
 - (void)addSetPieceToStage:(SetPiece*)newPiece
 {    
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
-    UIPanGestureRecognizer * iconMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [iconMover setDelegate:_gestureCtrl];
+    //UIPanGestureRecognizer * iconMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    //[iconMover setDelegate:_gestureCtrl];
     
-    // create create image for prop - made it possible to set gesture recognizer to SetPiece
-    //[newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    //[newPiece setDelegate:_gestureCtrl];
+    // Set gesture recognizer to SetPiece
+    [newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [newPiece setDelegate:_gestureCtrl];
     
     UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];
-    //[newIconView addGestureRecognizer:newPiece];
-    [newIconView addGestureRecognizer:iconMover];
+    //[newIconView addGestureRecognizer:iconMover];
+    [newIconView addGestureRecognizer:newPiece];
     [newIconView setUserInteractionEnabled:YES];
     [newIconView sizeToFit];
-    [newIconView setCenter:CGPointMake(100, 100)];
+    [newIconView setCenter:CGPointMake(newPiece.piecePosition.xCoordinate, newPiece.piecePosition.yCoordinate)];
     
     // save icon to quickstageview
     [[self contentView].propsArray addObject:newIconView];
     
     // add icon as subview to make it appear on the stage
-    [[self contentView] addSubview:newIconView];
+    [[self contentView] addSubview:[[self contentView].propsArray lastObject]];
 }
 
 @end

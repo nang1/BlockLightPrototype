@@ -103,10 +103,12 @@
     else if([gesture state] == UIGestureRecognizerStateEnded)
     {
         //Put the code that you may want to execute when the UIView became larger than certain value or just to reset them back to their original transform scale
-        
+        NSString* pieceType = @"";
+        // A note was moved
         if([piece isMemberOfClass:[UILabel class]])
         {            
             Note* tempNote = [[Note alloc] init];
+            pieceType = @"note";
             
             int index = 0;
             for(UILabel *lbl in _quickStageView.noteLabels)
@@ -134,6 +136,7 @@
                 NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away a note, \"%@.\" Are you sure you want to continue?", tempNote.noteStr];
                 UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
                 alert.tag = index;
+                alert.title = pieceType;
                 [alert show];
 
             }
@@ -153,6 +156,47 @@
                  //*/
             }
         }
+        // A set piece was moved
+        if([piece isMemberOfClass:[UIImageView class]]){
+            SetPiece* tempPiece = [[SetPiece alloc] init];
+            pieceType = @"setPiece";
+            int index = 0;
+            for(UIImageView *tempView in _quickStageView.propsArray)
+            {
+                if([tempView isEqual:(UIImageView*)piece])
+                {
+                    tempPiece = [_frame.props objectAtIndex:index];
+                    break;
+                }
+                else{
+                    index++;
+                }
+            }
+            
+            Position *pos = tempPiece.piecePosition;
+            if(pos == nil) // should probably set to something once created
+            {
+                // update set piece with new position
+                pos = [[Position alloc] init];
+                pos.xCoordinate = [piece center].x;
+                pos.yCoordinate = [piece center].y;
+            }
+            else if([self isOnTrashCan:piece]) // user wants to trash icon
+            {
+                NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away a set piece. Are you sure you want to continue?"];
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+                alert.tag = index;
+                alert.title  = pieceType;
+                [alert show];
+            }
+            else {
+                CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
+                //CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
+                
+                // 64px because: 20px for the status bar, and 44px for the navigation bar
+                [pos updateX:(int)(height - [piece center].y) Y:(int)[piece center].x-64];
+            }
+        }
     }
 }
 
@@ -161,7 +205,10 @@
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
         //NSLog(@"Throw in trash can");
-        [self removeNoteAtIndex:alertView.tag];
+        if([alertView.title isEqual:@"note"])
+            [self removeNoteAtIndex:alertView.tag];
+        else if([alertView.title isEqual:@"setPiece"])
+            [self removeSetPieceAtIndex:alertView.tag];
     }
 }
 
@@ -216,7 +263,9 @@
         return;
     }
     //[[_quickStageView.propIcons objectAtIndex:i] removeFromSuperview];
+    [[_quickStageView.propsArray objectAtIndex:i] removeFromSuperview];
     //[_quickStageView.propIcons removeObjectAtIndex:i];
+    [_quickStageView.propsArray removeObjectAtIndex:i];
     [_frame.props removeObjectAtIndex:i];
     [_quickStageView setNeedsDisplay];
     //_frame.props
