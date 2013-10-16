@@ -13,6 +13,7 @@
 #import "Production.h"
 #import "QuickStageView.h"
 #import "NoteView.h"
+#import "SettingsView.h"
 #import "ViewView.h"
 #import "SetPieceView.h"
 #import "AllSetPieceView.h"

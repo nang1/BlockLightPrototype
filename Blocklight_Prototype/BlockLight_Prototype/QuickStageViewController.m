@@ -15,6 +15,7 @@
 @implementation QuickStageViewController
 
 @synthesize quickProduction = _quickProduction;
+@synthesize settingsBtn = _settingsBtn;
 @synthesize viewButton = _viewButton;
 @synthesize propsButton = _propsButton;
 @synthesize notesButton = _notesButton;
@@ -77,7 +78,7 @@
     UIBarButtonItem* redo = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRedo
                                                         target:self
                                                         action:@selector(redoButton)];
-    UIBarButtonItem* settingsBtn = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+    _settingsBtn = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
                                                              style:UIBarButtonItemStyleBordered
                                                              target:self
                                                              action:@selector(showStageEditor)];
@@ -87,7 +88,7 @@
                                                              action:@selector(viewButtonClick)];
 
     // add left-side tool bar buttons
-    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, settingsBtn, _viewButton, nil];
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
     
     // Tool buttons on right side
     _propsButton = [[UIBarButtonItem alloc] initWithTitle:@"Set Pieces"
@@ -133,25 +134,25 @@
 	[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
 	
 	// Creating the Production options button
-	//_productionOptions = [UIButton buttonWithType:UIButtonTypeCustom];
-	//_productionOptions.frame = CGRectMake(960, 640, 65, 65);
-	//UIImage* productionImage = [UIImage imageNamed:@"production-settings"];
-	//UIImageView* productionView = [[UIImageView alloc] initWithImage:productionImage];
-	//productionView.frame = CGRectMake(18, 5, 28, 31);
+	_productionOptions = [UIButton buttonWithType:UIButtonTypeCustom];
+	_productionOptions.frame = CGRectMake(960, 640, 65, 65);
+	UIImage* productionImage = [UIImage imageNamed:@"production-settings"];
+	UIImageView* productionView = [[UIImageView alloc] initWithImage:productionImage];
+	productionView.frame = CGRectMake(18, 5, 28, 31);
 	//label sits on top of button
-	//UILabel* productionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 35, 65, 15)];
-	//productionLabel.text = @"Production";
-	//productionLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:10];
-	//productionLabel.backgroundColor = [UIColor clearColor];
+	UILabel* productionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 35, 65, 15)];
+	productionLabel.text = @"Production";
+	productionLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:10];
+	productionLabel.backgroundColor = [UIColor clearColor];
 	
-	//_productionOptions.backgroundColor = [UIColor lightTextColor];
-	//[_productionOptions addSubview:productionView];
-	//[_productionOptions addSubview:productionLabel];
-	//[_productionOptions addTarget:self action:@selector(productionOptionsAS) forControlEvents:UIControlEventTouchUpInside];
-	
-	
+	_productionOptions.backgroundColor = [UIColor lightTextColor];
+	[_productionOptions addSubview:productionView];
+	[_productionOptions addSubview:productionLabel];
+	[_productionOptions addTarget:self action:@selector(productionOptionsAS) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 	// Add button and table to view
-	//[[self contentView] addSubview:_productionOptions];
+	[[self contentView] addSubview:_productionOptions];
 	[[self contentView] addSubview:_timeline];
 
     
@@ -200,8 +201,8 @@
 // Push stage editor view
 // sets the height, width, etc of stage
 - (void)showStageEditor {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Edit Stage Button" message:@"This button will create a popup to let you edit stage width and height. Will implement edit stage button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)SETTINGS withStage:[self contentView] withProduction:_quickProduction];
+    [self createPopover:_tvPopoverCtrl withType:(EditTools)SETTINGS];
 }
 
 // Shows view options such as grid lines, opacity, etc.
@@ -267,6 +268,9 @@
     // assign popover to appear over a tool bar button
     switch(_type){
         case SETTINGS:
+        {
+            [_btnPopover presentPopoverFromBarButtonItem:_settingsBtn permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
             break;
         case NOTES:
         {
@@ -396,10 +400,90 @@
 	}
 }
 
+- (void)productionOptionsAS{
+	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Current Frame", @"Copy Current Frame", @"New Frame", nil];
+	
+	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
+	
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+	if ([actionSheet isEqual:_productionSheet]){
+		Frame* newFrame = [[Frame alloc] init];
+		//[self contentView].noteLabel.text = @"";
+		switch (buttonIndex) {
+
+                // 'delete button'
+			case 0:
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete Frame" message:@"This will delete the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            }
+                break;
+                
+				//'copy' BUTTON
+			case 1:{
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+				/*
+                Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
+				Frame* newFrame = [[Frame alloc]init];
+				newFrame.spikePath = [UIBezierPath bezierPathWithCGPath:curFrame.spikePath.CGPath];
+				newFrame.spikePath.lineCapStyle = kCGLineCapRound;
+				newFrame.spikePath.miterLimit = 0;
+				newFrame.spikePath.lineWidth =5 ;
+				scene.curFrame = scene.curFrame +1;
+				[scene.frames insertObject:newFrame atIndex:scene.curFrame ];
+				[self contentView].myPath = newFrame.spikePath;
+				[[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
+				//[self saveIcon];
+                //*/
+                
+			}
+				break;
+			case 2:{/*
+                     //'new frame' BUTTON
+                     Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+                     Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
+                     
+                     for( Performer* p in _group.performers){
+                     NSString* key = [NSString stringWithFormat:@"%d",p.uniqueID.intValue];
+                     Position* pos = [curFrame.performerPositions objectForKey:key];
+                     
+                     if(pos != nil){
+                     [p.view removeFromSuperview];
+                     }
+                     }
+                     
+                     [self contentView].myPath = [[UIBezierPath alloc] init];
+                     [self contentView].myPath.lineCapStyle=kCGLineCapRound;
+                     [self contentView].myPath.miterLimit=0;
+                     [self contentView].myPath.lineWidth=5;
+                     
+                     scene.curFrame = scene.curFrame +1;
+                     [scene.frames insertObject:newFrame atIndex:scene.curFrame ];
+                     [[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
+                     //[self saveIcon];*/
+				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+				[scene.frames addObject:[[Frame alloc] init]];
+				[_timeline reloadData];
+				
+				NSIndexPath *ip=[NSIndexPath indexPathForRow:scene.curFrame inSection:0];
+				[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
+				[[self view] setNeedsDisplay];
+			}
+				
+			default:
+				break;
+		}
+	}
+}
+
 - (void)addNoteToStage:(Note*)note
 {
     // create label for the note
-    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 100, 300)];
+    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 200, 300)];
     //UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate, 100,50)];
     tempLabel.text = note.noteStr;
     //tempLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -408,7 +492,6 @@
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
     //tempLabel.center = CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate);
-    
     
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
     UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
@@ -423,6 +506,9 @@
     [[self contentView].noteLabels addObject:tempLabel];
     //[self.view addSubview:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
+    
+    // give an alert if notes are hidden
+    tempLabel.hidden = [self contentView].hiddenNotes;
 }
 
 - (void)addActorToStageFromFrame
@@ -449,7 +535,7 @@
     
     // save icon to quickstageview
     [[self contentView].propsArray addObject:newIconView];
-    
+
     // add icon as subview to make it appear on the stage
     [[self contentView] addSubview:[[self contentView].propsArray lastObject]];
 }

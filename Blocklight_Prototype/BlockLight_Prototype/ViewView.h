@@ -14,9 +14,11 @@
 
 @interface ViewView : UITableView <UITableViewDataSource, UITableViewDelegate> {
     TVPopoverViewController* _popoverCtrl;
+    UISwitch* _noteSwitchView;
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
+@property (nonatomic, strong) UISwitch* noteSwitchView;
 
 // These methods may need to be modified as we add the implementation
 - (id)initWithViewController:(TVPopoverViewController*)viewController;

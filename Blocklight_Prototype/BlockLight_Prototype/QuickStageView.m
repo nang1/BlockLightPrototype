@@ -18,6 +18,7 @@
 @synthesize opacity = _opacity;
 @synthesize brushPattern = _brushPattern;
 @synthesize noteLabels = _noteLabels;
+@synthesize hiddenNotes = _hiddenNotes;
 @synthesize first = _first;
 @synthesize propsArray = _propsArray;
 
@@ -31,6 +32,7 @@
         
     // create array to hold note labels
     _noteLabels = [[NSMutableArray alloc] init];
+    _hiddenNotes = NO;
     
     _horizontalGrid = YES;
     _verticalGrid = YES;

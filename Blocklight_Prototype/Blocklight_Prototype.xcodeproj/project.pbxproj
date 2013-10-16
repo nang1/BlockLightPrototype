@@ -73,6 +73,8 @@
 		8BB977D0180F00A6001C1EDE /* Tree.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977CF180F00A6001C1EDE /* Tree.png */; };
 		8BB977D2180F00B3001C1EDE /* startScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977D1180F00B3001C1EDE /* startScreen.png */; };
 		8BB977D4180F00BB001C1EDE /* startScreen2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB977D3180F00BB001C1EDE /* startScreen2.png */; };
+		86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EA9CB6180EF4CA00D030C0 /* SettingsView.m */; };
+		86EA9CBA180F091100D030C0 /* production-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 86EA9CB9180F091100D030C0 /* production-settings.png */; };
 		8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8717F3A2B100E949B1 /* ViewView.m */; };
 		8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */; };
 /* End PBXBuildFile section */
@@ -161,6 +163,9 @@
 		8BB977CF180F00A6001C1EDE /* Tree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tree.png; path = BlockLight_Prototype/Tree.png; sourceTree = SOURCE_ROOT; };
 		8BB977D1180F00B3001C1EDE /* startScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startScreen.png; path = BlockLight_Prototype/startScreen.png; sourceTree = SOURCE_ROOT; };
 		8BB977D3180F00BB001C1EDE /* startScreen2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startScreen2.png; path = BlockLight_Prototype/startScreen2.png; sourceTree = SOURCE_ROOT; };
+		86EA9CB5180EF4CA00D030C0 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = BlockLight_Prototype/SettingsView.h; sourceTree = SOURCE_ROOT; };
+		86EA9CB6180EF4CA00D030C0 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = BlockLight_Prototype/SettingsView.m; sourceTree = SOURCE_ROOT; };
+		86EA9CB9180F091100D030C0 /* production-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "production-settings.png"; sourceTree = "<group>"; };
 		8BC8BB8617F3A2B100E949B1 /* ViewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewView.h; path = BlockLight_Prototype/ViewView.h; sourceTree = SOURCE_ROOT; };
 		8BC8BB8717F3A2B100E949B1 /* ViewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewView.m; path = BlockLight_Prototype/ViewView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8917F3A2F900E949B1 /* SetPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetPieceView.h; path = BlockLight_Prototype/SetPieceView.h; sourceTree = SOURCE_ROOT; };
@@ -283,6 +288,7 @@
 				8BB977CF180F00A6001C1EDE /* Tree.png */,
 				8BB977CD180F009B001C1EDE /* Door.png */,
 				8BB977CB180F0093001C1EDE /* actor.png */,
+				86EA9CB9180F091100D030C0 /* production-settings.png */,
 				861C2BAE17FCE521006FC951 /* trash.png */,
 				861C2BA717FB9734006FC951 /* trash1.png */,
 				86572C8317E8BA040081513F /* bg-main.png */,
@@ -308,6 +314,8 @@
 				8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */,
 				34995AAF1803499200887496 /* AllSetPieceView.h */,
 				34995AB01803499200887496 /* AllSetPieceView.m */,
+				86EA9CB5180EF4CA00D030C0 /* SettingsView.h */,
+				86EA9CB6180EF4CA00D030C0 /* SettingsView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -449,6 +457,7 @@
 				8BB977D0180F00A6001C1EDE /* Tree.png in Resources */,
 				8BB977D2180F00B3001C1EDE /* startScreen.png in Resources */,
 				8BB977D4180F00BB001C1EDE /* startScreen2.png in Resources */,
+				86EA9CBA180F091100D030C0 /* production-settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +520,7 @@
 				8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */,
 				8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */,
 				34995AB11803499200887496 /* AllSetPieceView.m in Sources */,
+				86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

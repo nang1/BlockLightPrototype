@@ -11,15 +11,16 @@
 @implementation ViewView
 
 @synthesize popoverCtrl = _popoverCtrl;
+@synthesize noteSwitchView = _noteSwitchView;
 
 /* Auto-generated code
  - (id)initWithFrame:(CGRect)frame
  {
- self = [super initWithFrame:frame];
- if (self) {
- // Initialization code
- }
- return self;
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+    }
+    return self;
  }
  */
 
@@ -71,12 +72,11 @@
                 case 2:
                 {
                     cell.textLabel.text = @"Show Notes";
-                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(noteSwitch) forControlEvents:UIControlEventValueChanged];
-                    [switchview setOn:true];
-                    //[switchview setOn:[self contentView].grid animated:NO];
+                    _noteSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_noteSwitchView addTarget:self action:@selector(noteSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_noteSwitchView setOn: !_popoverCtrl.quickView.hiddenNotes animated:NO];
                     
-                    cell.accessoryView = switchview;
+                    cell.accessoryView = _noteSwitchView;
                 }
                 default:
                     break;
@@ -166,15 +166,11 @@
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Traffic Patterns" message:@"Will show or hide the traffic patterns." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     }
-    else if(section == 2){ // Notes
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Notes" message:@"Will show or hide the notes." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 3){ // Ruler
+    else if(section == 2){ // Ruler
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Ruler" message:@"Will show or hide a ruler that display the dimensions of the stage." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     }
-    else if(section == 4){ // Audience View
+    else if(section == 3){ // Audience View
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Audience View" message:@"Will show or hide something that interacts with the audience." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     }
@@ -189,8 +185,24 @@
 // User clicked the switch for showing/hiding notes
 - (void)noteSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Note Switch" message:@"Will show or hide the notes." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_noteSwitchView isOn])
+    {
+        //NSLog(@"You turned me on");
+        _popoverCtrl.quickView.hiddenNotes = NO;
+		for (UILabel *lbl in _popoverCtrl.quickView.noteLabels)
+		{
+            lbl.hidden = false;
+		}
+    }
+    else
+    {
+        //NSLog(@"You turned me off");
+        _popoverCtrl.quickView.hiddenNotes = YES;
+        for (UILabel *lbl in _popoverCtrl.quickView.noteLabels)
+		{
+            lbl.hidden = true;
+		}
+    }
 }
 
 /*

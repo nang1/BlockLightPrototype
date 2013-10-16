@@ -32,6 +32,15 @@
     // figure out which view we need to display
     switch(_type){
         case SETTINGS:
+        {
+            // set size and title
+            self.contentSizeForViewInPopover = CGSizeMake(320,460);
+            self.title = @"Settings";
+            
+            // create starting view to display settings options
+            SettingsView* _settingsView = [[SettingsView alloc] initWithViewController:self];
+            self.view = _settingsView;
+        }
             break;
             
         case NOTES:
@@ -40,6 +49,7 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 300);
             self.title = @"Add Note";
             
+            // work around to getting current frame
             Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
             Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
             

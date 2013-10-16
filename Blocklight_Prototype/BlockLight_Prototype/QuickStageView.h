@@ -17,6 +17,7 @@
 	CGFloat _opacity;
     UIColor *brushPattern; // color of lines when user draws
     NSMutableArray* _noteLabels;
+    BOOL _hiddenNotes;
 	BOOL first; // when drawing lines, this indicates whether this is the starting or ending point of the line
     
     NSMutableArray* _propsArray; // array to hold props positioned on stage
@@ -30,6 +31,7 @@
 @property CGFloat opacity;
 @property (strong) UIColor* brushPattern;
 @property (strong) NSMutableArray* noteLabels;
+@property BOOL hiddenNotes;
 @property BOOL first;
 @property (strong) NSMutableArray* propsArray;
 

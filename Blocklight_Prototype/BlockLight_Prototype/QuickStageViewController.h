@@ -20,16 +20,21 @@
 @class TVPopoverViewController;
 //@class TVGestureController;
 
-@interface QuickStageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate>{
+@interface QuickStageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate>{
     Production* _quickProduction;
     
     // These tool bar buttons are here because they are used
     // to locate position for popovers
+    UIBarButtonItem* _settingsBtn;
     UIBarButtonItem* _viewButton;
     UIBarButtonItem* _propsButton;
     UIBarButtonItem* _notesButton;
     UIBarButtonItem* _actorsButton;
     UIBarButtonItem* _sceneButton;
+    
+    // an actual button for handling production options
+    UIButton* _productionOptions;
+	UIActionSheet* _productionSheet;
     
     // controlls the popovers when a tool bar button is selected
     UIPopoverController* _btnPopover;
@@ -45,21 +50,29 @@
 	UITableView* _timeline;
 }
 
+// Buttons
 @property (strong) Production* quickProduction;
+@property (strong) UIBarButtonItem* settingsBtn;
 @property (strong) UIBarButtonItem* viewButton;
 @property (strong) UIBarButtonItem* propsButton;
 @property (strong) UIBarButtonItem* notesButton;
 @property (strong) UIBarButtonItem* actorsButton;
 @property (strong) UIBarButtonItem* sceneButton;
+@property (strong) UIButton* productionOptions;
+//@property (strong) UIActionSheet* productionSheet;
+
+// Controllers
 @property (nonatomic, retain) UIPopoverController* btnPopover;
 @property (nonatomic, retain) TVPopoverViewController* tvPopoverCtrl;
 @property (nonatomic, retain) UINavigationController* popoverNavCtrl;
 @property (nonatomic, retain) TVGestureController* gestureCtrl;
 
+// Methods:
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
 - (void)createPopover:(TVPopoverViewController*)_popoverViewCtrl withType:(EditTools)_type;
 - (void)addNoteToStage:(Note*)note;
 - (void)addActorToStageFromFrame;
 - (void)addSetPieceToStage:(SetPiece*)newPiece;
+- (void)productionOptionsAS;
 
 @end
