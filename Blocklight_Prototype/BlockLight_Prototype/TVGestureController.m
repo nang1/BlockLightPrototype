@@ -78,10 +78,8 @@
     }
     
     UIView *piece = [gesture view];
-    //float curX = [piece center].x;
-    //float curY = [piece center].y;
     
-    //We pass in the gesture to a method that will help us align our touches so that the pan and pinch will seems to originate between the fingers instead of other points or center point of the UIView
+    //We pass in the gesture to a method that will help us align our touches so that the pan and pinch will seem to originate between the fingers instead of other points or center point of the UIView
     [self adjustAnchorPointForGestureRecognizer:gesture];
     
     if ([gesture state] == UIGestureRecognizerStateChanged)
@@ -104,11 +102,17 @@
     {
         //Put the code that you may want to execute when the UIView became larger than certain value or just to reset them back to their original transform scale
         
+        NSString* pieceType = @""; // used to indicate type of piece to be deleted
+        int index = 0; // used to indicate index of object to be deleted in array
+        Position* pos;
+        
+        // A note was moved
         if([piece isMemberOfClass:[UILabel class]])
         {            
             Note* tempNote = [[Note alloc] init];
+            pieceType = @"note";
             
-            int index = 0;
+            // find index of piece that was moved
             for(UILabel *lbl in _quickStageView.noteLabels)
             {
                 if([lbl isEqual:(UILabel*)piece])
@@ -122,36 +126,58 @@
                 }
             }
             
-            Position *pos = tempNote.notePosition;
-            if(pos == nil) // should probably set to something once created
+            pos = tempNote.notePosition;
+        }
+        // A set piece was moved
+        else if([piece isMemberOfClass:[UIImageView class]]){
+            SetPiece* tempPiece = [[SetPiece alloc] init];
+            pieceType = @"setPiece";
+            
+            //find index of piece that was moved
+            for(UIImageView *tempView in _quickStageView.propsArray)
             {
-                pos = [[Position alloc] init];
-                pos.xCoordinate = [piece center].x;
-                pos.yCoordinate = [piece center].y;
+                if([tempView isEqual:(UIImageView*)piece])
+                {
+                    tempPiece = [_frame.props objectAtIndex:index];
+                    break;
+                }
+                else
+                {
+                    index++;
+                }
             }
-            else if([self isOnTrashCan:piece])
-            {
-                NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away a note, \"%@.\" Are you sure you want to continue?", tempNote.noteStr];
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                alert.tag = index;
-                [alert show];
 
-            }
-            else
-            {
-                CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
-                //CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
-                
-                // 64px because: 20px for the status bar, and 44px for the navigation bar
-                [pos updateX:(int)(height - [piece center].y) Y:(int)[piece center].x-64];
-                /*
-                 pos.xCoordinate = [piece center].x;
-                 pos.yCoordinate = [piece center].y;
-                 
-                 NSLog(@"Moved %@\n",tempNote.noteStr);
-                 NSLog(@"Moved note to: %d, %d\n",tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
-                 //*/
-            }
+            pos = tempPiece.piecePosition;
+        }
+        
+        if(pos == nil) // should have been set when created
+        {
+            // update set piece with new position
+            pos = [[Position alloc] init];
+            pos.xCoordinate = [piece center].x;
+            pos.yCoordinate = [piece center].y;
+        }
+        else if ([self isOnTrashCan:piece]) // user wants to delete icon
+        {
+            NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away something. Are you sure you want to continue?"];
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+            alert.tag = index;
+            alert.title  = pieceType;
+            [alert show];
+        }
+        else {
+            CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
+            //CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
+            
+            // 64px because: 20px for the status bar, and 44px for the navigation bar
+            [pos updateX:(int)(height - [piece center].y) Y:(int)[piece center].x-64];
+            /*
+            pos.xCoordinate = [piece center].x;
+            pos.yCoordinate = [piece center].y;
+            
+            NSLog(@"Moved %@\n",tempNote.noteStr);
+            NSLog(@"Moved note to: %d, %d\n",tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
+            //*/
         }
     }
 }
@@ -161,7 +187,10 @@
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
         //NSLog(@"Throw in trash can");
-        [self removeNoteAtIndex:alertView.tag];
+        if([alertView.title isEqual:@"note"])
+            [self removeNoteAtIndex:alertView.tag];
+        else if([alertView.title isEqual:@"setPiece"])
+            [self removeSetPieceAtIndex:alertView.tag];
     }
 }
 
@@ -215,11 +244,10 @@
         NSLog(@"Out of bounds error while removing set piece");
         return;
     }
-    //[[_quickStageView.propIcons objectAtIndex:i] removeFromSuperview];
-    //[_quickStageView.propIcons removeObjectAtIndex:i];
+    [[_quickStageView.propsArray objectAtIndex:i] removeFromSuperview];
+    [_quickStageView.propsArray removeObjectAtIndex:i];
     [_frame.props removeObjectAtIndex:i];
     [_quickStageView setNeedsDisplay];
-    //_frame.props
 }
 
 @end

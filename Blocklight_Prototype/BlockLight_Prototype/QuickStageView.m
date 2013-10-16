@@ -28,7 +28,8 @@
     if (self == nil)
         return nil;
     
-    self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bg-production.jpg"]];
+    //self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bg-production.jpg"]];
+    self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"startScreen2"]];
         
     // create array to hold note labels
     _noteLabels = [[NSMutableArray alloc] init];
