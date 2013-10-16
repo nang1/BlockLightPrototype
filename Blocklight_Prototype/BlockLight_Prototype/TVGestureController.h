@@ -13,6 +13,7 @@
 #import "Frame.h"
 #import "Note.h"
 #import "SetPiece.h"
+#import "Actor.h"
 
 @interface TVGestureController : UIViewController<UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {

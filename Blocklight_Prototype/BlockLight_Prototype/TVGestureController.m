@@ -130,24 +130,49 @@
         }
         // A set piece was moved
         else if([piece isMemberOfClass:[UIImageView class]]){
-            SetPiece* tempPiece = [[SetPiece alloc] init];
-            pieceType = @"setPiece";
-            
-            //find index of piece that was moved
-            for(UIImageView *tempView in _quickStageView.propsArray)
+            if(piece.tag == 10)
             {
-                if([tempView isEqual:(UIImageView*)piece])
+                Actor* tempActor = [[Actor alloc] init];
+                pieceType = @"actor";
+                
+                //find index of piece that was moved
+                for(UIImageView *tempView in _quickStageView.actorArray)
                 {
-                    tempPiece = [_frame.props objectAtIndex:index];
-                    break;
+                    if([tempView isEqual:(UIImageView*)piece])
+                    {
+                        tempActor = [_frame.actorsOnStage objectAtIndex:index];
+                        break;
+                    }
+                    else
+                    {
+                        index++;
+                    }
                 }
-                else
-                {
-                    index++;
-                }
+                
+                pos = tempActor.actorPosition;
             }
-
-            pos = tempPiece.piecePosition;
+            else
+            {
+                SetPiece* tempPiece = [[SetPiece alloc] init];
+                pieceType = @"setPiece";
+                
+                //find index of piece that was moved
+                for(UIImageView *tempView in _quickStageView.propsArray)
+                {
+                    if([tempView isEqual:(UIImageView*)piece])
+                    {
+                        tempPiece = [_frame.props objectAtIndex:index];
+                        break;
+                    }
+                    else
+                    {
+                        index++;
+                    }
+                }
+                
+                pos = tempPiece.piecePosition;
+            }
+            
         }
         
         if(pos == nil) // should have been set when created
