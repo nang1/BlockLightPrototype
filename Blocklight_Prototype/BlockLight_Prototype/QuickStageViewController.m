@@ -243,16 +243,19 @@
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
     
+    // a note was added
     if([tempFrame.notes count] > [[self contentView].noteLabels count])
     {
-        // a note was added
         [self addNoteToStage:[tempFrame.notes lastObject]];
     }
     
-    // if actor was added
+    // a actor was added
+    if([tempFrame.actorsOnStage count] > [[self contentView].actorArray count])
+    {
+        [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+    }
     
-    
-    // if setpiece was added
+    // a setpiece was added
     if([tempFrame.props count] > [[self contentView].propsArray count]){
         [self addSetPieceToStage:[tempFrame.props lastObject]];
     }
@@ -360,6 +363,10 @@
         for(UIImageView *tempView in [self contentView].propsArray){
             [tempView removeFromSuperview];
         }
+        
+        for(UIImageView *tempView in [self contentView].actorArray){
+            [tempView removeFromSuperview];
+        }
 
 		// remove all notes in current view notes array
 		[[self contentView].noteLabels removeAllObjects];
@@ -376,6 +383,14 @@
         // add new props
         for(SetPiece* piece in frame.props){
             [self addSetPieceToStage:piece];
+        }
+        
+        // remove all actors in current view actors array
+        [[self contentView].actorArray removeAllObjects];
+        
+        // add new actors
+        for(Actor* piece in frame.actorsOnStage){
+            [self addActorToStage:piece];
         }
         
 		[self.view setNeedsDisplay];
@@ -518,23 +533,38 @@
     tempLabel.hidden = [self contentView].hiddenNotes;
 }
 
-- (void)addActorToStageFromFrame
+- (void)addActorToStage:(Actor*)actor
 {
-    // TODO: logic for adding actors to stage
+    // Set gesture recognizer to SetPiece
+    [actor addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [actor setDelegate:_gestureCtrl];
+    
+    UIImageView* newActorIconView = [[UIImageView alloc] initWithImage:actor.actorIcon];
+    [newActorIconView addGestureRecognizer:actor];
+    [newActorIconView setUserInteractionEnabled:YES];
+    [newActorIconView sizeToFit];
+    [newActorIconView setCenter:CGPointMake(actor.actorPosition.xCoordinate, actor.actorPosition.yCoordinate)];
+    newActorIconView.tag = 10;
+    
+    // put actor's name underneath icon
+    UILabel* nameLbl = actor.actorName;
+    
+    [newActorIconView addSubview:nameLbl];
+    
+    // save icon to quickstageview
+    [[self contentView].actorArray addObject:newActorIconView];
+    
+    // add icon as subview to make it appear on the stage
+    [[self contentView] addSubview:[[self contentView].actorArray lastObject]];
 }
 
 - (void)addSetPieceToStage:(SetPiece*)newPiece
-{    
-    // assign the note a UIPanGesture Recognizer so that it can move around on stage
-    //UIPanGestureRecognizer * iconMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    //[iconMover setDelegate:_gestureCtrl];
-    
+{       
     // Set gesture recognizer to SetPiece
     [newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
     [newPiece setDelegate:_gestureCtrl];
     
     UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];
-    //[newIconView addGestureRecognizer:iconMover];
     [newIconView addGestureRecognizer:newPiece];
     [newIconView setUserInteractionEnabled:YES];
     [newIconView sizeToFit];

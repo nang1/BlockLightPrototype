@@ -91,9 +91,12 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 300);
             self.title = @"Add Performers";
             
+            // work around to getting current frame
+            Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
+            Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+            
             // create view to add actors
-            UIView* _actorView = [[UIView alloc] init];
-            _actorView.backgroundColor = [UIColor greenColor];
+            ActorView* _actorView = [[ActorView alloc] initWithFrame:CGRectMake(0,0,320,300) withProductionFrame:tempFrame withViewController:self];
             self.view = _actorView;
         }
             break;

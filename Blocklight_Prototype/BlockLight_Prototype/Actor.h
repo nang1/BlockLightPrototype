@@ -9,12 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "Position.h"
 
-@interface Actor : NSObject {
-    NSNumber* _actorID; // holds ID of performer in this role
+@interface Actor : UIPanGestureRecognizer {
+    //NSNumber* _actorID; // holds ID of performer in this role
+    UILabel* _actorName;
     Position* _actorPosition;
+    UIImage* _actorIcon;
 }
 
-@property (strong) NSNumber* actorID;
+//@property (strong) NSNumber* actorID;
+@property (strong) UILabel* actorName;
 @property (strong) Position* actorPosition;
+@property (strong) UIImage* actorIcon;
 
 @end
