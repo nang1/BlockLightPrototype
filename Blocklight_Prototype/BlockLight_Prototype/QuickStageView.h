@@ -21,6 +21,7 @@
 	BOOL first; // when drawing lines, this indicates whether this is the starting or ending point of the line
     
     NSMutableArray* _propsArray; // array to hold props positioned on stage
+    NSMutableArray* _actorArray; // array to hold actors on stage
 }
 
 @property BOOL horizontalGrid;
@@ -34,6 +35,7 @@
 @property BOOL hiddenNotes;
 @property BOOL first;
 @property (strong) NSMutableArray* propsArray;
+@property (strong) NSMutableArray* actorArray;
 
 - (id) initWithFrame:(CGRect)frame andViewController:(id)viewController;
 // - (void)drawStage;

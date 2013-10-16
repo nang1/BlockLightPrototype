@@ -21,6 +21,7 @@
 @synthesize hiddenNotes = _hiddenNotes;
 @synthesize first = _first;
 @synthesize propsArray = _propsArray;
+@synthesize actorArray = _actorArray;
 
 #pragma mark Constructors
 - (id)initWithFrame:(CGRect)frame andViewController:(id)viewController {
@@ -49,6 +50,8 @@
     
     // array to hold set pieces
     _propsArray = [[NSMutableArray alloc] init];
+    // array to hold actors
+    _actorArray = [[NSMutableArray alloc] init];
     
     return self;
 }
