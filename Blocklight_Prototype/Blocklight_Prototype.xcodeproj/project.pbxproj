@@ -70,6 +70,7 @@
 		867CB8F017F2349A00E8B0F5 /* TVPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8EE17F2349A00E8B0F5 /* TVPopoverViewController.m */; };
 		867CB8F717F2393900E8B0F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F417F2393900E8B0F5 /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		867CB8F817F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F517F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld */; };
+		86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EA9CB6180EF4CA00D030C0 /* SettingsView.m */; };
 		8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8717F3A2B100E949B1 /* ViewView.m */; };
 		8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */; };
 /* End PBXBuildFile section */
@@ -155,6 +156,8 @@
 		867CB8F317F2393900E8B0F5 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BlockLight_Prototype/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		867CB8F417F2393900E8B0F5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BlockLight_Prototype/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		867CB8F617F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Blocklight_Prototype.xcdatamodel; sourceTree = "<group>"; };
+		86EA9CB5180EF4CA00D030C0 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = BlockLight_Prototype/SettingsView.h; sourceTree = SOURCE_ROOT; };
+		86EA9CB6180EF4CA00D030C0 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = BlockLight_Prototype/SettingsView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8617F3A2B100E949B1 /* ViewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewView.h; path = BlockLight_Prototype/ViewView.h; sourceTree = SOURCE_ROOT; };
 		8BC8BB8717F3A2B100E949B1 /* ViewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewView.m; path = BlockLight_Prototype/ViewView.m; sourceTree = SOURCE_ROOT; };
 		8BC8BB8917F3A2F900E949B1 /* SetPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetPieceView.h; path = BlockLight_Prototype/SetPieceView.h; sourceTree = SOURCE_ROOT; };
@@ -297,6 +300,8 @@
 				8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */,
 				34995AAF1803499200887496 /* AllSetPieceView.h */,
 				34995AB01803499200887496 /* AllSetPieceView.m */,
+				86EA9CB5180EF4CA00D030C0 /* SettingsView.h */,
+				86EA9CB6180EF4CA00D030C0 /* SettingsView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -498,6 +503,7 @@
 				8BC8BB8817F3A2B100E949B1 /* ViewView.m in Sources */,
 				8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */,
 				34995AB11803499200887496 /* AllSetPieceView.m in Sources */,
+				86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

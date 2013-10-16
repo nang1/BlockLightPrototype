@@ -25,6 +25,7 @@
     
     // These tool bar buttons are here because they are used
     // to locate position for popovers
+    UIBarButtonItem* _settingsBtn;
     UIBarButtonItem* _viewButton;
     UIBarButtonItem* _propsButton;
     UIBarButtonItem* _notesButton;
@@ -46,6 +47,7 @@
 }
 
 @property (strong) Production* quickProduction;
+@property (strong) UIBarButtonItem* settingsBtn;
 @property (strong) UIBarButtonItem* viewButton;
 @property (strong) UIBarButtonItem* propsButton;
 @property (strong) UIBarButtonItem* notesButton;

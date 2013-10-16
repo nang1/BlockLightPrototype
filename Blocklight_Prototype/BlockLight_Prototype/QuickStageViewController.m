@@ -15,6 +15,7 @@
 @implementation QuickStageViewController
 
 @synthesize quickProduction = _quickProduction;
+@synthesize settingsBtn = _settingsBtn;
 @synthesize viewButton = _viewButton;
 @synthesize propsButton = _propsButton;
 @synthesize notesButton = _notesButton;
@@ -77,7 +78,7 @@
     UIBarButtonItem* redo = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRedo
                                                         target:self
                                                         action:@selector(redoButton)];
-    UIBarButtonItem* settingsBtn = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+    _settingsBtn = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
                                                              style:UIBarButtonItemStyleBordered
                                                              target:self
                                                              action:@selector(showStageEditor)];
@@ -87,7 +88,7 @@
                                                              action:@selector(viewButtonClick)];
 
     // add left-side tool bar buttons
-    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, settingsBtn, _viewButton, nil];
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
     
     // Tool buttons on right side
     _propsButton = [[UIBarButtonItem alloc] initWithTitle:@"Set Pieces"
@@ -200,8 +201,10 @@
 // Push stage editor view
 // sets the height, width, etc of stage
 - (void)showStageEditor {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Edit Stage Button" message:@"This button will create a popup to let you edit stage width and height. Will implement edit stage button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)SETTINGS withStage:[self contentView] withProduction:_quickProduction];
+    [self createPopover:_tvPopoverCtrl withType:(EditTools)SETTINGS];
+    /*    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Edit Stage Button" message:@"This button will create a popup to let you edit stage width and height. Will implement edit stage button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alert show]; //*/
 }
 
 // Shows view options such as grid lines, opacity, etc.
@@ -267,6 +270,9 @@
     // assign popover to appear over a tool bar button
     switch(_type){
         case SETTINGS:
+        {
+            [_btnPopover presentPopoverFromBarButtonItem:_settingsBtn permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
             break;
         case NOTES:
         {
@@ -401,7 +407,7 @@
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
     //tempLabel.center = CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate);
-    
+    tempLabel.hidden = [self contentView].hiddenNotes;
     
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
     UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
@@ -432,7 +438,7 @@
     
     ///*
     // some of this needs to be moved to AllSetPieceView file
-    UIImage* newIcon = [UIImage imageNamed:@"tree"];
+    //UIImage* newIcon = [UIImage imageNamed:@"tree"];
     //*/
 }
 
