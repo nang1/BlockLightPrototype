@@ -10,8 +10,10 @@
 
 @implementation Actor
 
-@synthesize actorID = _actorID;
+//@synthesize actorID = _actorID;
+@synthesize actorName = _actorName;
 @synthesize actorPosition = _actorPosition;
+@synthesize actorIcon = _actorIcon;
 
 -(id)init{
     self = [super init];
@@ -20,6 +22,8 @@
         return  nil;
     
     _actorPosition = [[Position alloc] init];
+    
+    _actorIcon = [UIImage imageNamed:@"actor"];
     
     return self;
 }
