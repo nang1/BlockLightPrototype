@@ -75,7 +75,7 @@
     
     // make a new note as a Note object and add to current frame
     Actor* newActor = [[Actor alloc] init];
-    newActor.actorName = [[UILabel alloc] initWithFrame:CGRectMake(0, 70, 100, 20)];
+    newActor.actorName = [[UILabel alloc] initWithFrame:CGRectMake(-10, 70, 95, 20)];
     newActor.actorName.text = _nameTextBox.text;
     newActor.actorName.backgroundColor = [UIColor clearColor];
     [_frame.actorsOnStage addObject:newActor];

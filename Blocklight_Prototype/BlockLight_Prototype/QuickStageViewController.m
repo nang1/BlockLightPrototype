@@ -514,23 +514,26 @@
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
     //tempLabel.center = CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate);
+    tempLabel.hidden = [self contentView].hiddenNotes;
     
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
-    UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [noteMover setDelegate:_gestureCtrl];
+    //UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    //[noteMover setDelegate:_gestureCtrl];
+    //[tempLabel addGestureRecognizer:noteMover];
+
+    // JNN: just realized, is the same piece of code as above three lines -__-'
+    [note addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [note setDelegate:_gestureCtrl];
+    [tempLabel addGestureRecognizer:note];
+
     [tempLabel setUserInteractionEnabled:YES];
-    [tempLabel addGestureRecognizer:noteMover];
     [tempLabel sizeToFit];
     [tempLabel setCenter:CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate)];
     //NSLog(@"Center: (%d, %d)", note.notePosition.xCoordinate, note.notePosition.yCoordinate);
     
     // finally, add the label as a subview which will appear on stage
     [[self contentView].noteLabels addObject:tempLabel];
-    //[self.view addSubview:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
-    
-    // give an alert if notes are hidden
-    tempLabel.hidden = [self contentView].hiddenNotes;
 }
 
 - (void)addActorToStage:(Actor*)actor
@@ -548,6 +551,7 @@
     
     // put actor's name underneath icon
     UILabel* nameLbl = actor.actorName;
+    nameLbl.textAlignment = NSTextAlignmentCenter;
     
     [newActorIconView addSubview:nameLbl];
     
