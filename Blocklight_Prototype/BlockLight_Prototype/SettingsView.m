@@ -35,9 +35,23 @@
     
     _popoverCtrl = viewController;
     
+    /* // JNN: if we ever want to add a header for whatever reason:
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(10,20,300,40)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
+    headerLabel.text = @"Header for the table";
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.shadowColor = [UIColor blackColor];
+    headerLabel.shadowOffset = CGSizeMake(0, 1);
+    headerLabel.font = [UIFont boldSystemFontOfSize:22];
+    headerLabel.backgroundColor = [UIColor clearColor];
+    [containerView addSubview:headerLabel];
+    [self setTableHeaderView:containerView];
+    //*/
+    
     return self;
 }
 
+// JNN: Barrett Ames's prev code:
 /*- (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -139,73 +153,95 @@
     return self;
 } //*/
 
-// UITableView Datasource for view Popover
+// UITableView Datasource for Settings View Popover
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
     
     UITableViewCell* cell;
     
-    // View options for display in View popover
-    switch(section) {
-        case 0: // Edit Stage
+    // Settings options for display in Settings View popover
+    switch(section)
+    {
+    case 0: // Layout options save certain positions of set pieces
+        switch (row)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Edit Stage";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
-            break;
-            
-        case 1: // Preset
-        {
+        case 0:
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Select Preset Stage";
-            cell.textLabel.textColor = [UIColor grayColor];
+            cell.textLabel.text = @"Save Current Layout";
+            //cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
             break;
-        case 2: // Stage Name
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Stage Name";
-            cell.textLabel.textColor = [UIColor grayColor];
+        case 1:
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+            cell.textLabel.text = @"Select Layout Preset";
+            //cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
             break;
-            
-        case 3: // Width
+        default: // something weird happened
+            break;
+        }
+        break;
+    case 1: // Edit Stage
+        switch(row)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
+        case 0: // Stage Name
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
+            cell.textLabel.text = @"Name";
+            cell.detailTextLabel.text = @"Name of Stage";
+            //cell.textLabel.textColor = [UIColor grayColor];
+            //cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            break;
+        case 1: // Width
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Width";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
+            cell.detailTextLabel.text = @"Some Number";
+            //cell.textLabel.textColor = [UIColor grayColor];
+            //cell.textLabel.textAlignment = NSTextAlignmentCenter;
             break;
-         
-        case 4: // Height
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
+        case 2: // Height
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Height";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.detailTextLabel.text = @"Some Number";
+            //cell.textLabel.textColor = [UIColor grayColor];
+            //cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            break;
+        default: // something weird happened
+            break;
         }
-            break;
-            
-        case 5: // Stage Apron
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Stage Apron";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
-            break;
-            
-        default:
-            cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            break;
+        break;
+    case 2: // Stage Apron
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+        cell.textLabel.text = @"Stage Apron";
+        //cell.textLabel.textColor = [UIColor grayColor];
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        break;
+    default:
+        cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+        break;
     }
     return cell;
+}
+
+// Set section headings
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionName = @"";
+    switch (section)
+    {
+    case 0:
+        sectionName = @"Save/Change Layout";
+        break;
+    case 1:
+        sectionName = @"Edit Stage";
+        break;
+    case 2:
+        sectionName = @"Other Settings";
+        break;
+    default: // no section name
+        break;
+    }
+    return sectionName;
 }
 
 // Set height for table
@@ -217,12 +253,26 @@
 // Determines the number of rows in a section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 1;
+    switch (section)
+    {
+        case 0:
+            rows = 2;
+            break;
+        case 1:
+            rows = 3;
+            break;
+        case 2:
+            rows = 1;
+            break;
+        default: // something weird happened
+            break;
+    }
     return rows;
 }
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 6;
+    NSInteger section = 3;
     return section;
 }
 
@@ -231,33 +281,92 @@
     NSInteger section = [indexPath section];
     NSInteger row = [indexPath row];
     
-    if(section == 0)
+    switch(section)
     {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Edit Stage" message:@"Is actually just a label with no particular function." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 1){ // Preset
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Preset" message:@"Will show available/saved preset stage sizes, probably in a separate window." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 2){ // Stage Name
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Name" message:@"To name your stage before saving. Needs text field." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 3){ // Width
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Width" message:@"To set your stage width. Needs text field." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 4){ // Height
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Height" message:@"To set your stage height. Needs text field." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 5){ // Stage Apron
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Apron" message:@"To modify somehow the stage apron, probably in a separate window." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
+    case 0: // User selected layout options
+        switch (row)
+        {
+        case 0: // Save current layout and ask for a name
+            {
+                UIAlertView* saveAlert =  [[UIAlertView alloc]initWithTitle:@"Save Layout"
+                                                                    message:@"Please enter a name for the layout"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                          otherButtonTitles:@"Save (Not done)",nil];
+                saveAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                [saveAlert show];
+                saveAlert.delegate = self;
+            }
+            break;
+        case 1: // Select a layout preset to load to the stage
+            {
+                // This will probably erase all other set pieces currently on the stage
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Select Layout"
+                                                                message:@"May create another view to select a layout"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Ok", nil];
+                [alert show];
+            }
+            break;
+        default: // something weird happened
+            break;
+        }
+        // end of layout options
+        break;
+    case 1: // Edit Stage
+        switch (row)
+        {
+        case 0: // Stage Name
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Name"
+                                                                message:@"To name your stage before saving. Needs text field."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Ok", nil];
+                [alert show];
+            }
+            break;
+        case 1: // Stage Width
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Width"
+                                                                message:@"To set your stage width. Needs text field."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Ok", nil];
+                [alert show];
+            }
+            break;
+        case 2: // Stage Height
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Height"
+                                                                message:@"To set your stage height. Needs text field."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Ok", nil];
+                [alert show];
+            }
+            break;
+        default: // something weird happened
+            break;
+        }
+        break;
+    case 2: // Stage Apron
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Apron"
+                                                            message:@"To modify somehow the stage apron, probably in a separate window."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Ok", nil];
+            [alert show];
+        }
+        break;
+    default: // something weird happened
+        break;
     }
 }
 
+// JNN: Barrett Ames's prev code:
 /* // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
