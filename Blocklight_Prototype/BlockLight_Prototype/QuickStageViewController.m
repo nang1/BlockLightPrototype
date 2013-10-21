@@ -295,7 +295,7 @@
         case GRID:
             // This is here to stop the warning, but GridOptionsView shouldn't be
             // called from here, its a sub-view of ViewView
-        case ALLPROPS:
+        case PROPSLIST:
             // This is here to stop the warning, but this view shouldn't be called
             // from here, it is a sub-view of SetPieceView
             break;

@@ -12,6 +12,7 @@
 typedef enum {MALE, FEMALE} Gender;
 typedef enum {SOPRANO, MEZZOSOPRANO, ALTO, CONTRALTO, TENOR, BARITONE, BASS} Voice;
 typedef enum {FEET, METERS} MeasurementType;
-typedef enum {SETTINGS, NOTES, VIEWS, PROPS, ACTORS, SCENES, GRID, ALLPROPS} EditTools;
+typedef enum {SETTINGS, NOTES, VIEWS, PROPS, ACTORS, SCENES, GRID, PROPSLIST} EditTools;
+typedef enum {ALL, PLANTS, STAIRS, PLATFORMS, RISERS, FURNITURE, UNCATEGORIZED} ListType;
 
 #endif

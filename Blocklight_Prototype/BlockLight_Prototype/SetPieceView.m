@@ -55,7 +55,12 @@
             cell.accessoryView = switchview;
         }
             break;
-            
+        
+        /* NOTE: If categories are changed, update the number of rows for switch(section) case 1
+         *       in the method, numberOfRowsInSection.
+         *    Also make sure to change the method, didSelectRowAtIndexPath, so that the appropriate
+         *    response is made when clicking on a row.
+         */
         case 1:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -82,6 +87,10 @@
                     break;
                     
                 case 5:
+                    cell.textLabel.text = @"Furniture";
+                    break;
+                    
+                case 6:
                     cell.textLabel.text = @"Uncategorized";
                     break;
                     
@@ -114,7 +123,7 @@
             break;
             
         case 1:
-            rows = 6;
+            rows = 7;
             break;
             
         default:
@@ -126,75 +135,84 @@
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 2;//3;
+    NSInteger section = 2;
     return section;
 }
 
 // How to respond to a row that got selected
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger section = [indexPath section];
     NSInteger row = [indexPath row];
+    NSInteger section = [indexPath section];
     
-    switch (section) {
-        case 1:
-        {       // Unsure if should create new views to list them
+    // access info of tvpopoverviewcontroller
+    QuickStageView* tempView = _popoverCtrl.quickView;
+    Production* tempProduction = _popoverCtrl.production;
+    
+    TVPopoverViewController* newPopViewCtrl;
+    switch(section){
+        case 0:
+            // spike tape
+            break;
+        case 1: // Go to list of set pieces
             switch (row) {
                 case 0:
                 {
-                    /*
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"All" message:@"May create another view to list all set pieces" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
-                     */
-                    // access info of tvpopoverviewcontroller
-                    QuickStageView* tempView = _popoverCtrl.quickView;
-                    Production* tempProduction = _popoverCtrl.production;
-                    
-                    //create a new one with the same information
-                    TVPopoverViewController* newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)ALLPROPS withStage:tempView withProduction:tempProduction];
-                    newPopViewCtrl.popover = _popoverCtrl.popover;
-                    
-                    // push to navigation controller
-                    [_popoverCtrl.popoverNav pushViewController:newPopViewCtrl animated:YES];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)ALL];
                 }
                     break;
-                    
                 case 1:
                 {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Plants" message:@"May create another view to list all plants" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)PLANTS];
                 }
                     break;
-                    
                 case 2:
                 {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stairs" message:@"May create another view to list all stairs" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)STAIRS];
                 }
                     break;
-                    
                 case 3:
                 {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Platforms" message:@"May create another view to list all platforms" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)PLATFORMS];
                 }
                     break;
-                    
                 case 4:
                 {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Risers" message:@"May create another view to list all risers" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)RISERS];
                 }
                     break;
-                    
                 case 5:
                 {
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Uncategorized" message:@"May create another view to list all uncategorized pieces" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                    [newPopViewCtrl setPropListType:(ListType)FURNITURE];
                 }
                     break;
-            }
-        } // end of list of set pieces
-            break;
+                case 6:
+                {
+                    //create a new popover with the same information
+                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
+                   [newPopViewCtrl setPropListType:(ListType)UNCATEGORIZED];                }
+                    break;
+                default:
+                    break;
+            }// got correct view of list
+            
+            newPopViewCtrl.popover = _popoverCtrl.popover;
+            
+            // push to navigation controller
+            [_popoverCtrl.popoverNav pushViewController:newPopViewCtrl animated:YES];
+            
+            break; //end of list of set pieces
             
         default:
             break;
