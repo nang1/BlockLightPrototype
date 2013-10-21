@@ -110,7 +110,7 @@
         if([piece isMemberOfClass:[UILabel class]])
         {            
             Note* tempNote = [[Note alloc] init];
-            pieceType = @"note";
+            pieceType = @"Note";
             
             // find index of piece that was moved
             for(UILabel *lbl in _quickStageView.noteLabels)
@@ -133,7 +133,7 @@
             if(piece.tag == 10)
             {
                 Actor* tempActor = [[Actor alloc] init];
-                pieceType = @"actor";
+                pieceType = @"Actor";
                 
                 //find index of piece that was moved
                 for(UIImageView *tempView in _quickStageView.actorArray)
@@ -154,8 +154,8 @@
             else
             {
                 SetPiece* tempPiece = [[SetPiece alloc] init];
-                pieceType = @"setPiece";
-                
+                pieceType = @"Set Piece";
+              
                 //find index of piece that was moved
                 for(UIImageView *tempView in _quickStageView.propsArray)
                 {
@@ -212,10 +212,12 @@
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
         //NSLog(@"Throw in trash can");
-        if([alertView.title isEqual:@"note"])
+        if([alertView.title isEqual:@"Note"])
             [self removeNoteAtIndex:alertView.tag];
-        else if([alertView.title isEqual:@"setPiece"])
+        else if([alertView.title isEqual:@"Set Piece"])
             [self removeSetPieceAtIndex:alertView.tag];
+        else if([alertView.title isEqualToString:@"Actor"])
+            [self removeActorAtIndex:alertView.tag];
     }
 }
 
@@ -255,8 +257,8 @@
         NSLog(@"Out of bounds error while removing actor");
         return;
     }
-    //[[_quickStageView.actorIcons objectAtIndex:i] removeFromSuperview];
-    //[_quickStageView.actorIcons removeObjectAtIndex:i];
+    [[_quickStageView.actorArray objectAtIndex:i] removeFromSuperview];
+    [_quickStageView.actorArray removeObjectAtIndex:i];
     [_frame.actorsOnStage removeObjectAtIndex:i];
     [_quickStageView setNeedsDisplay];
 }
