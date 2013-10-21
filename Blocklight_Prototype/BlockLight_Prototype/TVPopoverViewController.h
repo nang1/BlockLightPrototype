@@ -16,7 +16,7 @@
 #import "SettingsView.h"
 #import "ViewView.h"
 #import "SetPieceView.h"
-#import "AllSetPieceView.h"
+#import "SetPieceListView.h"
 #import "GridOptionsView.h"
 #import "ActorView.h"
 
@@ -33,6 +33,7 @@
 
 - (id)initPopoverView:(EditTools)_type withStage:(QuickStageView*) quickStage withProduction:(Production*)production;
 -(void)dismissPopoverView;
+- (void)setPropListType:(ListType)pType;
 
 @property (nonatomic, strong) UIPopoverController* popover;
 @property (nonatomic, strong) QuickStageView* quickView;

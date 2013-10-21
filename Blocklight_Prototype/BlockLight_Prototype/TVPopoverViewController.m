@@ -138,18 +138,18 @@
         }
             break;
             
-        case ALLPROPS: // This called when user clicks "All"
+        case PROPSLIST: // User clicked a set piece category in SetPieceView
         {
             // set size and title
             self.contentSizeForViewInPopover = CGSizeMake(320, 550);
-            self.title = @"All Props";
+            self.title = @"Props List";
             
             Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
             Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
             
             // create view to select a set piece
-            AllSetPieceView* _allSetPieceView = [[AllSetPieceView alloc] initWithFrame:CGRectMake(0,0,320,216) withProductionFrame:tempFrame withViewController:self];
-            self.view = _allSetPieceView;
+            SetPieceListView* _setPieceListView = [[SetPieceListView alloc] initWithFrame:CGRectMake(0,0,320,216) withProductionFrame:tempFrame withViewController:self];
+            self.view = _setPieceListView;
         }
             break;
     }
@@ -166,7 +166,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+// used to set the category of set pieces list
+- (void)setPropListType:(ListType)pType {
+    [(SetPieceListView*)self.view setListType:pType];
+}
 
 // dismiss this popover view
 - (void)dismissPopoverView {

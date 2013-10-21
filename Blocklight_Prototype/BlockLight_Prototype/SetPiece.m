@@ -32,14 +32,17 @@
     
     _piecePosition = [[Position alloc] init];
     
-    if([type isEqualToString:@"tree"]){
+    if([type isEqualToString:@"Tree"]){
         _icon = [UIImage imageNamed:@"Tree"];
     }
     else if([type isEqualToString:@"Door"]){
         _icon = [UIImage imageNamed:@"Door"];
     }
-    else if([type isEqualToString:@"trash"]){
+    else if([type isEqualToString:@"Trash"]){
         _icon = [UIImage imageNamed:@"trash"];
+    }
+    else { // blank cell
+        _icon = [UIImage imageNamed:@"production-settings"];
     }
     
     return self;
