@@ -44,6 +44,21 @@
     else if([type isEqualToString:@"Mannequin"]){
         _icon = [UIImage imageNamed:@"mannequin"];
     }
+    else if([type isEqualToString:@"Bridge"]){
+        _icon = [UIImage imageNamed:@"bridge"];
+    }
+    else if([type isEqualToString:@"Circle"]){
+        _icon = [UIImage imageNamed:@"circle"];
+    }
+    else if([type isEqualToString:@"Square"]){
+        _icon = [UIImage imageNamed:@"square"];
+    }
+    else if([type isEqualToString:@"Black Stairs"]){
+        _icon = [UIImage imageNamed:@"stairs"];
+    }
+    else if([type isEqualToString:@"Water"]){
+        _icon = [UIImage imageNamed:@"water"];
+    }
     else { // blank cell
         _icon = [UIImage imageNamed:@"production-settings"];
     }

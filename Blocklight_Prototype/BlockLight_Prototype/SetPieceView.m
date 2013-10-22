@@ -83,14 +83,10 @@
                     break;
                     
                 case 4:
-                    cell.textLabel.text = @"Risers";
-                    break;
-                    
-                case 5:
                     cell.textLabel.text = @"Furniture";
                     break;
                     
-                case 6:
+                case 5:
                     cell.textLabel.text = @"Uncategorized";
                     break;
                     
@@ -123,7 +119,7 @@
             break;
             
         case 1:
-            rows = 7;
+            rows = 6;
             break;
             
         default:
@@ -187,21 +183,15 @@
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
-                    [newPopViewCtrl setPropListType:(ListType)RISERS];
+                    [newPopViewCtrl setPropListType:(ListType)FURNITURE];
                 }
                     break;
                 case 5:
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
-                    [newPopViewCtrl setPropListType:(ListType)FURNITURE];
+                   [newPopViewCtrl setPropListType:(ListType)UNCATEGORIZED];
                 }
-                    break;
-                case 6:
-                {
-                    //create a new popover with the same information
-                    newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
-                   [newPopViewCtrl setPropListType:(ListType)UNCATEGORIZED];                }
                     break;
                 default:
                     break;

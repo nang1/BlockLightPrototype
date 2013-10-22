@@ -19,6 +19,7 @@
  *           didSelectRowAtIndexPath
  *           titleForHeaderInSection
  *           numberOfSectionsInTableView
+ *           and edit SetPieceView.m and Defaults.h
  */
 #import "SetPieceListView.h"
 
@@ -77,12 +78,9 @@
                     [self displayPlatformCell:cell inRow:row];
                     break;
                 case 3:
-                    [self displayRiserCell:cell inRow:row];
-                    break;
-                case 4:
                     [self displayFurnitureCell:cell inRow:row];
                     break;
-                case 5:
+                case 4:
                     [self displayUncategorizedCell:cell inRow:row];
                     break;
                 default:
@@ -97,9 +95,6 @@
             break;
         case PLATFORMS:
             [self displayPlatformCell:cell inRow:row];
-            break;
-        case RISERS:
-            [self displayRiserCell:cell inRow:row];
             break;
         case FURNITURE:
             [self displayFurnitureCell:cell inRow:row];
@@ -138,12 +133,9 @@
                     sectionName = @"Platforms";
                     break;
                 case 3:
-                    sectionName = @"Risers";
-                    break;
-                case 4:
                     sectionName = @"Furniture";
                     break;
-                case 5:
+                case 4:
                     sectionName = @"Uncategorized";
                     break;
                 default: // no section name
@@ -158,9 +150,6 @@
             break;
         case PLATFORMS:
             sectionName = @"Platforms";
-            break;
-        case RISERS:
-            sectionName = @"Risers";
             break;
         case FURNITURE:
             sectionName = @"Furniture";
@@ -190,14 +179,11 @@
                 case 2: // platforms
                     rows = 1;
                     break;
-                case 3: // risers
+                case 3: // furniture
                     rows = 1;
                     break;
-                case 4: // furniture
-                    rows = 1;
-                    break;
-                case 5: // uncategorized
-                    rows = 2;
+                case 4: // uncategorized
+                    rows = 6;
                     break;
                 default:
                     break;
@@ -212,14 +198,11 @@
         case PLATFORMS:
             rows = 1;
             break;
-        case RISERS:
-            rows = 1;
-            break;
         case FURNITURE:
             rows = 1;
             break;
         case UNCATEGORIZED:
-            rows = 2;
+            rows = 6;
             break;
         default:
             break;
@@ -232,7 +215,7 @@
     NSInteger section = 1;
     
     if (listType == (ListType)ALL) {
-        section = 6;
+        section = 5;
     }
     
     return section;
@@ -256,12 +239,9 @@
                     [self selectedPlatformItem:row];
                     break;
                 case 3:
-                    [self selectedRiserItem:row];
-                    break;
-                case 4:
                     [self selectedFurnitureItem:row];
                     break;
-                case 5:
+                case 4:
                     [self selectedUncategorizedItem:row];
                     break;
                 default:
@@ -276,9 +256,6 @@
             break;
         case PLATFORMS:
             [self selectedPlatformItem:row];
-            break;
-        case RISERS:
-            [self selectedRiserItem:row];
             break;
         case FURNITURE:
             [self selectedFurnitureItem:row];
@@ -308,8 +285,8 @@
 - (void) displayStairCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
-            cell.textLabel.text = @"Some stair";
-            cell.imageView.image = [UIImage imageNamed:@"production-settings"];
+            cell.textLabel.text = @"Black Stairs";
+            cell.imageView.image = [UIImage imageNamed:@"stairs"];
             break;
             
         default:
@@ -322,19 +299,6 @@
     switch (row) {
         case 0:
             cell.textLabel.text = @"Some platform";
-            cell.imageView.image = [UIImage imageNamed:@"production-settings"];
-            break;
-            
-        default:
-            break;
-    }
-}
-
-// This table row is displaying a riser set piece
-- (void) displayRiserCell:(UITableViewCell*)cell inRow:(NSInteger)row {
-    switch (row) {
-        case 0:
-            cell.textLabel.text = @"Some riser";
             cell.imageView.image = [UIImage imageNamed:@"production-settings"];
             break;
             
@@ -363,10 +327,25 @@
             cell.textLabel.text = @"Door";
             cell.imageView.image = [UIImage imageNamed:@"Door"];
             break;
-            
         case 1:
             cell.textLabel.text = @"Mannequin";
             cell.imageView.image = [UIImage imageNamed:@"mannequin"];
+            break;
+        case 2:
+            cell.textLabel.text = @"Bridge";
+            cell.imageView.image = [UIImage imageNamed:@"bridge"];
+            break;
+        case 3:
+            cell.textLabel.text = @"Circle";
+            cell.imageView.image = [UIImage imageNamed:@"circle"];
+            break;
+        case 4:
+            cell.textLabel.text = @"Square";
+            cell.imageView.image = [UIImage imageNamed:@"square"];
+            break;
+        case 5:
+            cell.textLabel.text = @"Water";
+            cell.imageView.image = [UIImage imageNamed:@"water"];
             break;
             
         default:
@@ -398,7 +377,7 @@
 - (void) selectedStairItem:(NSInteger)row {
     switch (row) {
         case 0:
-            [self addNewSetPiece:@"blank"];
+            [self addNewSetPiece:@"Black Stairs"];
             break;
         default:
             break;
@@ -407,17 +386,6 @@
 
 // User selected some platform item to be added to stage
 - (void) selectedPlatformItem:(NSInteger)row {
-    switch (row) {
-        case 0:
-            [self addNewSetPiece:@"blank"];
-            break;
-        default:
-            break;
-    }
-}
-
-// User selected some riser item to be added to stage
-- (void) selectedRiserItem:(NSInteger)row {
     switch (row) {
         case 0:
             [self addNewSetPiece:@"blank"];
@@ -446,6 +414,18 @@
             break;
         case 1:
             [self addNewSetPiece:@"Mannequin"];
+            break;
+        case 2:
+            [self addNewSetPiece:@"Bridge"];
+            break;
+        case 3:
+            [self addNewSetPiece:@"Circle"];
+            break;
+        case 4:
+            [self addNewSetPiece:@"Square"];
+            break;
+        case 5:
+            [self addNewSetPiece:@"Water"];
             break;
         default:
             break;
