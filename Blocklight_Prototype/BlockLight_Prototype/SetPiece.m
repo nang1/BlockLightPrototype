@@ -41,6 +41,9 @@
     else if([type isEqualToString:@"Trash"]){
         _icon = [UIImage imageNamed:@"trash"];
     }
+    else if([type isEqualToString:@"Mannequin"]){
+        _icon = [UIImage imageNamed:@"mannequin"];
+    }
     else { // blank cell
         _icon = [UIImage imageNamed:@"production-settings"];
     }

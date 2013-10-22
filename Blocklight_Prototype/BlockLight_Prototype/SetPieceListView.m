@@ -9,15 +9,16 @@
 // Depending on what the user selected in SetPieceView, a different list will show
 
 /* NOTE: When changing number of set pieces availabe, be sure to update the methods:
- *           cellForRowAtIndexPath
  *           numberOfRowsInSection
- *           didSelectRowAtIndexPath
  *           display<ListType>Cell
  *           selected<ListType>Item
+ *           and edit SetPiece.m
  *
  *       When changing number of categories, update the methods:
- *           titleForHeaderInSection()
- *           numberOfSectionsInTableView()
+ *           cellForRowAtIndexPath
+ *           didSelectRowAtIndexPath
+ *           titleForHeaderInSection
+ *           numberOfSectionsInTableView
  */
 #import "SetPieceListView.h"
 
@@ -196,7 +197,7 @@
                     rows = 1;
                     break;
                 case 5: // uncategorized
-                    rows = 1;
+                    rows = 2;
                     break;
                 default:
                     break;
@@ -218,7 +219,7 @@
             rows = 1;
             break;
         case UNCATEGORIZED:
-            rows = 1;
+            rows = 2;
             break;
         default:
             break;
@@ -363,6 +364,11 @@
             cell.imageView.image = [UIImage imageNamed:@"Door"];
             break;
             
+        case 1:
+            cell.textLabel.text = @"Mannequin";
+            cell.imageView.image = [UIImage imageNamed:@"mannequin"];
+            break;
+            
         default:
             break;
     }
@@ -437,6 +443,9 @@
     switch (row) {
         case 0:
             [self addNewSetPiece:@"Door"];
+            break;
+        case 1:
+            [self addNewSetPiece:@"Mannequin"];
             break;
         default:
             break;
