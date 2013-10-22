@@ -13,15 +13,17 @@
 @implementation SettingsView
 
 @synthesize popoverCtrl = _popoverCtrl;
-/*
-@synthesize selectPreset= _selectPreset;
-@synthesize stageName=_stageName;
+@synthesize stage = _stage;
+@synthesize stageName = _stageName;
 @synthesize stageWidth=_stageWidth;
 @synthesize stageHeight=_stageHeight;
+/*
+@synthesize selectPreset= _selectPreset;
 //*/
 
 
-- (id)initWithViewController:(TVPopoverViewController *)viewController{
+- (id)initWithViewController:(TVPopoverViewController *)viewController withStage:(Stage *)stage
+{
     self = [super initWithFrame:CGRectMake(0, 0, 320, 216) style:UITableViewStyleGrouped];
     //self = [self initWithFrame:CGRectMake(0, 0, 320, 216)];
     
@@ -34,6 +36,7 @@
     self.delegate = self;
     
     _popoverCtrl = viewController;
+    _stage = stage;
     
     /* // JNN: if we ever want to add a header for whatever reason:
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(10,20,300,40)];
@@ -188,23 +191,91 @@
         case 0: // Stage Name
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Name";
-            cell.detailTextLabel.text = @"Name of Stage";
+            //cell.detailTextLabel.text = @"Name of Stage";
             //cell.textLabel.textColor = [UIColor grayColor];
             //cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            
+            // create UITextField
+            _stageName = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
+            _stageName.placeholder = @"Untitled";
+            _stageName.adjustsFontSizeToFitWidth = YES;
+            _stageName.textColor = [UIColor blackColor];
+            _stageName.keyboardType = UIKeyboardTypeDefault;//UIKeyboardTypeNumberPad;
+            _stageName.returnKeyType = UIReturnKeyDone;
+            _stageName.backgroundColor = [UIColor clearColor];
+            _stageName.autocorrectionType = UITextAutocorrectionTypeNo;
+            _stageName.autocapitalizationType = UITextAutocorrectionTypeDefault;
+            _stageName.clearButtonMode = UITextFieldViewModeNever;
+            [_stageName setEnabled:YES];
+            
+            // set text to whatever the current stage name is
+            if(_stage.name != NULL)
+            {
+                [_stageName setText:_stage.name];
+            }
+            
+            // set delegate to handle text field enter event
+            _stageName.tag = 0;
+            [_stageName setDelegate:self];
+            [cell.contentView addSubview:_stageName];
             break;
         case 1: // Width
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Width";
-            cell.detailTextLabel.text = @"Some Number";
-            //cell.textLabel.textColor = [UIColor grayColor];
-            //cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                
+            // create UITextField
+            _stageWidth = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
+            _stageWidth.placeholder = @"Some Width";
+            _stageWidth.adjustsFontSizeToFitWidth = YES;
+            _stageWidth.textColor = [UIColor blackColor];
+            _stageWidth.keyboardType = UIKeyboardTypeNumberPad;
+            _stageWidth.returnKeyType = UIReturnKeyDone;
+            _stageWidth.backgroundColor = [UIColor clearColor];
+            _stageWidth.autocorrectionType = UITextAutocorrectionTypeNo;
+            _stageWidth.autocapitalizationType = UITextAutocorrectionTypeDefault;
+            _stageWidth.clearButtonMode = UITextFieldViewModeNever;
+            [_stageWidth setEnabled:YES];
+                
+            // set text to whatever the current stage width is
+            if(_stage.width != NULL)
+            {
+                [_stageWidth setText: [_stage.width stringValue]];
+            }
+                
+            // set delegate to handle text field enter event
+            _stageWidth.tag = 1;
+            [_stageWidth setDelegate:self];
+            [cell.contentView addSubview:_stageWidth];
+            
             break;
         case 2: // Height
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Height";
-            cell.detailTextLabel.text = @"Some Number";
-            //cell.textLabel.textColor = [UIColor grayColor];
-            //cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                
+            // create UITextField
+            _stageHeight = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
+            _stageHeight.placeholder = @"Some Height";
+            _stageHeight.adjustsFontSizeToFitWidth = YES;
+            _stageHeight.textColor = [UIColor blackColor];
+            _stageHeight.keyboardType = UIKeyboardTypeNumberPad;
+            _stageHeight.returnKeyType = UIReturnKeyDone;
+            _stageHeight.backgroundColor = [UIColor clearColor];
+            _stageHeight.autocorrectionType = UITextAutocorrectionTypeNo;
+            _stageHeight.autocapitalizationType = UITextAutocorrectionTypeDefault;
+            _stageHeight.clearButtonMode = UITextFieldViewModeNever;
+            [_stageHeight setEnabled:YES];
+                
+            // set text to whatever the current stage height is
+            if(_stage.height != NULL)
+            {
+                [_stageHeight setText: [_stage.height stringValue]];
+            }
+                
+            // set delegate to handle text field enter event
+            _stageHeight.tag = 2;
+            [_stageHeight setDelegate:self];
+            [cell.contentView addSubview:_stageHeight];
+
             break;
         default: // something weird happened
             break;
@@ -213,7 +284,7 @@
     case 2: // Stage Apron
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
         cell.textLabel.text = @"Stage Apron";
-        //cell.textLabel.textColor = [UIColor grayColor];
+        cell.textLabel.textColor = [UIColor grayColor];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         break;
     default:
@@ -288,11 +359,11 @@
         {
         case 0: // Save current layout and ask for a name
             {
-                UIAlertView* saveAlert =  [[UIAlertView alloc]initWithTitle:@"Save Layout"
-                                                                    message:@"Please enter a name for the layout"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Cancel"
-                                                          otherButtonTitles:@"Save (Not done)",nil];
+                UIAlertView* saveAlert = [[UIAlertView alloc]initWithTitle:@"Save Layout"
+                                                                   message:@"Please enter a name for the layout"
+                                                                  delegate:self
+                                                         cancelButtonTitle:@"Cancel"
+                                                         otherButtonTitles:@"Save (Not done)",nil];
                 saveAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
                 [saveAlert show];
                 saveAlert.delegate = self;
@@ -319,12 +390,8 @@
         {
         case 0: // Stage Name
             {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Name"
-                                                                message:@"To name your stage before saving. Needs text field."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Cancel"
-                                                      otherButtonTitles:@"Ok", nil];
-                [alert show];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                [_stageName becomeFirstResponder];
             }
             break;
         case 1: // Stage Width
@@ -384,5 +451,64 @@
     CGContextFillPath(context);
 }
 //*/
+
+
+// UITextFieldDelegate Code
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    // it should NOT enter a new line/return carriage/whatever "return" key returns
+    return NO;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if(textField.tag == 0) // stage name tag
+    {
+        //NSLog(@"edited the stage name: %@", textField.text);
+        // JNN: properties are amazing! ^-^
+        [_stage setName:textField.text];
+        // need to somehow set: QuickStageViewController's
+        // navigationItem.title = _quickProduction.stage.name;
+        //[_popoverCtrl dismissPopoverView]; // <- don't want to do this
+    }
+    else if(textField.tag == 1) // stage width tag
+    {
+        [_stage setWidth:[NSNumber numberWithInteger:[textField.text integerValue]]];
+    }
+    else if(textField.tag == 2) // stage height tag
+    {
+        [_stage setHeight:[NSNumber numberWithInteger:[textField.text integerValue]]];
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(textField.tag == 1 || textField.tag == 2) // stage width or stage height tag
+    {
+        // have to check if replacementString contains nondigit character
+        
+        // get the invalid character set
+        NSCharacterSet *nonDecimalNumbers = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+        
+        // check the string if it has any invalid characters
+        NSRange invalidRange = [string rangeOfCharacterFromSet:nonDecimalNumbers];
+        if(invalidRange.location == NSNotFound) // || invalidRange.length > 0);
+        {
+            // invalid characters not found
+            return YES;
+        }
+        else
+        {
+            // invalid characters found, should not add new characters
+            return NO;
+        }
+    }
+    else // default, any textfield should be modifiable
+    {
+        return YES;
+    }
+}
 
 @end

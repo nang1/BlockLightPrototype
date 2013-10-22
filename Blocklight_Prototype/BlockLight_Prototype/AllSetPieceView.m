@@ -53,18 +53,21 @@
         {
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = @"Tree";
+            [cell.imageView setImage:[UIImage imageNamed: @"Tree.png"]];
         }
             break;
         case 1:
         {
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = @"Door";
+            [cell.imageView setImage:[UIImage imageNamed: @"Door.png"]];
         }
             break;
         case 2:
         {
             cell.textLabel.textColor = [UIColor blackColor];
             cell.textLabel.text = @"Recycle Bin";
+            [cell.imageView setImage:[UIImage imageNamed: @"trash.png"]];
         }
             break;
         default:
