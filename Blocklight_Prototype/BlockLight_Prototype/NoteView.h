@@ -11,7 +11,6 @@
 #import "TVPopoverViewController.h"
 #import "Frame.h"
 #import "Note.h"
-//#import "Position.h"
 
 @class NoteView;
 @class TVPopoverViewController;

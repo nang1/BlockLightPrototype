@@ -38,7 +38,7 @@
             self.title = @"Settings";
             
             // create starting view to display settings options
-            SettingsView* _settingsView = [[SettingsView alloc] initWithViewController:self];
+            SettingsView* _settingsView = [[SettingsView alloc] initWithViewController:self withStage:_production.stage];
             self.view = _settingsView;
         }
             break;
@@ -91,9 +91,12 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 300);
             self.title = @"Add Performers";
             
+            // work around to getting current frame
+            Scene* tempScene = [production.scenes objectAtIndex: production.curScene];
+            Frame* tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+            
             // create view to add actors
-            UIView* _actorView = [[UIView alloc] init];
-            _actorView.backgroundColor = [UIColor greenColor];
+            ActorView* _actorView = [[ActorView alloc] initWithFrame:CGRectMake(0,0,320,300) withProductionFrame:tempFrame withViewController:self];
             self.view = _actorView;
         }
             break;
@@ -106,7 +109,19 @@
             
             // create view to select a scene
             UIView* _sceneView = [[UIView alloc] init];
-            _sceneView.backgroundColor = [UIColor blueColor];
+            _sceneView.backgroundColor = [UIColor lightGrayColor];
+            
+            UILabel* description = [[UILabel alloc] initWithFrame: CGRectMake(10,10,300,200)];
+            description.text = @"This popover will let the user move";
+            description.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+            description.backgroundColor = [UIColor clearColor];
+            UILabel* description2 = [[UILabel alloc] initWithFrame: CGRectMake(25,25,300,200)];
+            description2.text = @"between different scenes.";
+            description2.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+            description2.backgroundColor = [UIColor clearColor];
+            
+            [_sceneView addSubview:description];
+            [_sceneView addSubview:description2];
             self.view = _sceneView;
         }
             break;
@@ -117,9 +132,8 @@
             self.contentSizeForViewInPopover = CGSizeMake(320, 300);
             self.title = @"Grid Options";
             
-            // create view to select a scene
-            UIView* _gridView = [[UIView alloc] init];
-            _gridView.backgroundColor = [UIColor orangeColor];
+            // create view to adjust grid lines
+            GridOptionsView* _gridView = [[GridOptionsView alloc] initWithViewController:self];
             self.view = _gridView;
         }
             break;

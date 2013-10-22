@@ -90,6 +90,9 @@
     // add left-side tool bar buttons
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
     
+    // set title to production's stage name
+    self.navigationItem.title = _quickProduction.stage.name;
+    
     // Tool buttons on right side
     _propsButton = [[UIBarButtonItem alloc] initWithTitle:@"Set Pieces"
                                                                style:UIBarButtonItemStyleBordered
@@ -243,16 +246,22 @@
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
     
+    // JNN: I cheated
+    self.navigationItem.title = _quickProduction.stage.name;
+    
+    // a note was added
     if([tempFrame.notes count] > [[self contentView].noteLabels count])
     {
-        // a note was added
         [self addNoteToStage:[tempFrame.notes lastObject]];
     }
     
-    // if actor was added
+    // a actor was added
+    if([tempFrame.actorsOnStage count] > [[self contentView].actorArray count])
+    {
+        [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+    }
     
-    
-    // if setpiece was added
+    // a setpiece was added
     if([tempFrame.props count] > [[self contentView].propsArray count]){
         [self addSetPieceToStage:[tempFrame.props lastObject]];
     }
@@ -351,19 +360,21 @@
         [_gestureCtrl changeFrame:frame]; // the frame had changed
 
 
+        // remove current objects from view
 		for (UILabel *lbl in [self contentView].noteLabels)
 		{
-			//if ([lbl isKindOfClass:[UILabel class]]){
 				[lbl removeFromSuperview];
-			//}
-			
 		}
-//	NSInteger i = 0;
-//		for (UILabel* lbl in self.view.
-			
-//		}
+        
+        for(UIImageView *tempView in [self contentView].propsArray){
+            [tempView removeFromSuperview];
+        }
+        
+        for(UIImageView *tempView in [self contentView].actorArray){
+            [tempView removeFromSuperview];
+        }
 
-		// remove all notes in current view
+		// remove all notes in current view notes array
 		[[self contentView].noteLabels removeAllObjects];
 		
 		// add new notes
@@ -371,6 +382,23 @@
         {
             [self addNoteToStage:note];
 		}
+        
+        // remove all props in current view props array
+        [[self contentView].propsArray removeAllObjects];
+        
+        // add new props
+        for(SetPiece* piece in frame.props){
+            [self addSetPieceToStage:piece];
+        }
+        
+        // remove all actors in current view actors array
+        [[self contentView].actorArray removeAllObjects];
+        
+        // add new actors
+        for(Actor* piece in frame.actorsOnStage){
+            [self addActorToStage:piece];
+        }
+        
 		[self.view setNeedsDisplay];
 	}
 }
@@ -386,6 +414,13 @@
 		cell.backgroundColor = [UIColor colorWithPatternImage:frame.frameIcon];
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		
+        // put a label on each frame of the timeline
+        int myInteger = indexPath.row;
+        myInteger++;
+        NSString* myNewString = [NSString stringWithFormat:@"%i", myInteger];
+        cell.textLabel.text = myNewString;
+        [cell.textLabel setTransform:CGAffineTransformMakeRotation(M_PI / 2)];
+        
 		return cell;
 	}
 	else{
@@ -394,7 +429,7 @@
 }
 
 - (void)productionOptionsAS{
-	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy Previous Frame", @"New Frame", nil];
+	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Current Frame", @"Copy Current Frame", @"New Frame", nil];
 	
 	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
 	
@@ -405,10 +440,21 @@
 		Frame* newFrame = [[Frame alloc] init];
 		//[self contentView].noteLabel.text = @"";
 		switch (buttonIndex) {
-				
+
+                // 'delete button'
+			case 0:
+            {
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete Frame" message:@"This will delete the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+            }
+                break;
+                
 				//'copy' BUTTON
-			case 0:{
-				Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+			case 1:{
+                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [alert show];
+				/*
+                Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
 				Frame* newFrame = [[Frame alloc]init];
 				newFrame.spikePath = [UIBezierPath bezierPathWithCGPath:curFrame.spikePath.CGPath];
@@ -420,10 +466,11 @@
 				[self contentView].myPath = newFrame.spikePath;
 				[[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
 				//[self saveIcon];
+                //*/
                 
 			}
 				break;
-			case 1:{/*
+			case 2:{/*
                      //'new frame' BUTTON
                      Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
                      Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
@@ -464,7 +511,7 @@
 - (void)addNoteToStage:(Note*)note
 {
     // create label for the note
-    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 100, 300)];
+    UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 200, 300)];
     //UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate, 100,50)];
     tempLabel.text = note.noteStr;
     //tempLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -476,36 +523,68 @@
     tempLabel.hidden = [self contentView].hiddenNotes;
     
     // assign the note a UIPanGesture Recognizer so that it can move around on stage
-    UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [noteMover setDelegate:_gestureCtrl];
+    //UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    //[noteMover setDelegate:_gestureCtrl];
+    //[tempLabel addGestureRecognizer:noteMover];
+
+    // JNN: just realized, is the same piece of code as above three lines -__-'
+    [note addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [note setDelegate:_gestureCtrl];
+    [tempLabel addGestureRecognizer:note];
+
     [tempLabel setUserInteractionEnabled:YES];
-    [tempLabel addGestureRecognizer:noteMover];
     [tempLabel sizeToFit];
     [tempLabel setCenter:CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate)];
     //NSLog(@"Center: (%d, %d)", note.notePosition.xCoordinate, note.notePosition.yCoordinate);
     
     // finally, add the label as a subview which will appear on stage
     [[self contentView].noteLabels addObject:tempLabel];
-    //[self.view addSubview:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
 }
 
-- (void)addActorToStageFromFrame
+- (void)addActorToStage:(Actor*)actor
 {
-    // TODO: logic for adding actors to stage
+    // Set gesture recognizer to SetPiece
+    [actor addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [actor setDelegate:_gestureCtrl];
+    
+    UIImageView* newActorIconView = [[UIImageView alloc] initWithImage:actor.actorIcon];
+    [newActorIconView addGestureRecognizer:actor];
+    [newActorIconView setUserInteractionEnabled:YES];
+    [newActorIconView sizeToFit];
+    [newActorIconView setCenter:CGPointMake(actor.actorPosition.xCoordinate, actor.actorPosition.yCoordinate)];
+    newActorIconView.tag = 10;
+    
+    // put actor's name underneath icon
+    UILabel* nameLbl = actor.actorName;
+    nameLbl.textAlignment = NSTextAlignmentCenter;
+    
+    [newActorIconView addSubview:nameLbl];
+    
+    // save icon to quickstageview
+    [[self contentView].actorArray addObject:newActorIconView];
+    
+    // add icon as subview to make it appear on the stage
+    [[self contentView] addSubview:[[self contentView].actorArray lastObject]];
 }
 
-- (void)addSetPieceToStage:(UILabel*)imageLabel
-{
-    /*
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Add a tree" message:@"Almost there. Just need to figure out get image." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
-     //*/
+- (void)addSetPieceToStage:(SetPiece*)newPiece
+{       
+    // Set gesture recognizer to SetPiece
+    [newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
+    [newPiece setDelegate:_gestureCtrl];
     
-    ///*
-    // some of this needs to be moved to AllSetPieceView file
-    //UIImage* newIcon = [UIImage imageNamed:@"tree"];
-    //*/
+    UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];
+    [newIconView addGestureRecognizer:newPiece];
+    [newIconView setUserInteractionEnabled:YES];
+    [newIconView sizeToFit];
+    [newIconView setCenter:CGPointMake(newPiece.piecePosition.xCoordinate, newPiece.piecePosition.yCoordinate)];
+    
+    // save icon to quickstageview
+    [[self contentView].propsArray addObject:newIconView];
+
+    // add icon as subview to make it appear on the stage
+    [[self contentView] addSubview:[[self contentView].propsArray lastObject]];
 }
 
 @end

@@ -21,6 +21,7 @@
 @synthesize hiddenNotes = _hiddenNotes;
 @synthesize first = _first;
 @synthesize propsArray = _propsArray;
+@synthesize actorArray = _actorArray;
 
 #pragma mark Constructors
 - (id)initWithFrame:(CGRect)frame andViewController:(id)viewController {
@@ -28,7 +29,8 @@
     if (self == nil)
         return nil;
     
-    self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bg-production.jpg"]];
+    //self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bg-production.jpg"]];
+    self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"startScreen2"]];
         
     // create array to hold note labels
     _noteLabels = [[NSMutableArray alloc] init];
@@ -48,6 +50,8 @@
     
     // array to hold set pieces
     _propsArray = [[NSMutableArray alloc] init];
+    // array to hold actors
+    _actorArray = [[NSMutableArray alloc] init];
     
     return self;
 }

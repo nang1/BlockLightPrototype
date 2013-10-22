@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 #import "TVPopoverViewController.h"
 #import "Frame.h"
+#import "SetPiece.h"
 
 @interface AllSetPieceView : UITableView <UITableViewDelegate, UITableViewDataSource> {
     TVPopoverViewController* _popoverCtrl;

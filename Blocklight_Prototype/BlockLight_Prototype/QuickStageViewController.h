@@ -71,8 +71,8 @@
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
 - (void)createPopover:(TVPopoverViewController*)_popoverViewCtrl withType:(EditTools)_type;
 - (void)addNoteToStage:(Note*)note;
-- (void)addActorToStageFromFrame;
-- (void)addSetPieceToStage:(UILabel*)imageLabel;
+- (void)addActorToStage:(Actor*)actor;
+- (void)addSetPieceToStage:(SetPiece*)newPiece;
 - (void)productionOptionsAS;
 
 @end

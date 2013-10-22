@@ -93,6 +93,13 @@
     //newNote.notePosition = [[Position alloc] init];
     [_frame.notes addObject:newNote];
     
+    if(_popoverCtrl.quickView.hiddenNotes)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Notes Hidden" message:@"Your current settings have Notes hidden. To change this, go to View." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }
+
+    
     // just to check if note has been added to current frame
     // NSLog(@"Added new note, Number of notes: %d\n",[tempFrame.notes count]);
     

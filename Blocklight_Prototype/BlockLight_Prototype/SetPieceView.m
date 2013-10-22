@@ -56,24 +56,7 @@
         }
             break;
             
-        case 1: // Layout options save certain positions of set pieces
-        {
-            switch (row) {
-                case 0:
-                    cell.textLabel.text = @"Save Current Layout";
-                    break;
-                    
-                case 1:
-                    cell.textLabel.text = @"Layout Presets";
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-            break;
-            
-        case 2: // Lists all the set pieces the user can choose
+        case 1:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor blackColor];
@@ -131,10 +114,6 @@
             break;
             
         case 1:
-            rows = 2;
-            break;
-            
-        case 2:
             rows = 6;
             break;
             
@@ -147,7 +126,7 @@
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 3;
+    NSInteger section = 2;//3;
     return section;
 }
 
@@ -157,33 +136,7 @@
     NSInteger row = [indexPath row];
     
     switch (section) {
-        case 1: // User selected layout options
-        {
-            switch (row) {
-                case 0:
-                { // Save current layout and ask for a name
-                    UIAlertView* saveAlert =  [[UIAlertView alloc ]initWithTitle:@"Save Layout"
-                                                                         message:@"Please enter a name for the layout"
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"Cancel"
-                                                               otherButtonTitles:@"Save (Not done)",nil];
-                    saveAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-                    [saveAlert show];
-                    saveAlert.delegate = self;
-                }
-                    break;
-                    
-                case 1: // Select a layout preset to load to the stage
-                {       // This will probably erase all other set pieces currently on the stage
-                    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Select Layout" message:@"May create another view to select a layout" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-                    [alert show];
-                }
-                    break;
-            }
-        } // end of layout options
-            break;
-            
-        case 2: // User wants to look at some list of set pieces
+        case 1:
         {       // Unsure if should create new views to list them
             switch (row) {
                 case 0:
