@@ -90,6 +90,9 @@
     // add left-side tool bar buttons
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
     
+    // set title to production's stage name
+    self.navigationItem.title = _quickProduction.stage.name;
+    
     // Tool buttons on right side
     _propsButton = [[UIBarButtonItem alloc] initWithTitle:@"Set Pieces"
                                                                style:UIBarButtonItemStyleBordered
@@ -242,6 +245,8 @@
     // check to see if number of notes, actors, or setpieces inside frame had changed
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+
+    self.navigationItem.title = _quickProduction.stage.name;
     
     // a note was added
     if([tempFrame.notes count] > [[self contentView].noteLabels count])

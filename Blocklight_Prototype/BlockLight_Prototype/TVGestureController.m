@@ -155,7 +155,7 @@
             {
                 SetPiece* tempPiece = [[SetPiece alloc] init];
                 pieceType = @"Set Piece";
-              
+
                 //find index of piece that was moved
                 for(UIImageView *tempView in _quickStageView.propsArray)
                 {

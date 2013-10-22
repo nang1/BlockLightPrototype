@@ -67,6 +67,7 @@
 		867CB8F017F2349A00E8B0F5 /* TVPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8EE17F2349A00E8B0F5 /* TVPopoverViewController.m */; };
 		867CB8F717F2393900E8B0F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F417F2393900E8B0F5 /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		867CB8F817F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F517F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld */; };
+		867DE55B18105340008BD719 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 867DE55A18105340008BD719 /* Default-Landscape~ipad.png */; };
 		86EA9CB7180EF4CA00D030C0 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EA9CB6180EF4CA00D030C0 /* SettingsView.m */; };
 		86EA9CBA180F091100D030C0 /* production-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 86EA9CB9180F091100D030C0 /* production-settings.png */; };
 		8B85A8C2180F3BD200E3A26D /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B85A8C1180F3BD200E3A26D /* Icon-72.png */; };
@@ -160,6 +161,7 @@
 		867CB8F317F2393900E8B0F5 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BlockLight_Prototype/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		867CB8F417F2393900E8B0F5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BlockLight_Prototype/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		867CB8F617F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Blocklight_Prototype.xcdatamodel; sourceTree = "<group>"; };
+		867DE55A18105340008BD719 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		86EA9CB5180EF4CA00D030C0 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = BlockLight_Prototype/SettingsView.h; sourceTree = SOURCE_ROOT; };
 		86EA9CB6180EF4CA00D030C0 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = BlockLight_Prototype/SettingsView.m; sourceTree = SOURCE_ROOT; };
 		86EA9CB9180F091100D030C0 /* production-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "production-settings.png"; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 		86572C3117E8B9A70081513F = {
 			isa = PBXGroup;
 			children = (
+				867DE55A18105340008BD719 /* Default-Landscape~ipad.png */,
 				8B85A8C1180F3BD200E3A26D /* Icon-72.png */,
 				86572C4817E8B9A70081513F /* Blocklight_Prototype */,
 				86572C6A17E8B9A70081513F /* Blocklight_PrototypeTests */,
@@ -484,6 +487,7 @@
 				86EA9CBA180F091100D030C0 /* production-settings.png in Resources */,
 				8B85A8C2180F3BD200E3A26D /* Icon-72.png in Resources */,
 				8B916DE61816F9C900BE9ECD /* mannequin.png in Resources */,
+				867DE55B18105340008BD719 /* Default-Landscape~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
