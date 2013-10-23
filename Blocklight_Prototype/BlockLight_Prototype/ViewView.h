@@ -22,7 +22,7 @@
 
 // These methods may need to be modified as we add the implementation
 - (id)initWithViewController:(TVPopoverViewController*)viewController;
-- (void)gridSwitch;
+- (void)spikeTapeSwitch;
 - (void)noteSwitch;
 
 @end
