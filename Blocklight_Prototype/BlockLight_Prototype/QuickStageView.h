@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface QuickStageView : UIView {
-    BOOL _horizontalGrid ;
+    BOOL _horizontalGrid;
 	BOOL _verticalGrid;
-	BOOL _grid;
+	BOOL _grid; // default minimum: 16 lines height x 24 lines width
 	BOOL _spikeTape;
 	UIBezierPath *_myPath;
-	CGFloat _opacity;
+    float _spacing; // should be in Stage?
+    float _opacity; // should be in Stage?
+	//CGFloat _opacity;
     UIColor *brushPattern; // color of lines when user draws
     NSMutableArray* _noteLabels;
     BOOL _hiddenNotes;
@@ -29,11 +31,14 @@
 @property BOOL grid;
 @property BOOL spikeTape;
 @property (strong) UIBezierPath* myPath;
-@property CGFloat opacity;
+@property float spacing;
+@property float opacity; // float uses less memory than CGFloat which is a wrapper
+//@property CGFloat opacity; // for both floats(32-bit) and doubles(64-bit)
 @property (strong) UIColor* brushPattern;
 @property (strong) NSMutableArray* noteLabels;
 @property BOOL hiddenNotes;
 @property BOOL first;
+
 @property (strong) NSMutableArray* propsArray;
 @property (strong) NSMutableArray* actorArray;
 

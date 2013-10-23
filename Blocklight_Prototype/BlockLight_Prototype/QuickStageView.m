@@ -15,6 +15,7 @@
 @synthesize grid = _grid;
 @synthesize spikeTape = _spikeTape;
 @synthesize myPath = _myPath;
+@synthesize spacing = _spacing;
 @synthesize opacity = _opacity;
 @synthesize brushPattern = _brushPattern;
 @synthesize noteLabels = _noteLabels;
@@ -39,6 +40,7 @@
     _horizontalGrid = YES;
     _verticalGrid = YES;
     _grid = NO;
+    _spacing = 1.0f;
     _opacity = 1.0;
     _myPath = [[UIBezierPath alloc] init];
     _myPath.lineCapStyle = kCGLineCapRound;
@@ -56,8 +58,8 @@
     return self;
 }
 
-
 // Only override drawRect: if you perform custom drawing.
+// gets called everytime [self setNeedsDisplay]
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Draw Stage
@@ -69,9 +71,13 @@
     // Stage border
     CGContextMoveToPoint(context, 50, 25);
     CGContextAddLineToPoint(context,974,25);
+    // w/ Stage Apron
     CGContextAddLineToPoint(context, 974, 550);
-    CGContextAddArcToPoint(context, 512, 700, 50, 550, 1500);
+    CGContextAddArcToPoint(context, 512, 700, 50, 550, 1500); // x1, y1, x2, y2, radius
     CGContextAddLineToPoint(context, 50, 550);
+    // w/o Stage Apron
+    //CGContextAddLineToPoint(context, 974, 625);
+    //CGContextAddLineToPoint(context, 50, 625);
     
     // Make stage white
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
@@ -87,17 +93,27 @@
     if(_grid){
         if(_horizontalGrid){
             // display horizatonal grid lines
-            for(int i = 0; i < 764; i+=40){
+            /*for(float i = 0; i < 764; i+=40*_spacing){
                 CGContextMoveToPoint(context, 0, i);
                 CGContextAddLineToPoint(context, 1024, i);
+            }//*/
+            for(float i = 25; i <= 625; i+=600/_spacing)
+            {
+                CGContextMoveToPoint(context, 50, i);
+                CGContextAddLineToPoint(context, 974, i);
             }
         }
         
         if(_verticalGrid){
             // display vertical grid lines
-            for(int i = 0; i < 1024; i+=40){
+            /*for(float i = 0; i < 1024; i+=40*_spacing){
                 CGContextMoveToPoint(context, i, 0);
                 CGContextAddLineToPoint(context, i, 768);
+            }//*/
+            for(float i = 50; i <= 975; i+=925/_spacing)
+            {
+                CGContextMoveToPoint(context, i, 25);
+                CGContextAddLineToPoint(context, i, 625);
             }
         }
     }
