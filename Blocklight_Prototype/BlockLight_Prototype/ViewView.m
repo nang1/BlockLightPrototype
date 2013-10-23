@@ -50,65 +50,52 @@
     
     // View options for display in View popover
     switch(section) {
-        case 0: // Grid Options
+        case 0: // General Options
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
             switch(row){
-                case 0: // Switch for grid on stage
+                case 0:
+                    cell.textLabel.text = @"Grid Options";
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
+                case 1:
+                    cell.textLabel.text = @"Show Notes";
+                    _noteSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_noteSwitchView addTarget:self action:@selector(noteSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_noteSwitchView setOn: !_popoverCtrl.quickView.hiddenNotes animated:NO];                    
+                    cell.accessoryView = _noteSwitchView;
+                    break;
+                case 2: // Switch for Spike Tape
                 {
-                    cell.textLabel.text = @"Grid View";
+                    cell.textLabel.text = @"Show Spike Tape";
                     UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(gridSwitch) forControlEvents:UIControlEventValueChanged];
+                    [switchview addTarget:self action:@selector(spikeTapeSwitch) forControlEvents:UIControlEventValueChanged];
                     //[switchview setOn:[self contentView].grid animated:NO];
                     
                     cell.accessoryView = switchview;
                 }
                     break;
-                case 1:
-                {
-                    cell.textLabel.text = @"Grid Options";
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                }
-                    break;
-                case 2:
-                {
-                    cell.textLabel.text = @"Show Notes";
-                    _noteSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [_noteSwitchView addTarget:self action:@selector(noteSwitch) forControlEvents:UIControlEventValueChanged];
-                    [_noteSwitchView setOn: !_popoverCtrl.quickView.hiddenNotes animated:NO];
-                    
-                    cell.accessoryView = _noteSwitchView;
-                }
                 default:
                     break;
             }
-            break; // end of rows for Grid Options
-            
-        case 1: // Traffic Patterns, probably referring to spike tape
-        {
+            break; // end of rows for General Options
+        case 1: // Traffic Patterns, probably referring to animation step arrows
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Traffic Patterns";
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
             break;
-        case 2: // lines w/ numbers that indicate the length of something
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Ruler";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
-            break;
-            
-        case 3: // Something to do with the audience
-        {
+        case 2: // Something to do with the audience
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Audience View";
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        }
             break;
-            
+        case 3: // Stage Apron
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+            cell.textLabel.text = @"Stage Apron";
+            cell.textLabel.textColor = [UIColor grayColor];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            break;
         default:
             cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             break;
@@ -148,7 +135,7 @@
     NSInteger section = [indexPath section];
     NSInteger row = [indexPath row];
     
-    if(section == 0 && row == 1) { // Grid Options
+    if(section == 0 && row == 0) { // Grid Options
         // Push grid options view onto nav controller to allow user to change grid appearance
         
         // access info of tvpopoverviewcontroller
@@ -166,19 +153,25 @@
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Traffic Patterns" message:@"Will show or hide the traffic patterns." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     }
-    else if(section == 2){ // Ruler
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Ruler" message:@"Will show or hide a ruler that display the dimensions of the stage." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    else if(section == 2){ // Audience View
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Audience View" message:@"Will show or hide something that interacts with the audience." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     }
-    else if(section == 3){ // Audience View
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Audience View" message:@"Will show or hide something that interacts with the audience." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    else if(section == 3) // Stage Apron
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Apron"
+                                                        message:@"Will show or hide the stage apron."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Ok", nil];
         [alert show];
     }
 }
 
-// User clicked the switch for showing/hiding grid lines
-- (void)gridSwitch {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Grid Switch" message:@"Will show or hide the grid lines." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+// User clicked the switch for showing/hiding spike tape
+- (void)spikeTapeSwitch
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spike Tape" message:@"Will show or hide the spike tape." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
     [alert show];
 }
 
@@ -187,16 +180,14 @@
 {
     if([_noteSwitchView isOn])
     {
-        //NSLog(@"You turned me on");
         _popoverCtrl.quickView.hiddenNotes = NO;
 		for (UILabel *lbl in _popoverCtrl.quickView.noteLabels)
 		{
             lbl.hidden = false;
 		}
     }
-    else
+    else // switched notes off
     {
-        //NSLog(@"You turned me off");
         _popoverCtrl.quickView.hiddenNotes = YES;
         for (UILabel *lbl in _popoverCtrl.quickView.noteLabels)
 		{

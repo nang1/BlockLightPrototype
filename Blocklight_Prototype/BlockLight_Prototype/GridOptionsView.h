@@ -17,6 +17,10 @@
 
 // These methods may need to be modified as we add the implementation
 - (id)initWithViewController:(TVPopoverViewController*)viewController;
+- (void)gridSwitch;
+- (void)rulerSwitch;
+- (void)metricSwitch;
+- (void)spacingChange;
 - (void)opacityChange;
 
 @end
