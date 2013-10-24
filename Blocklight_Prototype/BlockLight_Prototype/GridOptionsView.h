@@ -16,6 +16,9 @@
     UISwitch* _rulerSwitchView;
     UISwitch* _metricSwitchView;
     
+    UIButton* _horizontal;
+    UIButton* _vertical;
+    
     UISlider* _spacingSlider;
     UISlider* _opacitySlider;
 }
@@ -24,6 +27,8 @@
 @property (nonatomic, strong) UISwitch* gridSwitchView;
 @property (nonatomic, strong) UISwitch* rulerSwitchView;
 @property (nonatomic, strong) UISwitch* metricSwitchView;
+@property (nonatomic, strong) UIButton* horizontal;
+@property (nonatomic, strong) UIButton* vertical;
 @property (nonatomic, strong) UISlider* spacingSlider;
 @property (nonatomic, strong) UISlider* opacitySlider;
 
@@ -32,6 +37,8 @@
 - (void)gridSwitch;
 - (void)rulerSwitch;
 - (void)metricSwitch;
+- (void)horzButton;
+- (void)vertButton;
 - (void)spacingChange;
 - (void)opacityChange;
 

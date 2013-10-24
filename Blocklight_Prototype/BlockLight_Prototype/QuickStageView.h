@@ -11,12 +11,13 @@
 @interface QuickStageView : UIView {
     BOOL _horizontalGrid;
 	BOOL _verticalGrid;
-	BOOL _grid; // default minimum: 16 lines height x 24 lines width
+	BOOL _grid;
+    BOOL _ruler;
+    BOOL _isMetric;
 	BOOL _spikeTape;
 	UIBezierPath *_myPath;
     float _spacing; // should be in Stage?
-    float _opacity; // should be in Stage?
-	//CGFloat _opacity;
+    float _opacity; //CGFloat _opacity; // should be in Stage?
     UIColor *brushPattern; // color of lines when user draws
     NSMutableArray* _noteLabels;
     BOOL _hiddenNotes;
@@ -24,16 +25,19 @@
     
     NSMutableArray* _propsArray; // array to hold props positioned on stage
     NSMutableArray* _actorArray; // array to hold actors on stage
+    
+    NSMutableArray* _rulerLabelsArray; // array to hold ruler labels
 }
 
 @property BOOL horizontalGrid;
 @property BOOL verticalGrid;
 @property BOOL grid;
+@property BOOL ruler;
+@property BOOL isMetric;
 @property BOOL spikeTape;
 @property (strong) UIBezierPath* myPath;
-@property float spacing;
-@property float opacity; // float uses less memory than CGFloat which is a wrapper
-//@property CGFloat opacity; // for both floats(32-bit) and doubles(64-bit)
+@property float spacing; // float uses less memory than CGFloat which is a wrapper
+@property float opacity; //@property CGFloat opacity; // for both floats(32-bit) and doubles(64-bit)
 @property (strong) UIColor* brushPattern;
 @property (strong) NSMutableArray* noteLabels;
 @property BOOL hiddenNotes;
@@ -41,6 +45,8 @@
 
 @property (strong) NSMutableArray* propsArray;
 @property (strong) NSMutableArray* actorArray;
+
+@property (strong) NSMutableArray* rulerLabelsArray;
 
 - (id) initWithFrame:(CGRect)frame andViewController:(id)viewController;
 // - (void)drawStage;

@@ -11,14 +11,12 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TVPopoverViewController.h"
-#import "Stage.h"
 
 @class TVPopoverViewController;
 
 @interface SettingsView : UITableView <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 {
     TVPopoverViewController* _popoverCtrl;
-    Stage* _stage;
     UITextField* _stageName;
     UITextField* _stageWidth;
     UITextField* _stageHeight;
@@ -28,7 +26,6 @@
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
-@property (strong) Stage* stage;
 @property (strong) UITextField* stageName;
 @property (strong) UITextField* stageWidth;
 @property (strong) UITextField* stageHeight;
@@ -36,6 +33,6 @@
 @property (strong) UIButton* selectPreset;
 //*/
 
-- (id)initWithViewController:(TVPopoverViewController*)viewController withStage:(Stage*)stage;
+- (id)initWithViewController:(TVPopoverViewController*)viewController;
 
 @end
