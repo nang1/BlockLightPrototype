@@ -38,7 +38,7 @@
             self.title = @"Settings";
             
             // create starting view to display settings options
-            SettingsView* _settingsView = [[SettingsView alloc] initWithViewController:self withStage:_production.stage];
+            SettingsView* _settingsView = [[SettingsView alloc] initWithViewController:self];
             self.view = _settingsView;
         }
             break;

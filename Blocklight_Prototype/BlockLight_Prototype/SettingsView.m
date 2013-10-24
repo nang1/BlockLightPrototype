@@ -13,7 +13,6 @@
 @implementation SettingsView
 
 @synthesize popoverCtrl = _popoverCtrl;
-@synthesize stage = _stage;
 @synthesize stageName = _stageName;
 @synthesize stageWidth=_stageWidth;
 @synthesize stageHeight=_stageHeight;
@@ -22,7 +21,7 @@
 //*/
 
 
-- (id)initWithViewController:(TVPopoverViewController *)viewController withStage:(Stage *)stage
+- (id)initWithViewController:(TVPopoverViewController *)viewController
 {
     self = [super initWithFrame:CGRectMake(0, 0, 320, 216) style:UITableViewStyleGrouped];
     //self = [self initWithFrame:CGRectMake(0, 0, 320, 216)];
@@ -36,7 +35,6 @@
     self.delegate = self;
     
     _popoverCtrl = viewController;
-    _stage = stage;
     
     /* // JNN: if we ever want to add a header for whatever reason:
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(10,20,300,40)];
@@ -175,10 +173,9 @@
             
             // create UITextField
             _stageName = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
-            _stageName.placeholder = @"Untitled";
             _stageName.adjustsFontSizeToFitWidth = YES;
             _stageName.textColor = [UIColor blackColor];
-            _stageName.keyboardType = UIKeyboardTypeDefault;//UIKeyboardTypeNumberPad;
+            _stageName.keyboardType = UIKeyboardTypeDefault;
             _stageName.returnKeyType = UIReturnKeyDone;
             _stageName.backgroundColor = [UIColor clearColor];
             _stageName.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -187,10 +184,8 @@
             [_stageName setEnabled:YES];
             
             // set text to whatever the current stage name is
-            if(_stage.name != NULL)
-            {
-                [_stageName setText:_stage.name];
-            }
+            _stageName.placeholder = @"Untitled";
+            [_stageName setText:_popoverCtrl.production.stage.name];
             
             // set delegate to handle text field enter event
             _stageName.tag = 0;
@@ -198,12 +193,12 @@
             [cell.contentView addSubview:_stageName];
             break;
         case 1: // Width
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Width";
                 
             // create UITextField
             _stageWidth = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
-            _stageWidth.placeholder = @"Some Width";
             _stageWidth.adjustsFontSizeToFitWidth = YES;
             _stageWidth.textColor = [UIColor blackColor];
             _stageWidth.keyboardType = UIKeyboardTypeNumberPad;
@@ -215,24 +210,28 @@
             [_stageWidth setEnabled:YES];
                 
             // set text to whatever the current stage width is
-            if(_stage.width != NULL)
-            {
-                [_stageWidth setText: [_stage.width stringValue]];
-            }
-                
+            _stageWidth.placeholder = @"Some Width";
+            [_stageWidth setText:[_popoverCtrl.production.stage.width stringValue]];
+
+            // label for dimensions
+            UILabel* dimension = [[UILabel alloc] initWithFrame:CGRectMake(230,10,70,30)];
+            dimension.backgroundColor = [UIColor clearColor];
+            [dimension setText:_popoverCtrl.production.stage.measurementType];
+            
             // set delegate to handle text field enter event
             _stageWidth.tag = 1;
             [_stageWidth setDelegate:self];
             [cell.contentView addSubview:_stageWidth];
-            
+            [cell.contentView addSubview:dimension];
+        }
             break;
         case 2: // Height
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Height";
                 
             // create UITextField
             _stageHeight = [[UITextField alloc] initWithFrame:CGRectMake(85, 15, 190, 30)];
-            _stageHeight.placeholder = @"Some Height";
             _stageHeight.adjustsFontSizeToFitWidth = YES;
             _stageHeight.textColor = [UIColor blackColor];
             _stageHeight.keyboardType = UIKeyboardTypeNumberPad;
@@ -244,16 +243,20 @@
             [_stageHeight setEnabled:YES];
                 
             // set text to whatever the current stage height is
-            if(_stage.height != NULL)
-            {
-                [_stageHeight setText: [_stage.height stringValue]];
-            }
-                
+            _stageHeight.placeholder = @"Some Height";
+            [_stageHeight setText: [_popoverCtrl.production.stage.height stringValue]];
+            
+            // label for dimensions
+            UILabel* dimension = [[UILabel alloc] initWithFrame:CGRectMake(230,10,70,30)];
+            dimension.backgroundColor = [UIColor clearColor];
+            [dimension setText:_popoverCtrl.production.stage.measurementType];
+            
             // set delegate to handle text field enter event
             _stageHeight.tag = 2;
             [_stageHeight setDelegate:self];
             [cell.contentView addSubview:_stageHeight];
-
+            [cell.contentView addSubview:dimension];
+        }
             break;
         default: // something weird happened
             break;
@@ -428,25 +431,43 @@
 {
     if(textField.tag == 0) // stage name tag
     {
-        //NSLog(@"edited the stage name: %@", textField.text);
-        // JNN: properties are amazing! ^-^
-        [_stage setName:textField.text];
+        [_popoverCtrl.production.stage setName:textField.text];
         // need to somehow set: QuickStageViewController's
         // navigationItem.title = _quickProduction.stage.name;
         //[_popoverCtrl dismissPopoverView]; // <- don't want to do this
     }
     else if(textField.tag == 1) // stage width tag
     {
-        [_stage setWidth:[NSNumber numberWithInteger:[textField.text integerValue]]];
+        [_popoverCtrl.production.stage setWidth:[NSNumber numberWithInteger:[textField.text integerValue]]];
     }
     else if(textField.tag == 2) // stage height tag
     {
-        [_stage setHeight:[NSNumber numberWithInteger:[textField.text integerValue]]];
+        [_popoverCtrl.production.stage setHeight:[NSNumber numberWithInteger:[textField.text integerValue]]];
     }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if([string isEqualToString:@""])
+    {
+        // backspace, don't care
+        return YES;
+    }
+    
+    if([textField.text length] >= 25)
+    {
+        // stage name
+        // maximum 25 characters, before text starts to shrink within view
+        return NO;
+    }
+    else if(textField.tag != 0 && [textField.text length] >= 15)
+    {
+        // stage width or height
+        // maximum fifteen characters, before text starts to shrink within view
+        return NO;
+    }
+    
+    // JNN: not quite regex, but good enough
     if(textField.tag == 1 || textField.tag == 2) // stage width or stage height tag
     {
         // have to check if replacementString contains nondigit character

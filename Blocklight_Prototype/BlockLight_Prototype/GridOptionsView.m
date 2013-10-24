@@ -12,6 +12,13 @@
 @implementation GridOptionsView
 
 @synthesize popoverCtrl = _popoverCtrl;
+@synthesize gridSwitchView = _gridSwitchView;
+@synthesize rulerSwitchView = _rulerSwitchView;
+@synthesize metricSwitchView = _metricSwitchView;
+@synthesize horizontal = _horizontal;
+@synthesize vertical = _vertical;
+@synthesize spacingSlider = _spacingSlider;
+@synthesize opacitySlider = _opacitySlider;
 
 /* Auto-generated code
 - (id)initWithFrame:(CGRect)frame
@@ -51,51 +58,77 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
             switch(row) {
                 case 0: // show grid switch
-                {
                     cell.textLabel.text = @"Show Grid";
-                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(gridSwitch) forControlEvents:UIControlEventValueChanged];
-                    //[switchview setOn:[self contentView].grid animated:NO];
-                    cell.accessoryView = switchview;
-                }
+                    _gridSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_gridSwitchView addTarget:self action:@selector(gridSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_gridSwitchView setOn:_popoverCtrl.quickView.grid animated:NO];
+                    cell.accessoryView = _gridSwitchView;
                     break;
                 case 1: // show ruler switch
-                {
                     cell.textLabel.text = @"Show Ruler";
-                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(rulerSwitch) forControlEvents:UIControlEventValueChanged];
-                    //[switchview setOn:[self contentView].grid animated:NO];
-                    cell.accessoryView = switchview;
-                }
+                    _rulerSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_rulerSwitchView addTarget:self action:@selector(rulerSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_rulerSwitchView setOn:_popoverCtrl.quickView.ruler animated:NO];
+                    cell.accessoryView = _rulerSwitchView;
                     break;
                 case 2: // measurement switch
                 {
                     cell.textLabel.text = @"Use Metric System"; // Feet or Meters
-                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(metricSwitch) forControlEvents:UIControlEventValueChanged];
-                    //[switchview setOn:[self contentView].grid animated:NO];
+                    _metricSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_metricSwitchView addTarget:self action:@selector(metricSwitch) forControlEvents:UIControlEventValueChanged];
                     
-                    cell.accessoryView = switchview;
+                    [_metricSwitchView setOn:_popoverCtrl.quickView.isMetric animated:NO];
+                    /*if([_popoverCtrl.production.stage.measurementType isEqualToString:@"Feet"])
+                    {
+                        [_metricSwitchView setOn:NO animated:NO];
+                    }
+                    else
+                    {
+                        [_metricSwitchView setOn:YES animated:NO];
+                    }//*/
+                    
+                    cell.accessoryView = _metricSwitchView;
                 }
                     break;
                 case 3: // grid types radio buttons/table
                 {
                     cell.textLabel.text = @"Grid Type";
-                    cell.detailTextLabel.text = @"Full";
-                    /*
-                     if ([self contentView].horizontalGrid) {
-                     if([self contentView].verticalGrid){
-                     cell.detailTextLabel.text = @"Full";
-                     }
-                     else{
-                     cell.detailTextLabel.text = @"Horizontal";
-                     }
-                     }
-                     else{
-                     cell.detailTextLabel.text = @"Vertical";
-                     }
-                     */
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    
+                    // horizontal text
+                    UILabel* hText = [[UILabel alloc] initWithFrame:CGRectMake(100, 10, 50, 30)];
+                    [hText setBackgroundColor:[UIColor clearColor]];
+                    [hText setAdjustsFontSizeToFitWidth:YES];
+                    [hText setText:@"Horizontal"];
+                    
+                    // horizontal button
+                    _horizontal = [UIButton buttonWithType:UIButtonTypeCustom];
+                    _horizontal.frame = CGRectMake(160, 10, 30, 30);
+                    [_horizontal addTarget:self action:@selector(horzButton) forControlEvents: UIControlEventTouchUpInside];
+                    [_horizontal setBackgroundImage:[UIImage imageNamed:@"circle"] forState:UIControlStateSelected];
+                    [_horizontal setBackgroundImage:[UIImage imageNamed:@"square"] forState:UIControlStateNormal];
+                    //[_horizontal setBackgroundImage:[UIImage imageNamed:@"water"] forState:UIControlStateHighlighted];
+                    [_horizontal setSelected:_popoverCtrl.quickView.horizontalGrid];
+                    
+                    // vertical text
+                    UILabel* vText = [[UILabel alloc] initWithFrame:CGRectMake(200, 10, 50, 30)];
+                    [vText setBackgroundColor:[UIColor clearColor]];
+                    [vText setAdjustsFontSizeToFitWidth:YES];
+                    [vText setText:@"Vertical"];
+                    
+                    // vertical button
+                    _vertical = [UIButton buttonWithType:UIButtonTypeCustom];
+                    _vertical.frame = CGRectMake(260, 10, 30, 30);
+                    [_vertical addTarget:self action:@selector(vertButton) forControlEvents: UIControlEventTouchUpInside];
+                    [_vertical setBackgroundImage:[UIImage imageNamed:@"circle"] forState:UIControlStateSelected];
+                    [_vertical setBackgroundImage:[UIImage imageNamed:@"square"] forState:UIControlStateNormal];
+                    //[_vertical setBackgroundImage:[UIImage imageNamed:@"water"] forState:UIControlStateHighlighted];
+                    [_vertical setSelected:_popoverCtrl.quickView.verticalGrid];
+
+                    // add everything to the cell
+                    [cell addSubview:hText];
+                    [cell addSubview:_horizontal];
+                    [cell addSubview:vText];
+                    [cell addSubview:_vertical];
                 }
                     break;
                 default:
@@ -105,27 +138,27 @@
             break;
         case 1: // Spacing Slider for grid lines
         {
-            cell =   [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
-            UISlider* _spacingSlider = [[UISlider alloc] init];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
+            _spacingSlider = [[UISlider alloc] init];
             _spacingSlider.bounds = CGRectMake(0, 0, cell.contentView.bounds.size.width - 95, _spacingSlider.bounds.size.height);
             _spacingSlider.center = CGPointMake(CGRectGetMidX(cell.contentView.bounds), CGRectGetMidY(cell.contentView.bounds));
-            //_opacitySlider.value = [self contentView].opacity;
-            _spacingSlider.maximumValue = 1.0;
-            _spacingSlider.minimumValue = 0.0;
+            _spacingSlider.minimumValue = 1.0;
+            _spacingSlider.maximumValue = 10.0;
+            _spacingSlider.value = _popoverCtrl.quickView.spacing;
             [cell addSubview: _spacingSlider];
             
             [_spacingSlider addTarget:self action:@selector(spacingChange) forControlEvents:UIControlEventValueChanged];
             
             // Min value label
             UILabel* minValue = [[UILabel alloc] initWithFrame:CGRectMake(20, 7,30, 25)];
-            minValue.text = @"0.0";
+            minValue.text = @"1.0";
             minValue.backgroundColor = [UIColor clearColor];
             minValue.textColor = cell.detailTextLabel.textColor;
             [cell addSubview:minValue];
             
             //Max value label
             UILabel* maxValue = [[UILabel alloc] initWithFrame:CGRectMake(275, 7, 30, 25)];
-            maxValue.text = @"1.0";
+            maxValue.text = @"10."; // because the UILabel rect is small
             maxValue.backgroundColor = [UIColor clearColor];
             maxValue.textColor = cell.detailTextLabel.textColor;
             [cell addSubview:maxValue];
@@ -133,13 +166,13 @@
             break;            
         case 2: // Opacity Slider for grid
         {
-            cell =   [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
-            UISlider* _opacitySlider = [[UISlider alloc] init];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
+            _opacitySlider = [[UISlider alloc] init];
             _opacitySlider.bounds = CGRectMake(0, 0, cell.contentView.bounds.size.width - 95, _opacitySlider.bounds.size.height);
             _opacitySlider.center = CGPointMake(CGRectGetMidX(cell.contentView.bounds), CGRectGetMidY(cell.contentView.bounds));
-            //_opacitySlider.value = [self contentView].opacity;
-            _opacitySlider.maximumValue = 1.0;
             _opacitySlider.minimumValue = 0.0;
+            _opacitySlider.maximumValue = 1.0;
+            _opacitySlider.value = _popoverCtrl.quickView.opacity;
             [cell addSubview: _opacitySlider];
             
             [_opacitySlider addTarget:self action:@selector(opacityChange) forControlEvents:UIControlEventValueChanged];
@@ -219,18 +252,9 @@
 
 // How to respond to row that got selected
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger section = [indexPath section];
-    NSInteger row = [indexPath row];
-    
-    if(section == 0 && row == 3)
-    {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Grid Type"
-                                                        message:@"Can choose whether to show or hide vertical and horizontal grid lines."
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
+    //NSInteger section = [indexPath section];
+    //NSInteger row = [indexPath row];
+    [self deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark Switch Functions
@@ -238,22 +262,78 @@
 // User clicked the switch for showing/hiding grid lines
 - (void)gridSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Show Grid" message:@"Will show or hide the grid." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_gridSwitchView isOn])
+    {
+        _popoverCtrl.quickView.grid = YES;
+    }
+    else // switched grid off
+    {
+        _popoverCtrl.quickView.grid = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 // User clicked the switch for showing/hiding ruler
 - (void)rulerSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Ruler" message:@"Will show or hide the ruler dimensions of the stage." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_rulerSwitchView isOn])
+    {
+        _popoverCtrl.quickView.ruler = YES;
+    }
+    else // switched ruler off
+    {
+        _popoverCtrl.quickView.ruler = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 // User clicked the switch for changing from feet to meters
 - (void)metricSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Measurement" message:@"Change the measurement type of the grid lines. Can be in feet or meters." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_metricSwitchView isOn]) // meters
+    {
+        _popoverCtrl.quickView.isMetric = YES;
+        _popoverCtrl.production.stage.measurementType = @"Meters";
+    }
+    else // feet
+    {
+        _popoverCtrl.quickView.isMetric = NO;
+        _popoverCtrl.production.stage.measurementType = @"Feet";
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
+}
+
+#pragma mark Button Press
+// user pressed the horizontal check box
+-(void)horzButton
+{
+    if(_horizontal.selected)
+    {
+        [_horizontal setSelected:NO];
+        _popoverCtrl.quickView.horizontalGrid = NO;
+    }
+    else
+    {
+        [_horizontal setSelected:YES];
+        _popoverCtrl.quickView.horizontalGrid = YES;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
+}
+
+// user pressed the vertical check box
+-(void)vertButton
+{
+    if(_vertical.selected)
+    {
+        [_vertical setSelected:NO];
+        _popoverCtrl.quickView.verticalGrid = NO;
+    }
+    else
+    {
+        [_vertical setSelected:YES];
+        _popoverCtrl.quickView.verticalGrid = YES;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 #pragma mark Slider Functions
@@ -261,19 +341,15 @@
 // user changed slider that controls spacing of the grid
 - (void)spacingChange
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spacing" message:@"Change spacing of grid lines according to value on slider." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    _popoverCtrl.quickView.spacing = _spacingSlider.value;
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 // user changed slider that controls opacity of grid
-- (void)opacityChange {
-    /*
-    [self contentView].opactiry = _opacitySlider.value;
-    [[self contentView] setNeedsDisplay];
-     */
-    
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Opacity" message:@"Change opacity of grid lines according to value on slider." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+- (void)opacityChange
+{
+    _popoverCtrl.quickView.opacity = _opacitySlider.value;
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 /*
