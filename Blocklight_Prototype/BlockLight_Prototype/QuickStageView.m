@@ -10,15 +10,8 @@
 
 @implementation QuickStageView
 
-@synthesize horizontalGrid = _horizontalGrid;
-@synthesize verticalGrid = _verticalGrid;
-@synthesize grid = _grid;
-@synthesize ruler = _ruler;
-@synthesize isMetric = _isMetric;
 @synthesize spikeTape = _spikeTape;
 @synthesize myPath = _myPath;
-@synthesize spacing = _spacing;
-@synthesize opacity = _opacity;
 @synthesize brushPattern = _brushPattern;
 @synthesize noteLabels = _noteLabels;
 @synthesize hiddenNotes = _hiddenNotes;
@@ -28,7 +21,8 @@
 @synthesize rulerLabelsArray = _rulerLabelsArray;
 
 #pragma mark Constructors
-- (id)initWithFrame:(CGRect)frame andViewController:(id)viewController {
+- (id)initWithFrame:(CGRect)frame andViewController:(id)viewController andStage:(Stage *)stage
+{
     self = [super initWithFrame:frame];
     if (self == nil)
         return nil;
@@ -36,17 +30,8 @@
     //self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"bg-production.jpg"]];
     self.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"startScreen2"]];
         
-    // create array to hold note labels
-    _noteLabels = [[NSMutableArray alloc] init];
-    _hiddenNotes = NO;
+    _stage = stage;
     
-    _horizontalGrid = YES;
-    _verticalGrid = YES;
-    _grid = NO;
-    _ruler = NO;
-    _isMetric = NO;
-    _spacing = 5.0f;
-    _opacity = 1.0f;
     _myPath = [[UIBezierPath alloc] init];
     _myPath.lineCapStyle = kCGLineCapRound;
     _myPath.miterLimit = 0;
@@ -55,11 +40,13 @@
     _first = YES;
     //_spikeTape = YES; // had just put this line to make sure drawing lines worked
     
+    // create array to hold note labels
+    _noteLabels = [[NSMutableArray alloc] init];
+    _hiddenNotes = NO;
     // array to hold set pieces
     _propsArray = [[NSMutableArray alloc] init];
     // array to hold actors
     _actorArray = [[NSMutableArray alloc] init];
-
     // array to hold ruler labels
     _rulerLabelsArray = [[NSMutableArray alloc] init];
     
@@ -80,13 +67,17 @@
     // Stage border
     CGContextMoveToPoint(context, 50, 25);
     CGContextAddLineToPoint(context,974,25);
-    // w/ Stage Apron
-    CGContextAddLineToPoint(context, 974, 550);
-    CGContextAddArcToPoint(context, 512, 700, 50, 550, 1500); // x1, y1, x2, y2, radius
-    CGContextAddLineToPoint(context, 50, 550);
-    // w/o Stage Apron
-    //CGContextAddLineToPoint(context, 974, 625);
-    //CGContextAddLineToPoint(context, 50, 625);
+    if(_stage.apron) // w/ Stage Apron
+    {
+        CGContextAddLineToPoint(context, 974, 550);
+        CGContextAddArcToPoint(context, 512, 700, 50, 550, 1500); // x1, y1, x2, y2, radius
+        CGContextAddLineToPoint(context, 50, 550);
+    }
+    else // w/o Stage Apron
+    {
+        CGContextAddLineToPoint(context, 974, 625);
+        CGContextAddLineToPoint(context, 50, 625);
+    }
     
     // Make stage white
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
@@ -95,7 +86,7 @@
     CGContextSetShadowWithColor(context, CGSizeMake(0, 0), 10, [UIColor clearColor].CGColor);
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetAlpha(context, _opacity);
+    CGContextSetAlpha(context, [_stage.gridOpacity floatValue]);
     CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
     
     // remove all ruler labels if there is any
@@ -106,30 +97,33 @@
     [_rulerLabelsArray removeAllObjects];
     
     // user enables grid view
-    if(_grid){
-        if(_horizontalGrid){
+    if(_stage.grid)
+    {
+        if(_stage.horizontalGrid)
+        {
             // display horizatonal grid lines
             /*for(float i = 0; i < 764; i+=40*_spacing){
                 CGContextMoveToPoint(context, 0, i);
                 CGContextAddLineToPoint(context, 1024, i);
             }//*/
-            for(float i = 25; i <= 625; i+=600/_spacing)
+            for(float i = 25; i <= 625; i+=600/[_stage.gridSpacing floatValue])
             {
                 // draw horizontal line
                 CGContextMoveToPoint(context, 50, i);
                 CGContextAddLineToPoint(context, 974, i);
 
-                if(_ruler)
+                if(_stage.ruler)
                 {
                     UILabel* temp = [[UILabel alloc] initWithFrame:CGRectMake(50,i,90,20)];
-                    [temp setBackgroundColor:[UIColor clearColor]];
-                    if(_isMetric) // meters
+                    [temp setBackgroundColor:[UIColor lightTextColor]];
+                    int value = (int)([_stage.height floatValue]*(i-25)/600);
+                    if(_stage.measurementType == METERS) // meters
                     {
-                        [temp setText: [NSString stringWithFormat:@" %d m", (int)i]];
+                        [temp setText: [NSString stringWithFormat:@" %d m", value]];
                     }
                     else // feet
                     {
-                        [temp setText: [NSString stringWithFormat:@" %d ft", (int)i]];
+                        [temp setText: [NSString stringWithFormat:@" %d ft", value]];
                     }
                     [_rulerLabelsArray addObject:temp];
                     [self addSubview:[_rulerLabelsArray lastObject]];
@@ -137,29 +131,31 @@
             }
         }
         
-        if(_verticalGrid){
+        if(_stage.verticalGrid)
+        {
             // display vertical grid lines
             /*for(float i = 0; i < 1024; i+=40*_spacing){
                 CGContextMoveToPoint(context, i, 0);
                 CGContextAddLineToPoint(context, i, 768);
             }//*/
-            for(float i = 50; i <= 975; i+=925/_spacing)
+            for(float i = 50; i <= 975; i+=925/[_stage.gridSpacing floatValue])
             {
                 // draw vertical line
                 CGContextMoveToPoint(context, i, 25);
                 CGContextAddLineToPoint(context, i, 625);
 
-                if(_ruler)
+                if(_stage.ruler)
                 {
                     UILabel* temp = [[UILabel alloc] initWithFrame:CGRectMake(i,25,90,20)];
-                    [temp setBackgroundColor:[UIColor clearColor]];
-                    if(_isMetric) // meters
+                    [temp setBackgroundColor:[UIColor lightTextColor]];
+                    int value = (int)([_stage.width floatValue]*(i-50)/925);
+                    if(_stage.measurementType == METERS)
                     {
-                        [temp setText: [NSString stringWithFormat:@" %d m", (int)i]];
+                        [temp setText: [NSString stringWithFormat:@" %d m", value]];
                     }
                     else // feet
                     {
-                        [temp setText: [NSString stringWithFormat:@" %d ft", (int)i]];
+                        [temp setText: [NSString stringWithFormat:@" %d ft", value]];
                     }
                     [_rulerLabelsArray addObject:temp];
                     [self addSubview:[_rulerLabelsArray lastObject]];

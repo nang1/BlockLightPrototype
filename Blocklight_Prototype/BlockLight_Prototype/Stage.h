@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Defaults.h"
 
 @interface Stage : NSObject {
     //Stage Attributes
@@ -16,10 +17,15 @@
     NSNumber* _gridOpacity;
     NSNumber* _gridSpacing;
     
-    NSString* _measurementType;
-    /* This is a typedef in Defaults.h in the old BlockLight
-     MeasurementType _measurementType;
-     */
+    // This is a typedef in Defaults.h in the old BlockLight
+    MeasurementType _measurementType; // Feet or Meters
+
+    // whether or not grid/ruler shown on stage
+	BOOL _grid;
+    BOOL _ruler;
+    BOOL _apron;
+    BOOL _horizontalGrid;
+	BOOL _verticalGrid;
 }
 
 @property (strong) NSString* name;
@@ -27,7 +33,11 @@
 @property (strong) NSNumber* height;
 @property (strong) NSNumber* gridOpacity;
 @property (strong) NSNumber* gridSpacing;
-@property (strong) NSString* measurementType;
-// @property (nonatomic) MeasurementType measurementType;
+@property (nonatomic) MeasurementType measurementType;
+@property BOOL grid;
+@property BOOL ruler;
+@property BOOL apron;
+@property BOOL horizontalGrid;
+@property BOOL verticalGrid;
 
 @end

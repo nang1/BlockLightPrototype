@@ -7,47 +7,35 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Stage.h"
 
 @interface QuickStageView : UIView {
-    BOOL _horizontalGrid;
-	BOOL _verticalGrid;
-	BOOL _grid;
-    BOOL _ruler;
-    BOOL _isMetric;
-	BOOL _spikeTape;
-	UIBezierPath *_myPath;
-    float _spacing; // should be in Stage?
-    float _opacity; //CGFloat _opacity; // should be in Stage?
-    UIColor *brushPattern; // color of lines when user draws
-    NSMutableArray* _noteLabels;
-    BOOL _hiddenNotes;
+    Stage* _stage;
+    
+    BOOL _spikeTape;
 	BOOL first; // when drawing lines, this indicates whether this is the starting or ending point of the line
     
-    NSMutableArray* _propsArray; // array to hold props positioned on stage
-    NSMutableArray* _actorArray; // array to hold actors on stage
+    UIBezierPath *_myPath;
+    UIColor *brushPattern; // color of lines when user draws
     
+    BOOL _hiddenNotes;
+    NSMutableArray* _noteLabels;
+	NSMutableArray* _propsArray; // array to hold props positioned on stage
+    NSMutableArray* _actorArray; // array to hold actors on stage
     NSMutableArray* _rulerLabelsArray; // array to hold ruler labels
 }
 
-@property BOOL horizontalGrid;
-@property BOOL verticalGrid;
-@property BOOL grid;
-@property BOOL ruler;
-@property BOOL isMetric;
-@property BOOL spikeTape;
-@property (strong) UIBezierPath* myPath;
-@property float spacing; // float uses less memory than CGFloat which is a wrapper
-@property float opacity; //@property CGFloat opacity; // for both floats(32-bit) and doubles(64-bit)
-@property (strong) UIColor* brushPattern;
-@property (strong) NSMutableArray* noteLabels;
-@property BOOL hiddenNotes;
-@property BOOL first;
+@property (nonatomic, strong) Stage* stage;
 
+@property BOOL spikeTape;
+@property BOOL first;
+@property (strong) UIBezierPath* myPath;
+@property (strong) UIColor* brushPattern;
+@property BOOL hiddenNotes;
+@property (strong) NSMutableArray* noteLabels;
 @property (strong) NSMutableArray* propsArray;
 @property (strong) NSMutableArray* actorArray;
-
 @property (strong) NSMutableArray* rulerLabelsArray;
 
-- (id) initWithFrame:(CGRect)frame andViewController:(id)viewController;
-// - (void)drawStage;
+- (id) initWithFrame:(CGRect)frame andViewController:(id)viewController andStage:(Stage*)stage;
 @end

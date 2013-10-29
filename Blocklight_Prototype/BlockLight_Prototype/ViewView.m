@@ -74,6 +74,14 @@
                     cell.accessoryView = switchview;
                 }
                     break;
+                case 3:
+                    //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
+                    cell.textLabel.text = @"Show Stage Apron";
+                    _apronSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_apronSwitchView addTarget:self action:@selector(apronSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_apronSwitchView setOn: _popoverCtrl.production.stage.apron animated:NO];
+                    cell.accessoryView = _apronSwitchView;
+                    break;
                 default:
                     break;
             }
@@ -90,12 +98,12 @@
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             break;
-        case 3: // Stage Apron
+        /*case 3: // Stage Apron
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             cell.textLabel.text = @"Stage Apron";
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            break;
+            break;//*/
         default:
             cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             break;
@@ -114,7 +122,7 @@
     NSInteger rows = 0;
     if(section == 0)
     {
-        rows = 3;
+        rows = 4;
     }
     else if(section < 6)
     {
@@ -126,7 +134,7 @@
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 4;
+    NSInteger section = 3;
     return section;
 }
 
@@ -168,11 +176,19 @@
     }
 }
 
-// User clicked the switch for showing/hiding spike tape
-- (void)spikeTapeSwitch
+#pragma mark Switches
+// User clicked the switch for showing/hiding stage apron
+-(void)apronSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spike Tape" message:@"Will show or hide the spike tape." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_apronSwitchView isOn])
+    {
+        _popoverCtrl.production.stage.apron = YES;
+    }
+    else
+    {
+        _popoverCtrl.production.stage.apron = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 // User clicked the switch for showing/hiding notes
@@ -194,6 +210,13 @@
             lbl.hidden = true;
 		}
     }
+}
+
+// User clicked the switch for showing/hiding spike tape
+- (void)spikeTapeSwitch
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spike Tape" message:@"Will show or hide the spike tape." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alert show];
 }
 
 /*

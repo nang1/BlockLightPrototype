@@ -216,7 +216,14 @@
             // label for dimensions
             UILabel* dimension = [[UILabel alloc] initWithFrame:CGRectMake(230,10,70,30)];
             dimension.backgroundColor = [UIColor clearColor];
-            [dimension setText:_popoverCtrl.production.stage.measurementType];
+            if(_popoverCtrl.production.stage.measurementType == METERS)
+            {
+                [dimension setText:@"Meters"];
+            }
+            else // feet
+            {
+                [dimension setText:@"Feet"];
+            }
             
             // set delegate to handle text field enter event
             _stageWidth.tag = 1;
@@ -249,7 +256,14 @@
             // label for dimensions
             UILabel* dimension = [[UILabel alloc] initWithFrame:CGRectMake(230,10,70,30)];
             dimension.backgroundColor = [UIColor clearColor];
-            [dimension setText:_popoverCtrl.production.stage.measurementType];
+            if(_popoverCtrl.production.stage.measurementType == METERS)
+            {
+                [dimension setText:@"Meters"];
+            }
+            else // feet
+            {
+                [dimension setText:@"Feet"];
+            }
             
             // set delegate to handle text field enter event
             _stageHeight.tag = 2;
