@@ -26,6 +26,12 @@
     return self;
 }
 
+// JNN: added, gets current frame
+-(Frame*)getCurFrame
+{
+    return [_frames objectAtIndex:_curFrame];
+}
+
 /* Save feature
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:_name forKey:@"sceneName"];

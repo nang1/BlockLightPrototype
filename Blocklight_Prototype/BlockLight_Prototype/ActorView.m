@@ -35,13 +35,26 @@
     _popoverCtrl = viewController;
     
     // text view field to enter text for note
-    _nameTextBox = [[UITextView alloc] initWithFrame:CGRectMake(10, 25, 300, 200)];
+    //_nameTextBox = [[UITextView alloc] initWithFrame:CGRectMake(10, 25, 300, 200)];
+    _nameTextBox = [[UITextField alloc] initWithFrame:CGRectMake(10, 40, 300, 50)];
     _nameTextBox.backgroundColor = [UIColor whiteColor];
     [_nameTextBox setFont:[UIFont systemFontOfSize:15]];
-    [_nameTextBox.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
-    [_nameTextBox.layer setBorderWidth:2.0];
+    //[_nameTextBox.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
+    //[_nameTextBox.layer setBorderWidth:2.0];
     _nameTextBox.layer.cornerRadius = 5;
     _nameTextBox.clipsToBounds = YES;
+    
+    //* // JNN: extra stuff for text field that's not really needed
+    _nameTextBox.borderStyle = UITextBorderStyleRoundedRect;
+    _nameTextBox.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    _nameTextBox.adjustsFontSizeToFitWidth = YES;
+    _nameTextBox.keyboardType = UIKeyboardTypeDefault;
+    _nameTextBox.returnKeyType = UIReturnKeyDone;
+    _nameTextBox.autocorrectionType = UITextAutocorrectionTypeNo;
+    _nameTextBox.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    _nameTextBox.placeholder = @"Insert Name";
+    [_nameTextBox setDelegate:self];
+    //*/
     
     // label
     UILabel* textLabel = [[UILabel alloc] initWithFrame: CGRectMake(10, 10, 100, 15)];
@@ -51,7 +64,8 @@
     
     // button to add note
     UIButton *add = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    add.frame = CGRectMake(10,240,300,50);
+    //add.frame = CGRectMake(10,240,300,50);
+    add.frame = CGRectMake(10,100,300,50);
     add.titleLabel.textColor = [UIColor blackColor];
     [add setTitle:@"Add Performer" forState:UIControlStateNormal];
     [add addTarget:self action:@selector(addActor) forControlEvents: UIControlEventTouchUpInside];
@@ -94,5 +108,15 @@
     // Drawing code
 }
 */
+
+#pragma mark UITextFieldDelegate Code
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    [self addActor];
+    // it should NOT enter a new line/return carriage/whatever "return" key returns
+    return NO;
+}
 
 @end

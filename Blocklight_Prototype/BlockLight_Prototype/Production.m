@@ -44,6 +44,18 @@
     _curScene = [_scenes count];
 }
 
+// JNN: added. gets the current scene of the production
+-(Scene*)getCurScene
+{
+    return [_scenes objectAtIndex: _curScene];
+}
+
+// JNN: added. gets the current frame from the current scene
+-(Frame*)getCurFrameFromScene
+{
+    return [[self getCurScene] getCurFrame];
+}
+
 /* Save feature
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:_name forKey:@"productionName"];
