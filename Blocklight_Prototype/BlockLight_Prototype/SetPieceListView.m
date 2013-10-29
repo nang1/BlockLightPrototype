@@ -49,6 +49,13 @@
     self.dataSource = self;
     self.delegate = self;
     
+    // Number of props for each category
+    _numPlants = 9;
+    _numStairs = 3;
+    _numPlatforms = 1;
+    _numFurniture = 9;
+    _numUncategorized = 9;
+    
     return self;
 }
 
@@ -171,38 +178,38 @@
         case ALL:
             switch(section){
                 case 0: // plants
-                    rows = 1;
+                    rows = _numPlants;
                     break;
                 case 1: // stairs
-                    rows = 1;
+                    rows = _numStairs;
                     break;
                 case 2: // platforms
-                    rows = 1;
+                    rows = _numPlatforms;
                     break;
                 case 3: // furniture
-                    rows = 1;
+                    rows = _numFurniture;
                     break;
                 case 4: // uncategorized
-                    rows = 6;
+                    rows = _numUncategorized;
                     break;
                 default:
                     break;
             }
             break;
         case PLANTS:
-            rows = 1;
+            rows = _numPlants;
             break;
         case STAIRS:
-            rows = 1;
+            rows = _numStairs;
             break;
         case PLATFORMS:
-            rows = 1;
+            rows = _numPlatforms;
             break;
         case FURNITURE:
-            rows = 1;
+            rows = _numFurniture;
             break;
         case UNCATEGORIZED:
-            rows = 6;
+            rows = _numUncategorized;
             break;
         default:
             break;
@@ -275,7 +282,38 @@
             cell.textLabel.text = @"Tree";
             cell.imageView.image = [UIImage imageNamed:@"Tree"];
             break;
-            
+        case 1:
+            cell.textLabel.text = @"Cactus";
+            cell.imageView.image = [UIImage imageNamed:@"cactus"];
+            break;
+        case 2:
+            cell.textLabel.text = @"Flower";
+            cell.imageView.image = [UIImage imageNamed:@"flower"];
+            break;
+        case 3:
+            cell.textLabel.text = @"Bush";
+            cell.imageView.image = [UIImage imageNamed:@"bush1"];
+            break;
+        case 4:
+            cell.textLabel.text = @"Flower Pot";
+            cell.imageView.image = [UIImage imageNamed:@"flowerpot1"];
+            break;
+        case 5:
+            cell.textLabel.text = @"Log";
+            cell.imageView.image = [UIImage imageNamed:@"log"];
+            break;
+        case 6:
+            cell.textLabel.text = @"Rock";
+            cell.imageView.image = [UIImage imageNamed:@"rock1"];
+            break;
+        case 7:
+            cell.textLabel.text = @"Sand";
+            cell.imageView.image = [UIImage imageNamed:@"Sand"];
+            break;
+        case 8:
+            cell.textLabel.text = @"Stump";
+            cell.imageView.image = [UIImage imageNamed:@"stump"];
+            break;
         default:
             break;
     }
@@ -288,7 +326,14 @@
             cell.textLabel.text = @"Black Stairs";
             cell.imageView.image = [UIImage imageNamed:@"stairs"];
             break;
-            
+        case 1:
+            cell.textLabel.text = @"Spiral Stairs";
+            cell.imageView.image = [UIImage imageNamed:@"Spiral_Staircase"];
+            break;
+        case 2:
+            cell.textLabel.text = @"Ladder";
+            cell.imageView.image = [UIImage imageNamed:@"ladder"];
+            break;
         default:
             break;
     }
@@ -298,8 +343,8 @@
 - (void) displayPlatformCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
-            cell.textLabel.text = @"Some platform";
-            cell.imageView.image = [UIImage imageNamed:@"production-settings"];
+            cell.textLabel.text = @"Podium";
+            cell.imageView.image = [UIImage imageNamed:@"Podium"];
             break;
             
         default:
@@ -314,7 +359,38 @@
             cell.textLabel.text = @"Recycle Bin";
             cell.imageView.image = [UIImage imageNamed:@"trash"];
             break;
-            
+        case 1:
+            cell.textLabel.text = @"Couch";
+            cell.imageView.image = [UIImage imageNamed:@"couch"];
+            break;
+        case 2:
+            cell.textLabel.text = @"Chair";
+            cell.imageView.image = [UIImage imageNamed:@"chair"];
+            break;
+        case 3:
+            cell.textLabel.text = @"Wood Chair";
+            cell.imageView.image = [UIImage imageNamed:@"chair1"];
+            break;
+        case 4:
+            cell.textLabel.text = @"Red Chair";
+            cell.imageView.image = [UIImage imageNamed:@"chair2"];
+            break;
+        case 5:
+            cell.textLabel.text = @"Steel Chair";
+            cell.imageView.image = [UIImage imageNamed:@"chair3"];
+            break;
+        case 6:
+            cell.textLabel.text = @"Nightstand";
+            cell.imageView.image = [UIImage imageNamed:@"nightstand"];
+            break;
+        case 7:
+            cell.textLabel.text = @"Table";
+            cell.imageView.image = [UIImage imageNamed:@"table1"];
+            break;
+        case 8:
+            cell.textLabel.text = @"Round Table";
+            cell.imageView.image = [UIImage imageNamed:@"table2"];
+            break;
         default:
             break;
     }
@@ -347,6 +423,18 @@
             cell.textLabel.text = @"Water";
             cell.imageView.image = [UIImage imageNamed:@"water"];
             break;
+        case 6:
+            cell.textLabel.text = @"Brick Wall";
+            cell.imageView.image = [UIImage imageNamed:@"brickWall"];
+            break;
+        case 7:
+            cell.textLabel.text = @"Fence";
+            cell.imageView.image = [UIImage imageNamed:@"fence"];
+            break;
+        case 8:
+            cell.textLabel.text = @"Gate";
+            cell.imageView.image = [UIImage imageNamed:@"gate"];
+            break;
             
         default:
             break;
@@ -368,6 +456,30 @@
         case 0:
             [self addNewSetPiece:@"Tree"];
             break;
+        case 1:
+            [self addNewSetPiece:@"cactus"];
+            break;
+        case 2:
+            [self addNewSetPiece:@"flower"];
+            break;
+        case 3:
+            [self addNewSetPiece:@"Bush"];
+            break;
+        case 4:
+            [self addNewSetPiece:@"flowerPot"];
+            break;
+        case 5:
+            [self addNewSetPiece:@"log"];
+            break;
+        case 6:
+            [self addNewSetPiece:@"Rock"];
+            break;
+        case 7:
+            [self addNewSetPiece:@"Sand"];
+            break;
+        case 8:
+            [self addNewSetPiece:@"stump"];
+            break;
         default:
             break;
     }
@@ -379,6 +491,12 @@
         case 0:
             [self addNewSetPiece:@"Black Stairs"];
             break;
+        case 1:
+            [self addNewSetPiece:@"SpiralStair"];
+            break;
+        case 2:
+            [self addNewSetPiece:@"ladder"];
+            break;
         default:
             break;
     }
@@ -388,7 +506,7 @@
 - (void) selectedPlatformItem:(NSInteger)row {
     switch (row) {
         case 0:
-            [self addNewSetPiece:@"blank"];
+            [self addNewSetPiece:@"Podium"];
             break;
         default:
             break;
@@ -400,6 +518,30 @@
     switch (row) {
         case 0:
             [self addNewSetPiece:@"Trash"];
+            break;
+        case 1:
+            [self addNewSetPiece:@"couch"];
+            break;
+        case 2:
+            [self addNewSetPiece:@"chair"];
+            break;
+        case 3:
+            [self addNewSetPiece:@"woodChair"];
+            break;
+        case 4:
+            [self addNewSetPiece:@"redChair"];
+            break;
+        case 5:
+            [self addNewSetPiece:@"steelChair"];
+            break;
+        case 6:
+            [self addNewSetPiece:@"nightstand"];
+            break;
+        case 7:
+            [self addNewSetPiece:@"table"];
+            break;
+        case 8:
+            [self addNewSetPiece:@"roundTable"];
             break;
         default:
             break;
@@ -426,6 +568,15 @@
             break;
         case 5:
             [self addNewSetPiece:@"Water"];
+            break;
+        case 6:
+            [self addNewSetPiece:@"brickWall"];
+            break;
+        case 7:
+            [self addNewSetPiece:@"fence"];
+            break;
+        case 8:
+            [self addNewSetPiece:@"gate"];
             break;
         default:
             break;

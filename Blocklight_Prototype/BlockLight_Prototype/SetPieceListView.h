@@ -18,6 +18,13 @@
     Frame* _frame; // where all the set pieces are stored
     
     ListType listType; // indicates which category of set pieces should be displayed
+ 
+    // Number of props for each category
+    NSInteger _numPlants;
+    NSInteger _numStairs;
+    NSInteger _numPlatforms;
+    NSInteger _numFurniture;
+    NSInteger _numUncategorized;
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
