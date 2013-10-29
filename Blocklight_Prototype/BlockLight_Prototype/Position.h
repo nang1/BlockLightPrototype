@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Position : NSObject {
+@interface Position : NSObject <NSCopying> {
     //NSNumber* _xCoordinate;
     //NSNumber* _yCoordinate;
     NSInteger _xCoordinate;

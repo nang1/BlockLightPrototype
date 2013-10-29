@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Position.h"
 
-@interface Actor : UIPanGestureRecognizer {
+@interface Actor : UIPanGestureRecognizer <NSCopying>{
     //NSNumber* _actorID; // holds ID of performer in this role
     UILabel* _actorName;
     Position* _actorPosition;

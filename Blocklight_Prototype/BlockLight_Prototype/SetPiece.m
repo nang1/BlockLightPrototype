@@ -66,6 +66,16 @@
     return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+	id copy = [[[self class]alloc]init];
+	if (copy){
+		[copy setPiecePosition:[self.piecePosition copyWithZone:zone]];
+		[copy setIcon:[UIImage imageWithCGImage:self.icon.CGImage]];
+	}
+	return copy;
+}
+
 /* Save feature
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:_name forKey:@"setPieceName"];

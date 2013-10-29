@@ -24,6 +24,16 @@
     return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+	id copy = [[[self class] alloc] init];
+	if (copy) {
+		[copy setNotePosition:[self.notePosition copyWithZone:zone]];
+		[copy setNoteStr:[NSMutableString stringWithString:self.noteStr]];
+	}
+	return copy;
+}
+
 /* Save feature
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:_noteStr forKey:@"noteStr"];

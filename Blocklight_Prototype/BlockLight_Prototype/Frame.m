@@ -31,6 +31,17 @@
     return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+	id copy = [[[self class] alloc] init];
+	if(copy){
+		[copy setProps:[self.props copyWithZone:zone]];
+		[copy setActorsOnStage:[self.actorsOnStage copyWithZone:zone]];
+		[copy setNotes:[self.notes copyWithZone:zone]];
+	}
+	return copy;
+}
+
 /* Save feature
  - (void)encodeWithCoder:(NSCoder *)encoder{
  [encoder encodeObject:_frameIcon forKey:@"frameIcon"];

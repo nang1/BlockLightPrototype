@@ -27,6 +27,22 @@
     
     return self;
 }
+-(id)copyWithZone:(NSZone *)zone
+{
+	id copy = [[[self class]alloc]init];
+	if (copy){
+		[copy setActorName:[self deepLabelCopy:self.actorName] ];
+		[copy setActorPosition:[self.actorPosition copyWithZone:zone]];
+		[copy setActorIcon:[UIImage imageWithCGImage:self.actorIcon.CGImage]];
+	}
+	return copy;
+}
+
+- (UILabel*) deepLabelCopy:(UILabel*) label {
+	UILabel *dup = [[UILabel alloc]initWithFrame:label.frame];
+	dup.text = label.text;
+	return dup;
+}
 
 /* Save feature
  - (void)encodeWithCoder:(NSCoder *)encoder{

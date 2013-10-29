@@ -34,6 +34,15 @@
     self.yCoordinate = y;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+	id copy = [[[self class]alloc]init];
+	if (copy){
+		[copy setXCoordinate:self.xCoordinate];
+		[copy setYCoordinate:self.yCoordinate];
+	}
+	return copy;
+}
 /* Save feature
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:_xCoordinate forKey:@"PositionXCoor"];
