@@ -437,77 +437,50 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if ([actionSheet isEqual:_productionSheet]){
 		Frame* newFrame = [[Frame alloc] init];
-		//[self contentView].noteLabel.text = @"";
 		switch (buttonIndex) {
 
-                // 'delete button'
+			// 'delete' button
 			case 0:
             {
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Delete Frame" message:@"This will delete the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
-            }
-                break;
-                
-				//'copy' BUTTON
-			case 1:{
-               // UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                //[alert show];
+				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				
+				// Don't delete if there is only one frame left - probably breaks the app =(
+				if([scene.frames count] != 1){
+					[scene.frames removeObjectAtIndex:scene.curFrame];
+					[_timeline reloadData];
+					scene.curFrame -=1;
+
+					NSIndexPath *ip = [NSIndexPath indexPathForRow:scene.curFrame inSection:0];
+					[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
+					
+					//Need to manually 'select' the previous frame so that we don't have leftover
+					//views on screen from old frame.
+					[_timeline.delegate tableView:_timeline didSelectRowAtIndexPath:ip];
+					[[self view] setNeedsDisplay];
+				}
+				
+			}
+			break;
+                
+			// 'copy' button
+			case 1:{
 				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
-				//[scene.frames insertObject:curFrame atIndex:scene.curFrame+1];
-				//[scene.frames addObject:curFrame];
 				Frame* newFrame = [[Frame alloc]init];
 				newFrame.actorsOnStage = [[NSMutableArray alloc]initWithArray:curFrame.actorsOnStage copyItems:YES];
 				newFrame.notes = [[NSMutableArray alloc]initWithArray:curFrame.notes copyItems:YES];
 				newFrame.props = [[NSMutableArray alloc]initWithArray:curFrame.props copyItems:YES];
 				[scene.frames addObject:newFrame];
-				//scene.curFrame+=1;
 				[_timeline reloadData];
 				
 				NSIndexPath *ip=[NSIndexPath indexPathForRow:scene.curFrame inSection:0];
 				[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
 				[[self view] setNeedsDisplay];
-				/*
-                Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
-				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
-				Frame* newFrame = [[Frame alloc]init];
-				newFrame.spikePath = [UIBezierPath bezierPathWithCGPath:curFrame.spikePath.CGPath];
-				newFrame.spikePath.lineCapStyle = kCGLineCapRound;
-				newFrame.spikePath.miterLimit = 0;
-				newFrame.spikePath.lineWidth =5 ;
-				scene.curFrame = scene.curFrame +1;
-				[scene.frames insertObject:newFrame atIndex:scene.curFrame ];
-				[self contentView].myPath = newFrame.spikePath;
-				[[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
-				//[self saveIcon];
-                //*/
-                
 			}
 				break;
-			case 2:{/*
-                     //'new frame' BUTTON
-                     Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
-                     Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
-                     
-                     for( Performer* p in _group.performers){
-                     NSString* key = [NSString stringWithFormat:@"%d",p.uniqueID.intValue];
-                     Position* pos = [curFrame.performerPositions objectForKey:key];
-                     
-                     if(pos != nil){
-                     [p.view removeFromSuperview];
-                     }
-                     }
-                     
-                     [self contentView].myPath = [[UIBezierPath alloc] init];
-                     [self contentView].myPath.lineCapStyle=kCGLineCapRound;
-                     [self contentView].myPath.miterLimit=0;
-                     [self contentView].myPath.lineWidth=5;
-                     
-                     scene.curFrame = scene.curFrame +1;
-                     [scene.frames insertObject:newFrame atIndex:scene.curFrame ];
-                     [[[UIApplication sharedApplication] keyWindow]  setNeedsDisplay];
-                     //[self saveIcon];*/
+				
+			// 'new frame' button
+			case 2:{
 				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				[scene.frames addObject:[[Frame alloc] init]];
 				[_timeline reloadData];
