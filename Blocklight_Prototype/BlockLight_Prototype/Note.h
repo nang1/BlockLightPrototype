@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Position.h"
 
-@interface Note : UIPanGestureRecognizer {
+@interface Note : UIPanGestureRecognizer <NSCopying>{
     NSString* _noteStr;
     Position* _notePosition;
 }

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Position.h"
 
-@interface SetPiece : UIPanGestureRecognizer {
+@interface SetPiece : UIPanGestureRecognizer <NSCopying> {
     // set piece attributes
     UIImage * _icon;
     Position* _piecePosition;

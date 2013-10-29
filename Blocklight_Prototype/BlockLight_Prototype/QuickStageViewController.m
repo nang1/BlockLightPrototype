@@ -450,8 +450,24 @@
                 
 				//'copy' BUTTON
 			case 1:{
-                UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [alert show];
+               // UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Copy Frame" message:@"This will copy the current frame." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                //[alert show];
+				
+				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];
+				//[scene.frames insertObject:curFrame atIndex:scene.curFrame+1];
+				//[scene.frames addObject:curFrame];
+				Frame* newFrame = [[Frame alloc]init];
+				newFrame.actorsOnStage = [[NSMutableArray alloc]initWithArray:curFrame.actorsOnStage copyItems:YES];
+				newFrame.notes = [[NSMutableArray alloc]initWithArray:curFrame.notes copyItems:YES];
+				newFrame.props = [[NSMutableArray alloc]initWithArray:curFrame.props copyItems:YES];
+				[scene.frames addObject:newFrame];
+				//scene.curFrame+=1;
+				[_timeline reloadData];
+				
+				NSIndexPath *ip=[NSIndexPath indexPathForRow:scene.curFrame inSection:0];
+				[_timeline selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionBottom];
+				[[self view] setNeedsDisplay];
 				/*
                 Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				Frame* curFrame = [scene.frames objectAtIndex:scene.curFrame];

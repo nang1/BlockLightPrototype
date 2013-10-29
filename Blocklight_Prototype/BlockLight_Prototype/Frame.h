@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Frame : NSObject {
+@interface Frame : NSObject <NSCopying>{
     UIImage* _frameIcon;
     UIBezierPath* _spikePath;
     NSMutableArray* _actorsOnStage;
