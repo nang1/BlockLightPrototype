@@ -44,9 +44,6 @@
 
 // Imports: Production.h - calls Scene.h
 - (void)loadView {
-    QuickStageView* _stageView = [[QuickStageView alloc] initWithFrame:CGRectZero andViewController:self];
-    self.view = _stageView;
-    
     // this production is meant only as scratch paper
     // the user must save it otherwise it all data will be removed
     _quickProduction = [[Production alloc] init];
@@ -56,7 +53,10 @@
     [_newScene.frames addObject:[[Frame alloc] init]];
     [_newScene.frames addObject:[[Frame alloc] init]];
     [_quickProduction.scenes addObject:_newScene];
-	
+	   
+    QuickStageView* _stageView = [[QuickStageView alloc] initWithFrame:CGRectZero andViewController:self andStage:_quickProduction.stage];
+    self.view = _stageView;
+    
     // JNN: not sure if this works
     _gestureCtrl = [[TVGestureController alloc] initWithFrame2: [_newScene.frames objectAtIndex:_newScene.curFrame] withStageView:_stageView];
 }

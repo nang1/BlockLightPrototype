@@ -16,12 +16,30 @@
 @synthesize gridOpacity = _gridOpacity;
 @synthesize gridSpacing = _gridSpacing;
 @synthesize measurementType = _measurementType;
+@synthesize grid = _grid;
+@synthesize ruler = _ruler;
+@synthesize apron = _apron;
+@synthesize horizontalGrid = _horizontalGrid;
+@synthesize verticalGrid = _verticalGrid;
 
 -(id) init{
     self = [super init];
     
     if(self == nil)
         return nil;
+    
+    // set defaults
+    // name can be null (i.e. untitled)
+    _width = [NSNumber numberWithFloat:30.0f];
+    _height = [NSNumber numberWithFloat:20.0f];
+    _gridSpacing = [NSNumber numberWithFloat:5.0f];
+    _gridOpacity = [NSNumber numberWithFloat:1.0f];
+    _measurementType = FEET;
+    _grid = NO;
+    _ruler = NO;
+    _apron = YES;
+    _horizontalGrid = YES;
+    _verticalGrid = YES;
     
     return self;
 }

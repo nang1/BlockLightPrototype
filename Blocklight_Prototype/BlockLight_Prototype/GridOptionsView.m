@@ -61,14 +61,14 @@
                     cell.textLabel.text = @"Show Grid";
                     _gridSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
                     [_gridSwitchView addTarget:self action:@selector(gridSwitch) forControlEvents:UIControlEventValueChanged];
-                    [_gridSwitchView setOn:_popoverCtrl.quickView.grid animated:NO];
+                    [_gridSwitchView setOn:_popoverCtrl.production.stage.grid animated: NO];
                     cell.accessoryView = _gridSwitchView;
                     break;
                 case 1: // show ruler switch
                     cell.textLabel.text = @"Show Ruler";
                     _rulerSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
                     [_rulerSwitchView addTarget:self action:@selector(rulerSwitch) forControlEvents:UIControlEventValueChanged];
-                    [_rulerSwitchView setOn:_popoverCtrl.quickView.ruler animated:NO];
+                    [_rulerSwitchView setOn:_popoverCtrl.production.stage.ruler animated: NO];
                     cell.accessoryView = _rulerSwitchView;
                     break;
                 case 2: // measurement switch
@@ -77,15 +77,14 @@
                     _metricSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
                     [_metricSwitchView addTarget:self action:@selector(metricSwitch) forControlEvents:UIControlEventValueChanged];
                     
-                    [_metricSwitchView setOn:_popoverCtrl.quickView.isMetric animated:NO];
-                    /*if([_popoverCtrl.production.stage.measurementType isEqualToString:@"Feet"])
+                    if(_popoverCtrl.production.stage.measurementType == FEET)
                     {
                         [_metricSwitchView setOn:NO animated:NO];
                     }
-                    else
+                    else // meters
                     {
                         [_metricSwitchView setOn:YES animated:NO];
-                    }//*/
+                    }
                     
                     cell.accessoryView = _metricSwitchView;
                 }
@@ -107,7 +106,7 @@
                     [_horizontal setBackgroundImage:[UIImage imageNamed:@"circle"] forState:UIControlStateSelected];
                     [_horizontal setBackgroundImage:[UIImage imageNamed:@"square"] forState:UIControlStateNormal];
                     //[_horizontal setBackgroundImage:[UIImage imageNamed:@"water"] forState:UIControlStateHighlighted];
-                    [_horizontal setSelected:_popoverCtrl.quickView.horizontalGrid];
+                    [_horizontal setSelected:_popoverCtrl.production.stage.horizontalGrid];
                     
                     // vertical text
                     UILabel* vText = [[UILabel alloc] initWithFrame:CGRectMake(200, 10, 50, 30)];
@@ -122,8 +121,8 @@
                     [_vertical setBackgroundImage:[UIImage imageNamed:@"circle"] forState:UIControlStateSelected];
                     [_vertical setBackgroundImage:[UIImage imageNamed:@"square"] forState:UIControlStateNormal];
                     //[_vertical setBackgroundImage:[UIImage imageNamed:@"water"] forState:UIControlStateHighlighted];
-                    [_vertical setSelected:_popoverCtrl.quickView.verticalGrid];
-
+                    [_vertical setSelected:_popoverCtrl.production.stage.verticalGrid];
+                    
                     // add everything to the cell
                     [cell addSubview:hText];
                     [cell addSubview:_horizontal];
@@ -144,7 +143,7 @@
             _spacingSlider.center = CGPointMake(CGRectGetMidX(cell.contentView.bounds), CGRectGetMidY(cell.contentView.bounds));
             _spacingSlider.minimumValue = 1.0;
             _spacingSlider.maximumValue = 10.0;
-            _spacingSlider.value = _popoverCtrl.quickView.spacing;
+            _spacingSlider.value = [_popoverCtrl.production.stage.gridSpacing floatValue];
             [cell addSubview: _spacingSlider];
             
             [_spacingSlider addTarget:self action:@selector(spacingChange) forControlEvents:UIControlEventValueChanged];
@@ -172,7 +171,7 @@
             _opacitySlider.center = CGPointMake(CGRectGetMidX(cell.contentView.bounds), CGRectGetMidY(cell.contentView.bounds));
             _opacitySlider.minimumValue = 0.0;
             _opacitySlider.maximumValue = 1.0;
-            _opacitySlider.value = _popoverCtrl.quickView.opacity;
+            _opacitySlider.value = [_popoverCtrl.production.stage.gridOpacity floatValue];
             [cell addSubview: _opacitySlider];
             
             [_opacitySlider addTarget:self action:@selector(opacityChange) forControlEvents:UIControlEventValueChanged];
@@ -264,11 +263,11 @@
 {
     if([_gridSwitchView isOn])
     {
-        _popoverCtrl.quickView.grid = YES;
+        _popoverCtrl.production.stage.grid = YES;
     }
     else // switched grid off
     {
-        _popoverCtrl.quickView.grid = NO;
+        _popoverCtrl.production.stage.grid = NO;
     }
     [_popoverCtrl.quickView setNeedsDisplay];
 }
@@ -278,11 +277,11 @@
 {
     if([_rulerSwitchView isOn])
     {
-        _popoverCtrl.quickView.ruler = YES;
+        _popoverCtrl.production.stage.ruler = YES;
     }
     else // switched ruler off
     {
-        _popoverCtrl.quickView.ruler = NO;
+        _popoverCtrl.production.stage.ruler = NO;
     }
     [_popoverCtrl.quickView setNeedsDisplay];
 }
@@ -292,13 +291,11 @@
 {
     if([_metricSwitchView isOn]) // meters
     {
-        _popoverCtrl.quickView.isMetric = YES;
-        _popoverCtrl.production.stage.measurementType = @"Meters";
+        _popoverCtrl.production.stage.measurementType = METERS;
     }
     else // feet
     {
-        _popoverCtrl.quickView.isMetric = NO;
-        _popoverCtrl.production.stage.measurementType = @"Feet";
+        _popoverCtrl.production.stage.measurementType = FEET;
     }
     [_popoverCtrl.quickView setNeedsDisplay];
 }
@@ -310,12 +307,12 @@
     if(_horizontal.selected)
     {
         [_horizontal setSelected:NO];
-        _popoverCtrl.quickView.horizontalGrid = NO;
+        _popoverCtrl.production.stage.horizontalGrid = NO;
     }
     else
     {
         [_horizontal setSelected:YES];
-        _popoverCtrl.quickView.horizontalGrid = YES;
+        _popoverCtrl.production.stage.horizontalGrid = YES;
     }
     [_popoverCtrl.quickView setNeedsDisplay];
 }
@@ -326,12 +323,12 @@
     if(_vertical.selected)
     {
         [_vertical setSelected:NO];
-        _popoverCtrl.quickView.verticalGrid = NO;
+        _popoverCtrl.production.stage.verticalGrid = NO;
     }
     else
     {
         [_vertical setSelected:YES];
-        _popoverCtrl.quickView.verticalGrid = YES;
+        _popoverCtrl.production.stage.verticalGrid = YES;
     }
     [_popoverCtrl.quickView setNeedsDisplay];
 }
@@ -341,14 +338,14 @@
 // user changed slider that controls spacing of the grid
 - (void)spacingChange
 {
-    _popoverCtrl.quickView.spacing = _spacingSlider.value;
+    _popoverCtrl.production.stage.gridSpacing = [NSNumber numberWithFloat:_spacingSlider.value];
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 // user changed slider that controls opacity of grid
 - (void)opacityChange
 {
-    _popoverCtrl.quickView.opacity = _opacitySlider.value;
+    _popoverCtrl.production.stage.gridOpacity = [NSNumber numberWithFloat:_opacitySlider.value];
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 

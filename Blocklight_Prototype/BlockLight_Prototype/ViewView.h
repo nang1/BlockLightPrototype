@@ -15,14 +15,17 @@
 @interface ViewView : UITableView <UITableViewDataSource, UITableViewDelegate> {
     TVPopoverViewController* _popoverCtrl;
     UISwitch* _noteSwitchView;
+    UISwitch* _apronSwitchView;
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
 @property (nonatomic, strong) UISwitch* noteSwitchView;
+@property (nonatomic, strong) UISwitch* apronSwitchView;
 
 // These methods may need to be modified as we add the implementation
 - (id)initWithViewController:(TVPopoverViewController*)viewController;
-- (void)spikeTapeSwitch;
 - (void)noteSwitch;
+- (void)apronSwitch;
+- (void)spikeTapeSwitch;
 
 @end
