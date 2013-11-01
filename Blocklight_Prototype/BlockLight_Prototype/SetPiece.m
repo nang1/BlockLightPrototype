@@ -10,6 +10,7 @@
 
 @implementation SetPiece
 
+@synthesize scaleRotationMatrix = _scaleRotationMatrix;
 @synthesize icon = _icon;
 @synthesize piecePosition = _piecePosition;
 
@@ -19,6 +20,7 @@
     if(self == nil)
         return nil;
     
+    _scaleRotationMatrix = CGAffineTransformIdentity;
     _piecePosition = [[Position alloc] init];
     
     return self;
@@ -30,6 +32,7 @@
     if(self == nil)
         return nil;
     
+    _scaleRotationMatrix = CGAffineTransformIdentity;
     _piecePosition = [[Position alloc] init];
     
     if([type isEqualToString:@"Tree"]){

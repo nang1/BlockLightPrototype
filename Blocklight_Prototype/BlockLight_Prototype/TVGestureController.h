@@ -27,8 +27,15 @@
 -(id) initWithFrame2:(Frame*)frame withStageView:(QuickStageView*)stageView;
 -(void) changeFrame:(Frame*)frame;
 
--(void) adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer;
+-(void)addGestureRecognizersToView:(UIView*)view;
+
+//-(void) adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer;
+-(void)pinchGesture:(UIPinchGestureRecognizer*) gesture;
+-(void)rotateGesture:(UIRotationGestureRecognizer*)gesture;
+-(void)pressHoldGesture:(UILongPressGestureRecognizer*)gesture;
 -(void) panGestureMoveAround:(UIPanGestureRecognizer*) gesture;
+
+//-(NSString*)identifyPiece:(UIView*)view;
 
 -(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex;
 

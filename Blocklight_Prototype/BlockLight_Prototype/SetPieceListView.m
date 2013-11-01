@@ -233,6 +233,11 @@
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
     
+    // JNN: this will make your job a bit easier:
+    //SetPiece* newProp = [[SetPiece alloc] initWithImage:[self cellForRowAtIndexPath:indexPath].imageView.image];
+    //[_frame.props addObject:newProp];
+    //[_popoverCtrl dismissPopoverView];
+    
     switch(listType) {
         case ALL:
             switch(section) {

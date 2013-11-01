@@ -24,4 +24,5 @@
 
 //JNN: added
 -(Frame*)getCurFrame;
+
 @end

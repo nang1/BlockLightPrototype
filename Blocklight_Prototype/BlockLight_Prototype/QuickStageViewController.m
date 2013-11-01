@@ -496,6 +496,8 @@
 	}
 }
 
+#pragma mark Methods for adding pieces to stage
+
 - (void)addNoteToStage:(Note*)note
 {
     // create label for the note
@@ -507,23 +509,15 @@
     tempLabel.numberOfLines = 0;
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
-    //tempLabel.center = CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate);
     tempLabel.hidden = [self contentView].hiddenNotes;
     
-    // assign the note a UIPanGesture Recognizer so that it can move around on stage
-    //UIPanGestureRecognizer * noteMover = [[UIPanGestureRecognizer alloc] initWithTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    //[noteMover setDelegate:_gestureCtrl];
-    //[tempLabel addGestureRecognizer:noteMover];
-
-    // JNN: just realized, is the same piece of code as above three lines -__-'
-    [note addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [note setDelegate:_gestureCtrl];
-    [tempLabel addGestureRecognizer:note];
-
-    [tempLabel setUserInteractionEnabled:YES];
+    // assign the gesture recognizers for user interaction
+    [_gestureCtrl addGestureRecognizersToView:tempLabel];
+    
+    // perform transformations
     [tempLabel sizeToFit];
     [tempLabel setCenter:CGPointMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate)];
-    //NSLog(@"Center: (%d, %d)", note.notePosition.xCoordinate, note.notePosition.yCoordinate);
+    [tempLabel setTransform:note.scaleRotationMatrix];
     
     // finally, add the label as a subview which will appear on stage
     [[self contentView].noteLabels addObject:tempLabel];
@@ -532,21 +526,20 @@
 
 - (void)addActorToStage:(Actor*)actor
 {
-    // Set gesture recognizer to SetPiece
-    [actor addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [actor setDelegate:_gestureCtrl];
-    
     UIImageView* newActorIconView = [[UIImageView alloc] initWithImage:actor.actorIcon];
-    [newActorIconView addGestureRecognizer:actor];
-    [newActorIconView setUserInteractionEnabled:YES];
+    
+    // assign the gesture recognizers for user interaction
+    [_gestureCtrl addGestureRecognizersToView:newActorIconView];
+    
+    // perform transformations
     [newActorIconView sizeToFit];
     [newActorIconView setCenter:CGPointMake(actor.actorPosition.xCoordinate, actor.actorPosition.yCoordinate)];
+    [newActorIconView setTransform:actor.scaleRotationMatrix];
     newActorIconView.tag = 10;
     
     // put actor's name underneath icon
     UILabel* nameLbl = actor.actorName;
     nameLbl.textAlignment = NSTextAlignmentCenter;
-    
     [newActorIconView addSubview:nameLbl];
     
     // save icon to quickstageview
@@ -558,15 +551,15 @@
 
 - (void)addSetPieceToStage:(SetPiece*)newPiece
 {       
-    // Set gesture recognizer to SetPiece
-    [newPiece addTarget:_gestureCtrl action:@selector(panGestureMoveAround:)];
-    [newPiece setDelegate:_gestureCtrl];
-    
     UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];
-    [newIconView addGestureRecognizer:newPiece];
-    [newIconView setUserInteractionEnabled:YES];
+    
+    // assign the gesture recognizers for user interaction
+    [_gestureCtrl addGestureRecognizersToView:newIconView];
+    
+    // perform transformations
     [newIconView sizeToFit];
     [newIconView setCenter:CGPointMake(newPiece.piecePosition.xCoordinate, newPiece.piecePosition.yCoordinate)];
+    [newIconView setTransform:newPiece.scaleRotationMatrix];
     
     // save icon to quickstageview
     [[self contentView].propsArray addObject:newIconView];

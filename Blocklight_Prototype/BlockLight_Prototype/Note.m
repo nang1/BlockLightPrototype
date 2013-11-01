@@ -10,6 +10,7 @@
 
 @implementation Note
 
+@synthesize scaleRotationMatrix = _scaleRotationMatrix;
 @synthesize noteStr = _noteStr;
 @synthesize notePosition = _notePosition;
 
@@ -19,6 +20,7 @@
     if(self ==nil)
         return nil;
     
+    _scaleRotationMatrix = CGAffineTransformIdentity;
     _notePosition = [[Position alloc] init];
     
     return self;
