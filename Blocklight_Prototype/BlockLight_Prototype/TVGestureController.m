@@ -62,7 +62,7 @@
     [rotateGesture setDelegate:self];
     [pressGesture setDelegate:self];
     
-    // add gesture recognizers to label
+    // add gesture recognizers to view
     [view addGestureRecognizer:panGesture];
     [view addGestureRecognizer:pinchGesture];
     [view addGestureRecognizer:rotateGesture];

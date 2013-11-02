@@ -38,6 +38,7 @@
 
 #pragma mark Accessors
 // don't get what this is exactly, but its used multiple times
+// JNN: used as a quick wrapper to get QuickStageView instead of having to typecast the UIView all the time
 - (QuickStageView*)contentView {
     return (QuickStageView*)self.view;
 }
@@ -79,13 +80,13 @@
                                                         target:self
                                                         action:@selector(redoButton)];
     _settingsBtn = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
-                                                             style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(showStageEditor)];
+                                                    style:UIBarButtonItemStyleBordered
+                                                   target:self
+                                                   action:@selector(pressPopoverButton:)];
     _viewButton = [[UIBarButtonItem alloc] initWithTitle:@"View"
-                                                             style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(viewButtonClick)];
+                                                   style:UIBarButtonItemStyleBordered
+                                                  target:self
+                                                  action:@selector(pressPopoverButton:)];
 
     // add left-side tool bar buttons
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
@@ -95,21 +96,21 @@
     
     // Tool buttons on right side
     _propsButton = [[UIBarButtonItem alloc] initWithTitle:@"Set Pieces"
-                                                               style:UIBarButtonItemStyleBordered
-                                                               target:self
-                                                               action:@selector(addProps)];
+                                                    style:UIBarButtonItemStyleBordered
+                                                   target:self
+                                                   action:@selector(pressPopoverButton:)];
     _notesButton = [[UIBarButtonItem alloc] initWithTitle:@"Notes"
-                                                              style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(addNote)];
+                                                    style:UIBarButtonItemStyleBordered
+                                                   target:self
+                                                   action:@selector(pressPopoverButton:)];
     _actorsButton = [[UIBarButtonItem alloc] initWithTitle:@"Performers"
-                                                              style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(addActor)];
+                                                     style:UIBarButtonItemStyleBordered
+                                                    target:self
+                                                    action:@selector(pressPopoverButton:)];
     _sceneButton = [[UIBarButtonItem alloc] initWithTitle:@"Scenes"
-                                                               style:UIBarButtonItemStyleBordered
-                                                              target:self
-                                                              action:@selector(selectScene)];
+                                                    style:UIBarButtonItemStyleBordered
+                                                   target:self
+                                                   action:@selector(pressPopoverButton:)];
     
     // add right-side tool bar buttons
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:_propsButton, _notesButton, _actorsButton, _sceneButton, nil];
@@ -201,43 +202,56 @@
     [alert show];
 }
 
-// Push stage editor view
-// sets the height, width, etc of stage
-- (void)showStageEditor {
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)SETTINGS withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)SETTINGS];
-}
-
-// Shows view options such as grid lines, opacity, etc.
-// this is where we enable or disable certain stage options for the stage view
-- (void)viewButtonClick {        
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)VIEWS withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)VIEWS];
-}
-
-// Gives a popover to select props for stage
-- (void)addProps {
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPS withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)PROPS];
-}
-
-// Adds a note to the stage
-- (void)addNote
+// Method for creating popover upon bar button press
+-(void) pressPopoverButton:(UIBarButtonItem *)btn
 {
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)NOTES withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)NOTES];
-}
-
-// Create a picker/popup to select an actor
-- (void)addActor {
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)ACTORS withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)ACTORS];
-}
-
-// Create a picker/popover to select a scene
-- (void)selectScene {
-    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)SCENES withStage:[self contentView] withProduction:_quickProduction];
-    [self createPopover:_tvPopoverCtrl withType:(EditTools)SCENES];
+    EditTools type = GRID; // JNN: just giving it some default value
+    
+    // JNN: instead of checking the buttons, could check btn.title or btn.tag instead
+    if([btn isEqual:_settingsBtn])
+    {
+        type = SETTINGS; // Stage editor view
+    }
+    else if([btn isEqual:_viewButton])
+    {
+        type = VIEWS; // Shows view options such as grid lines, opacity, etc.
+        // this is where we enable or disable certain stage options for the stage view
+    }
+    else if([btn isEqual:_propsButton])
+    {
+        type = PROPS; // Gives a popover to select props for stage
+    }
+    else if([btn isEqual:_notesButton])
+    {
+        type = NOTES; // Adds a note to the stage
+    }
+    else if([btn isEqual:_actorsButton])
+    {
+        type = ACTORS; // Create a picker/popup to select an actor
+    }
+    else if([btn isEqual:_sceneButton])
+    {
+        type = SCENES; // Create a picker/popover to select a scene
+    }
+    else // GRID or PROPSLIST, something weird happened... don't create a popover
+    {
+        return;
+    }
+    
+    // Create popover to display views that allow user to edit stage
+    _tvPopoverCtrl = [[TVPopoverViewController alloc] initPopoverView:type withStage:[self contentView] withProduction:_quickProduction];
+    _popoverNavCtrl = [[UINavigationController alloc] initWithRootViewController:_tvPopoverCtrl];
+    _btnPopover = [[UIPopoverController alloc] initWithContentViewController:_popoverNavCtrl];
+    
+    // assign popover to appear over a tool bar button
+    [_btnPopover presentPopoverFromBarButtonItem:btn permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+    // array of views that user can interact w/ while popover is visible
+    _btnPopover.passthroughViews = [[NSArray alloc] init];
+    _btnPopover.delegate = self;
+    // need to set this to dismiss popover
+    _tvPopoverCtrl.popover = _btnPopover;
+    _tvPopoverCtrl.popoverNav = _popoverNavCtrl;
 }
 
 // check if popover was dismissed.
@@ -266,51 +280,6 @@
     }
     
     [[self view] setNeedsDisplay]; // refreshes the view
-}
-
-// Create popover to display views that allow user to edit stage
-- (void)createPopover:(TVPopoverViewController*)_popoverViewCtrl withType:(EditTools)_type{
-    _popoverNavCtrl = [[UINavigationController alloc] initWithRootViewController:_popoverViewCtrl];
-    _btnPopover = [[UIPopoverController alloc] initWithContentViewController:_popoverNavCtrl];    
-    
-    // assign popover to appear over a tool bar button
-    switch(_type){
-        case SETTINGS:
-        {
-            [_btnPopover presentPopoverFromBarButtonItem:_settingsBtn permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-            break;
-        case NOTES:
-        {
-            [_btnPopover presentPopoverFromBarButtonItem:_notesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-            break;
-        case VIEWS:
-            [_btnPopover presentPopoverFromBarButtonItem:_viewButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            break;
-        case PROPS:
-            [_btnPopover presentPopoverFromBarButtonItem:_propsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            break;
-        case ACTORS:
-            [_btnPopover presentPopoverFromBarButtonItem:_actorsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            break;
-        case SCENES:
-            [_btnPopover presentPopoverFromBarButtonItem:_sceneButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            break;
-        case GRID:
-            // This is here to stop the warning, but GridOptionsView shouldn't be
-            // called from here, its a sub-view of ViewView
-        case PROPSLIST:
-            // This is here to stop the warning, but this view shouldn't be called
-            // from here, it is a sub-view of SetPieceView
-            break;
-    }
-    // array of views that user can interact w/ while popover is visible
-    _btnPopover.passthroughViews = [[NSArray alloc] init];
-    _btnPopover.delegate = self;
-    // need to set this to dismiss popover
-    _popoverViewCtrl.popover = _btnPopover;
-    _popoverViewCtrl.popoverNav = _popoverNavCtrl;
 }
 
 -(NSInteger) tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section{

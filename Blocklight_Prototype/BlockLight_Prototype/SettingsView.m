@@ -446,7 +446,7 @@
     if(textField.tag == 0) // stage name tag
     {
         [_popoverCtrl.production.stage setName:textField.text];
-        // need to somehow set: QuickStageViewController's
+        // TODO: need to somehow set: QuickStageViewController's
         // navigationItem.title = _quickProduction.stage.name;
         //[_popoverCtrl dismissPopoverView]; // <- don't want to do this
     }
@@ -458,6 +458,9 @@
     {
         [_popoverCtrl.production.stage setHeight:[NSNumber numberWithInteger:[textField.text integerValue]]];
     }
+    
+    // so stage width/height will update the ruler labels
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

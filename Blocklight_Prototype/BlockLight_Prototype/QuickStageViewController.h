@@ -68,8 +68,9 @@
 @property (nonatomic, retain) TVGestureController* gestureCtrl;
 
 // Methods:
+- (void)pressPopoverButton:(UIBarButtonItem*)btn;
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
-- (void)createPopover:(TVPopoverViewController*)_popoverViewCtrl withType:(EditTools)_type;
+
 - (void)addNoteToStage:(Note*)note;
 - (void)addActorToStage:(Actor*)actor;
 - (void)addSetPieceToStage:(SetPiece*)newPiece;

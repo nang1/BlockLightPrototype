@@ -20,6 +20,6 @@
 @property (strong) UIImage* icon;
 @property (strong) Position* piecePosition;
 
-- (id)initWithImage:(NSString*)type;
+-(id) initWithImage:(UIImage*)icon;
 
 @end
