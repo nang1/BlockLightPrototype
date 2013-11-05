@@ -211,10 +211,10 @@
             //sectionName = @"Basic Settings";
             break;
         case 1:
-            sectionName = @"Spacing";
+            sectionName = [NSString stringWithFormat: @"Spacing: %f x %f", _spacingSlider.value, _spacingSlider.value];
             break;
         case 2:
-            sectionName = @"Opacity";
+            sectionName = [NSString stringWithFormat:@"Opacity: %f", _opacitySlider.value];
             break;
         default: // no section name
             break;
@@ -339,6 +339,7 @@
 - (void)spacingChange
 {
     _popoverCtrl.production.stage.gridSpacing = [NSNumber numberWithFloat:_spacingSlider.value];
+    [[self headerViewForSection:1].textLabel setText:[NSString stringWithFormat: @"Spacing: %f x %f", _spacingSlider.value, _spacingSlider.value]];
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
@@ -346,6 +347,7 @@
 - (void)opacityChange
 {
     _popoverCtrl.production.stage.gridOpacity = [NSNumber numberWithFloat:_opacitySlider.value];
+    [[self headerViewForSection:2].textLabel setText:[NSString stringWithFormat: @"Opacity: %f", _opacitySlider.value]];
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 

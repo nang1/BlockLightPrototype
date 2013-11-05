@@ -13,14 +13,14 @@
 
 @class TVPopoverViewController;
 
-@interface ActorView : UIView
+@interface ActorView : UIView<UITextFieldDelegate>
 {
-    UITextView* _nameTextBox;
+    UITextField* _nameTextBox;
     Frame* _frame; // where all the actors are stored
     TVPopoverViewController* _popoverCtrl; // to dismiss it after adding an actor
 }
 
-@property (nonatomic, strong) UITextView* nameTextBox;
+@property (nonatomic, strong) UITextField* nameTextBox;
 @property (strong) TVPopoverViewController* popoverCtrl;
 
 -(id)initWithFrame:(CGRect)frame withProductionFrame: (Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController;

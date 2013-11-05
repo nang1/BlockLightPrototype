@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Frame.h"
 
-@interface Scene : NSObject {
+@interface Scene : NSObject
+{
     //scene attributes
     NSString* _name;
     NSMutableArray* _frames;
@@ -19,5 +21,8 @@
 @property (strong) NSString* name;
 @property (strong) NSMutableArray* frames;
 @property NSInteger curFrame;
+
+//JNN: added
+-(Frame*)getCurFrame;
 
 @end

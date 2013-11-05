@@ -11,13 +11,15 @@
 
 @interface SetPiece : UIPanGestureRecognizer <NSCopying> {
     // set piece attributes
+    CGAffineTransform _scaleRotationMatrix;
     UIImage * _icon;
     Position* _piecePosition;
 }
 
+@property CGAffineTransform scaleRotationMatrix;
 @property (strong) UIImage* icon;
 @property (strong) Position* piecePosition;
 
-- (id)initWithImage:(NSString*)type;
+-(id) initWithImage:(UIImage*)icon;
 
 @end

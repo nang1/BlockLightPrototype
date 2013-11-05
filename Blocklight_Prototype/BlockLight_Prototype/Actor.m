@@ -11,6 +11,7 @@
 @implementation Actor
 
 //@synthesize actorID = _actorID;
+@synthesize scaleRotationMatrix = _scaleRotationMatrix;
 @synthesize actorName = _actorName;
 @synthesize actorPosition = _actorPosition;
 @synthesize actorIcon = _actorIcon;
@@ -20,6 +21,8 @@
     
     if(self == nil)
         return  nil;
+    
+    _scaleRotationMatrix = CGAffineTransformIdentity;
     
     _actorPosition = [[Position alloc] init];
     

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Scene.h"
 #import "Stage.h"
+#import "Frame.h"
 
 @interface Production : NSObject {
     NSString* _name;
@@ -31,5 +32,7 @@
 // @property (strong) NSMutableDictionary* layouts;
 
 -(void)addScene;
+-(Scene*)getCurScene; // JNN: added
+-(Frame*)getCurFrameFromScene; // JNN: added
 
 @end

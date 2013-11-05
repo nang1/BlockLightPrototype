@@ -48,6 +48,31 @@
 	return YES;
 }
 
+-(void)addGestureRecognizersToView:(UIView *)view
+{
+    // create gesture recognizers
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureMoveAround:)];
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
+    UIRotationGestureRecognizer *rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateGesture:)];
+    UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressHoldGesture:)];
+    
+    // set gesture recognizer delegates
+    [panGesture setDelegate:self];
+    [pinchGesture setDelegate:self];
+    [rotateGesture setDelegate:self];
+    [pressGesture setDelegate:self];
+    
+    // add gesture recognizers to view
+    [view addGestureRecognizer:panGesture];
+    [view addGestureRecognizer:pinchGesture];
+    [view addGestureRecognizer:rotateGesture];
+    [view addGestureRecognizer:pressGesture];
+    
+    // enable user interaction
+    [view setUserInteractionEnabled:YES];
+}
+
+/*
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -63,9 +88,114 @@
         piece.center = locationInSuperview;
     }
 }
+//*/
 
+#pragma mark Gesture Recognizing Methods
+
+// so multiple gestures can be recognized
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+// for resizing pieces
+-(void)pinchGesture:(UIPinchGestureRecognizer*) gesture
+{
+    // grab the view and the scale
+    UIView *piece = [gesture view];
+    CGFloat newScale = [gesture scale];
+
+    // calculate the new transformation matrix
+    // JNN: TODO: set scaling min and maximum values
+    CGAffineTransform matrix = CGAffineTransformScale(piece.transform, newScale, newScale);
+    [piece setTransform:matrix];
+    
+    // so the next pinch gesture doesn't become skewed
+    [gesture setScale:1];
+    
+    // save the matrix to the piece
+    if([piece isMemberOfClass:[UILabel class]])
+    {
+        int index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
+        Note* tempNote = [_frame.notes objectAtIndex:index];
+        tempNote.scaleRotationMatrix = matrix;
+    }
+    else if([piece isMemberOfClass:[UIImageView class]])
+    {
+        if(piece.tag == 10) // actor tag
+        {
+            int index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
+            Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+            tempActor.scaleRotationMatrix = matrix;
+        }
+        else // set piece
+        {
+            int index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
+            SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+            tempPiece.scaleRotationMatrix = matrix;
+        }
+    }
+}
+
+// for rotating pieces
+-(void)rotateGesture:(UIRotationGestureRecognizer*)gesture
+{
+    // grab the view and rotation
+    UIView *piece = [gesture view];
+    CGFloat newRotation = [gesture rotation];
+    
+    // calculate the new transformation matrix
+    CGAffineTransform matrix = CGAffineTransformRotate(piece.transform, newRotation);
+    [piece setTransform:matrix];
+    
+    // so the next rotation gesture doesn't become skewed
+    [gesture setRotation:0];
+    
+    // save the matrix to the piece
+    if([piece isMemberOfClass:[UILabel class]])
+    {
+        int index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
+        Note* tempNote = [_frame.notes objectAtIndex:index];
+        tempNote.scaleRotationMatrix = matrix;
+    }
+    else if([piece isMemberOfClass:[UIImageView class]])
+    {
+        if(piece.tag == 10) // actor tag
+        {
+            int index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
+            Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+            tempActor.scaleRotationMatrix = matrix;
+        }
+        else // set piece
+        {
+            int index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
+            SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+            tempPiece.scaleRotationMatrix = matrix;
+        }
+    }
+}
+
+// for bringing up menu with additional actions
+-(void)pressHoldGesture:(UILongPressGestureRecognizer*)gesture
+{
+    if([gesture state] == UIGestureRecognizerStateBegan)
+    {
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Don't Touch Me!" message:@"Will provide popup menu with options to delete/modify pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
+// for moving pieces around
 -(void)panGestureMoveAround:(UIPanGestureRecognizer*) gesture
 {
+    /* // JNN reference: please do not delete
+    CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
+    CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
+    // 20px for the status bar, and 44px for the navigation bar
+     
+    // all stage pieces gets placed on view in following order:
+    // notes, set pieces, actors, from first to last
+     
     UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
     
     if (orientation==UIInterfaceOrientationLandscapeLeft) // rightside up
@@ -76,27 +206,28 @@
     {
         NSLog(@"right");
     }
+    //*/
     
     UIView *piece = [gesture view];
+    [_quickStageView bringSubviewToFront:piece];
     
     //We pass in the gesture to a method that will help us align our touches so that the pan and pinch will seem to originate between the fingers instead of other points or center point of the UIView
-    [self adjustAnchorPointForGestureRecognizer:gesture];
+    //[self adjustAnchorPointForGestureRecognizer:gesture];
     
     if ([gesture state] == UIGestureRecognizerStateChanged)
     {
         CGPoint translation = [gesture translationInView:[piece superview]];
         
-        // x should be between 100 and 650
-        float newX = MAX([piece center].x + lroundf(translation.x), 100);
-        newX = MIN(newX, 650);
+        // x should be between ?? and ???
+        //float newX = MAX([piece center].x + lroundf(translation.x), ??);
+        //newX = MIN(newX, ???);
         
-        // y should be between 100 and 950
-        //float newY = MAX([piece center].y + lroundf(translation.y), 100);
-        //newY = MIN(newY, 950);
+        // y should be between 25, and 600
+        float newY = MAX([piece center].y + lroundf(translation.y), 25);
+        newY = MIN(newY, 600);
         
-        [piece setCenter:CGPointMake(newX, [piece center].y + lroundf(translation.y))];
+        [piece setCenter:CGPointMake([piece center].x + lroundf(translation.x), newY)];
         [gesture setTranslation:CGPointZero inView:[piece superview]];
-        //NSLog(@"Piece center: %d, %d\n",(int)[piece center].x, (int)[piece center].y);
     }
     else if([gesture state] == UIGestureRecognizerStateEnded)
     {
@@ -104,109 +235,91 @@
         
         NSString* pieceType = @""; // used to indicate type of piece to be deleted
         int index = 0; // used to indicate index of object to be deleted in array
-        Position* pos;
         
         // A note was moved
         if([piece isMemberOfClass:[UILabel class]])
         {            
-            Note* tempNote = [[Note alloc] init];
             pieceType = @"Note";
+            index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
+            Note* tempNote = [_frame.notes objectAtIndex:index];
+            [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
             
-            // find index of piece that was moved
-            for(UILabel *lbl in _quickStageView.noteLabels)
+            /*
+            // JNN: if we use CGPoint, we could get rid of Position.h and Position.m
+            // JNN: TODO: move piece to end of array, or else figure out some way to keep ordering from back to front in tact
+            while(index != [_frame.notes count] - 1)
             {
-                if([lbl isEqual:(UILabel*)piece])
+                [_frame.notes exchangeObjectAtIndex:index withObjectAtIndex:index++];
+            }
+            // JNN: move piece to end of array method 2
+            for (UILabel* lbl in [[_quickStageView.noteLabels copy] autorelease])
+            {
+                if ([lbl isEqual:(UILabel*)piece])
                 {
-                    tempNote = [_frame.notes objectAtIndex:index];
+                    Note* tmp = [lbl retain];
+                    [_quickStageView.noteLabels removeObject:tmp];
+                    [_quickStageView.noteLabels addObject:tmp];
                     break;
                 }
-                else
-                {
-                    index++;
-                }
             }
-            
-            pos = tempNote.notePosition;
+             // JNN: ...I'll figure something out
+            //*/
         }
-        // A set piece was moved
-        else if([piece isMemberOfClass:[UIImageView class]]){
-            if(piece.tag == 10)
+        // An actor or set piece was moved
+        else if([piece isMemberOfClass:[UIImageView class]])
+        {
+            if(piece.tag == 10) // actor tag
             {
-                Actor* tempActor = [[Actor alloc] init];
                 pieceType = @"Actor";
-                
-                //find index of piece that was moved
-                for(UIImageView *tempView in _quickStageView.actorArray)
-                {
-                    if([tempView isEqual:(UIImageView*)piece])
-                    {
-                        tempActor = [_frame.actorsOnStage objectAtIndex:index];
-                        break;
-                    }
-                    else
-                    {
-                        index++;
-                    }
-                }
-                
-                pos = tempActor.actorPosition;
+                index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
+                Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+                [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
             }
-            else
+            else // non-actor tag, must be a set piece
             {
-                SetPiece* tempPiece = [[SetPiece alloc] init];
                 pieceType = @"Set Piece";
-
-                //find index of piece that was moved
-                for(UIImageView *tempView in _quickStageView.propsArray)
-                {
-                    if([tempView isEqual:(UIImageView*)piece])
-                    {
-                        tempPiece = [_frame.props objectAtIndex:index];
-                        break;
-                    }
-                    else
-                    {
-                        index++;
-                    }
-                }
-                
-                pos = tempPiece.piecePosition;
+                index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
+                SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+                [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
             }
-            
         }
         
-        if(pos == nil) // should have been set when created
+        // if piece is on trash can
+        if ([self isOnTrashCan:piece]) // user wants to delete icon
         {
-            // update set piece with new position
-            pos = [[Position alloc] init];
-            pos.xCoordinate = [piece center].x;
-            pos.yCoordinate = [piece center].y;
-        }
-        else if ([self isOnTrashCan:piece]) // user wants to delete icon
-        {
-            NSString *text = [[NSString alloc] initWithFormat:@"Warning: You are throwing away something. Are you sure you want to continue?"];
+            NSString *text = @"Warning: You are throwing away something. Are you sure you want to continue?";
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Trash Can" message:text delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
             alert.tag = index;
             alert.title  = pieceType;
             [alert show];
         }
-        else {
-            CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
-            //CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
-            
-            // 64px because: 20px for the status bar, and 44px for the navigation bar
-            [pos updateX:(int)(height - [piece center].y) Y:(int)[piece center].x-64];
-            /*
-            pos.xCoordinate = [piece center].x;
-            pos.yCoordinate = [piece center].y;
-            
-            NSLog(@"Moved %@\n",tempNote.noteStr);
-            NSLog(@"Moved note to: %d, %d\n",tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
-            //*/
-        }
     }
 }
 
+/*
+-(NSString*)identifyPiece:(UIView*)view
+{
+    NSString* toReturn = @"";
+    if([view isMemberOfClass:[UILabel class]])
+    {
+        toReturn = @"Note";
+    }
+    else if([view isMemberOfClass:[UIImageView class]])
+    {
+        if([view tag] == 10) // actor tag
+        {
+            toReturn = @"Actor";
+        }
+        else // non-actor tag, must be a set piece
+        {
+            toReturn = @"Set Piece";
+        }
+    }
+    return toReturn;
+}
+ //*/
+
+#pragma mark Trash Can methods
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
@@ -223,9 +336,9 @@
 
 -(BOOL)isOnTrashCan:(UIView*)piece
 {
-    // trash can created at (0,320,64,64)
-    if((384 < [piece center].x) && ([piece center].x < 448)
-            &&(960 < [piece center].y) && ([piece center].y < 1024))
+    // trash can drawn at (0,320,64,64)
+    if((0 < [piece center].x) && ([piece center].x < 64)
+       &&(320 < [piece center].y) && ([piece center].y < 384))
     {
         return true;
     }
@@ -235,6 +348,7 @@
     }
 }
 
+#pragma mark Remove Piece Functions
 -(void) removeNoteAtIndex:(int)i
 {
     if((i < 0) || (i >= [_frame.notes count]))

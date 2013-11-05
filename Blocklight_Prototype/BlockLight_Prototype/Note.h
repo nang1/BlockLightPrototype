@@ -10,10 +10,12 @@
 #import "Position.h"
 
 @interface Note : UIPanGestureRecognizer <NSCopying>{
+    CGAffineTransform _scaleRotationMatrix;
     NSString* _noteStr;
     Position* _notePosition;
 }
-    
+
+@property CGAffineTransform scaleRotationMatrix;
 @property (strong) NSString* noteStr;
 @property (strong) Position* notePosition;
 

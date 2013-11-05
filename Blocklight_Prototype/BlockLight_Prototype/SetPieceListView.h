@@ -31,7 +31,6 @@
 
 // These methods may need to be modified as we add the implementation
 - (id)initWithFrame:(CGRect) frame withProductionFrame:(Frame*)currentFrame withViewController:(TVPopoverViewController*)viewController;
-- (void)addNewSetPiece:(NSString*)imageType;
 - (void)setListType:(ListType)lType;
 
 @end
