@@ -50,13 +50,22 @@
 /* Save feature
  - (void)encodeWithCoder:(NSCoder *)encoder{
  [encoder encodeObject:_actorID forKey:@"actorID"];
+ // If using the Position model, encode using this
  [encoder encodeObject:_actorPosition forKey:@"actorPosition"];
+ // If position was changed to a CGPoint, encode using something like this
+ NSValue* tempVal = [NSValue value:_actorPosition withObjCType:@encoder(CGPoint)];
+ [encoder encodeObject:tempVal forKey:@"actorPosition"];
  }
  
  - (id)initWithCoder:(NSCoder *)decoder{
  if(self = [super init]){
- self.actorID = [decoder decodeObjectForKey:@"actorID"];
- self.actorPosition = [decoder decodeObjectForKey:@"actorPosition"];
+ 	self.actorID = [decoder decodeObjectForKey:@"actorID"];
+ 	self.actorPosition = [decoder decodeObjectForKey:@"actorPosition"];
+ 
+ 	// To decode a CGPoint, use something like this
+ 	NSValue *decodedValue = [decoder decodeObjectForKey:@"point"];
+ 	CGPoint point;
+ 	[decodedValue getValue:&point];
  }
  return self;
  }
