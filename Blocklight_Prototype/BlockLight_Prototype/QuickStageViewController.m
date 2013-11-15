@@ -233,8 +233,8 @@
     {
         type = SCENES; // Create a picker/popover to select a scene
     }
-    else // GRID or PROPSLIST, something weird happened... don't create a popover
-    {
+    else // GRID or PROPSLIST, don't create a popover here
+    {    // These popovers are created from VIEW and PROPS respectively
         return;
     }
     
@@ -254,6 +254,34 @@
     _tvPopoverCtrl.popoverNav = _popoverNavCtrl;
 }
 
+/* Undo - redo notes
+ Adding something  - popoverControllerDidDismissPopover
+ class - notes / actors / set piece
+ index - array index of object
+ OR
+ save actual object
+ index = -1
+ Put record in frame.undoArray
+ Undo - call correct remove___AtIndex
+ 
+ Deleting something - gestureCtrl : remove___AtIndex
+ save actual object
+ index = -5
+ Undo - add object to end of correct array in frame
+ use bool temp = [piece isKindOfClass:[SetPiece class]]; to figure out which array is should go in
+ 
+ Moving - gestureCtrl : panGestureMoveAround
+ class
+ index
+ position
+ OR
+ save copy of object before moving
+ index - (index of object in frame array)
+ 
+ Pinch and rotate similar to move, need to check which movement was done
+ */
+
+
 // check if popover was dismissed.
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     // check to see if number of notes, actors, or setpieces inside frame had changed
@@ -266,17 +294,29 @@
     if([tempFrame.notes count] > [[self contentView].noteLabels count])
     {
         [self addNoteToStage:[tempFrame.notes lastObject]];
+        Undo_Redo* newChange = [[Undo_Redo alloc] init];
+        newChange.changeType = -1;
+        newChange.index = [tempFrame.notes count] - 1;
+        [tempFrame.undoArray addObject:[tempFrame.notes lastObject]];
     }
     
     // a actor was added
     if([tempFrame.actorsOnStage count] > [[self contentView].actorArray count])
     {
         [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+        Undo_Redo* newChange = [[Undo_Redo alloc] init];
+        newChange.changeType = -1;
+        newChange.index = [tempFrame.actorsOnStage count] - 1;
+        [tempFrame.undoArray addObject:[tempFrame.actorsOnStage lastObject]];
     }
     
     // a setpiece was added
     if([tempFrame.props count] > [[self contentView].propsArray count]){
         [self addSetPieceToStage:[tempFrame.props lastObject]];
+        Undo_Redo* newChange = [[Undo_Redo alloc] init];
+        newChange.changeType = -1;
+        newChange.index = [tempFrame.props count] - 1;
+        [tempFrame.undoArray addObject:[tempFrame.props lastObject]];
     }
     
     [[self view] setNeedsDisplay]; // refreshes the view
@@ -323,10 +363,10 @@
 		
 		//NSLog(@"Current frame is: %d",scene.curFrame);
 
-		//TODO: Put notes and performers in their positions
 		Frame* frame = [scene.frames objectAtIndex:scene.curFrame];
+        // Consider clearing the undoArray
+        // [frame.undoArray removeAllObjects];
         [_gestureCtrl changeFrame:frame]; // the frame had changed
-
 
         // remove current objects from view
 		for (UILabel *lbl in [self contentView].noteLabels)
@@ -405,7 +445,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if ([actionSheet isEqual:_productionSheet]){
-		Frame* newFrame = [[Frame alloc] init];
+		//Frame* newFrame = [[Frame alloc] init];
 		switch (buttonIndex) {
 
 			// 'delete' button

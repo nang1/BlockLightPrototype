@@ -50,7 +50,6 @@
     // array to hold ruler labels
     _rulerLabelsArray = [[NSMutableArray alloc] init];
     
-    
     return self;
 }
 

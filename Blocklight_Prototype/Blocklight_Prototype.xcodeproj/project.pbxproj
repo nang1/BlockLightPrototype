@@ -95,6 +95,7 @@
 		8B84D02018203D4700DE1974 /* table2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B84D01018203D4700DE1974 /* table2.png */; };
 		8B85A8C2180F3BD200E3A26D /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B85A8C1180F3BD200E3A26D /* Icon-72.png */; };
 		8B85A8C6180F3DB700E3A26D /* ActorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B85A8C5180F3DB700E3A26D /* ActorView.m */; };
+		8B8708FD183676C10057A6FA /* Undo_Redo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8708FC183676C10057A6FA /* Undo_Redo.m */; };
 		8B916DE61816F9C900BE9ECD /* mannequin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B916DE51816F9C900BE9ECD /* mannequin.png */; };
 		8B916DEC1817013100BE9ECD /* bridge.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B916DE71817013100BE9ECD /* bridge.png */; };
 		8B916DED1817013100BE9ECD /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B916DE81817013100BE9ECD /* circle.png */; };
@@ -219,6 +220,8 @@
 		8B85A8C1180F3BD200E3A26D /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		8B85A8C4180F3DB700E3A26D /* ActorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActorView.h; path = BlockLight_Prototype/ActorView.h; sourceTree = SOURCE_ROOT; };
 		8B85A8C5180F3DB700E3A26D /* ActorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ActorView.m; path = BlockLight_Prototype/ActorView.m; sourceTree = SOURCE_ROOT; };
+		8B8708FB183676C10057A6FA /* Undo_Redo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Undo_Redo.h; path = BlockLight_Prototype/Undo_Redo.h; sourceTree = SOURCE_ROOT; };
+		8B8708FC183676C10057A6FA /* Undo_Redo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Undo_Redo.m; path = BlockLight_Prototype/Undo_Redo.m; sourceTree = SOURCE_ROOT; };
 		8B916DE51816F9C900BE9ECD /* mannequin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mannequin.png; path = BlockLight_Prototype/mannequin.png; sourceTree = SOURCE_ROOT; };
 		8B916DE71817013100BE9ECD /* bridge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bridge.png; sourceTree = "<group>"; };
 		8B916DE81817013100BE9ECD /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
@@ -445,6 +448,8 @@
 				86572CA417E8BA040081513F /* Stage.m */,
 				86572CA517E8BA040081513F /* UserData.h */,
 				86572CA617E8BA040081513F /* UserData.m */,
+				8B8708FB183676C10057A6FA /* Undo_Redo.h */,
+				8B8708FC183676C10057A6FA /* Undo_Redo.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 				86572CCE17E8BC6B0081513F /* Group.m in Sources */,
 				86572CCD17E8BC5C0081513F /* Note.m in Sources */,
 				86572CCC17E8BC550081513F /* Performer.m in Sources */,
+				8B8708FD183676C10057A6FA /* Undo_Redo.m in Sources */,
 				86572CCB17E8BC4E0081513F /* Position.m in Sources */,
 				86572CCA17E8BC480081513F /* Production.m in Sources */,
 				86572CC817E8BC370081513F /* Scene.m in Sources */,

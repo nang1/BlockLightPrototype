@@ -16,6 +16,7 @@
 #import "NoteView.h"
 #import "TimeLineViewCell.h"
 #import "TVGestureController.h"
+#import "Undo_Redo.h"
 
 @class TVPopoverViewController;
 //@class TVGestureController;
