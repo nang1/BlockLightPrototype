@@ -232,11 +232,18 @@
                 
             case -10: // Moved a piece
                 if([lastChange.obj isKindOfClass:[Note class]]){
-                    Note* prevNote = (Note*)lastChange.obj;
+                    // Change note position to its previous position
+                    Note *prevNote = (Note*)lastChange.obj;
                     Note* tempNote = [tempFrame.notes objectAtIndex:lastChange.index];
                     [tempNote.notePosition updateX:[prevNote.notePosition xCoordinate] Y:[prevNote.notePosition yCoordinate]];
+                    
+                    // Update view
                     UILabel* tempLbl = [[self contentView].noteLabels objectAtIndex:lastChange.index];
-                    [tempLbl setCenter:CGPointMake(tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate)];
+                    CGRect r = [tempLbl frame];
+                    r.origin.x = prevNote.notePosition.xCoordinate;
+                    r.origin.y = prevNote.notePosition.yCoordinate;
+                    [tempLbl setFrame:r];
+                    NSLog(@"Moved position %i, %i", prevNote.notePosition.xCoordinate, prevNote.notePosition.yCoordinate);
                 }
                 break;
             default: // Moved / pinched / rotated an object
@@ -588,9 +595,6 @@
     // finally, add the label as a subview which will appear on stage
     [[self contentView].noteLabels addObject:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
-    //NSInteger index = [[self contentView].noteLabels count] - 1;
-    //UIView* temp = [[self contentView].subviews lastObject];
-    //temp.tag = index;
 }
 
 - (void)addActorToStage:(Actor*)actor

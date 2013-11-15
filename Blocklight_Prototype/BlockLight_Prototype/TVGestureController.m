@@ -244,16 +244,16 @@
         {            
             pieceType = @"Note";
             index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
-            Note* tempNote = [_frame.notes objectAtIndex:index];
+            Note *tempNote = [[_frame.notes objectAtIndex:index] copy];
             
             // Save position in undoArray before changing it
             newChange.changeType = -10;
             newChange.obj = tempNote;
             newChange.index = index;
             [_frame.undoArray addObject:newChange];
-            
+            NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
-            
+            NSLog(@"New position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             /*
             // JNN: if we use CGPoint, we could get rid of Position.h and Position.m
             // JNN: TODO: move piece to end of array, or else figure out some way to keep ordering from back to front in tact
