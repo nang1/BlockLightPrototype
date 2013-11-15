@@ -180,7 +180,7 @@
 {
     if([gesture state] == UIGestureRecognizerStateBegan)
     {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Don't Touch Me!" message:@"Will provide popup menu with options to modify pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Don't Touch Me!" message:@"Will provide popup menu with options to delete/modify pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
     }
 }
@@ -233,6 +233,9 @@
     {
         //Put the code that you may want to execute when the UIView became larger than certain value or just to reset them back to their original transform scale
         
+        // Used to save position of piece before it was moved
+        Undo_Redo* newChange = [[Undo_Redo alloc] init];
+        
         NSString* pieceType = @""; // used to indicate type of piece to be deleted
         int index = 0; // used to indicate index of object to be deleted in array
         
@@ -242,6 +245,13 @@
             pieceType = @"Note";
             index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
             Note* tempNote = [_frame.notes objectAtIndex:index];
+            
+            // Save position in undoArray before changing it
+            newChange.changeType = -10;
+            newChange.obj = tempNote;
+            newChange.index = index;
+            [_frame.undoArray addObject:newChange];
+            
             [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
             
             /*
@@ -325,12 +335,37 @@
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
         //NSLog(@"Throw in trash can");
-        if([alertView.title isEqual:@"Note"])
+        if([alertView.title isEqual:@"Note"]){
+            // Save object in case user wants the note back
+            //Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            //newChange.changeType = -5;
+            //newChange.obj = [_frame.notes objectAtIndex:alertView.tag];
+            //[_frame.undoArray addObject:newChange];
+            
+            // Alter last change to say it is a piece deletion, instead of moving a piece
+            Undo_Redo* tempAction = [_frame.undoArray lastObject];
+            tempAction.changeType = -5;
+            
             [self removeNoteAtIndex:alertView.tag];
-        else if([alertView.title isEqual:@"Set Piece"])
+        }
+        else if([alertView.title isEqual:@"Set Piece"]){
+            // Save object in case user wants the set piece back
+            Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            newChange.changeType = -5;
+            newChange.obj = [_frame.props objectAtIndex:alertView.tag];
+            [_frame.undoArray addObject:newChange];
+            
             [self removeSetPieceAtIndex:alertView.tag];
-        else if([alertView.title isEqualToString:@"Actor"])
+        }
+        else if([alertView.title isEqualToString:@"Actor"]){
+            // Save object in case user wants the note back
+            Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            newChange.changeType = -5;
+            newChange.obj = [_frame.actorsOnStage objectAtIndex:alertView.tag];
+            [_frame.undoArray addObject:newChange];
+            
             [self removeActorAtIndex:alertView.tag];
+        }
     }
 }
 

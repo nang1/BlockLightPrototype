@@ -192,8 +192,59 @@
 }
 // Undo the move that the user last did
 - (void)undoButton {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Undo Button" message:@"This button will undo you last change to the stage. Will implement undo button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    // Get frame
+    Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+    Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+
+    if([tempFrame.undoArray count] == 0){
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Undo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+        [alert show];
+    } else {
+        // Get last change
+        Undo_Redo* lastChange = [tempFrame.undoArray lastObject];
+        switch(lastChange.changeType){
+            case -1: // Added an object, so delete it
+                if([lastChange.obj isKindOfClass:[Note class]]){
+                    [_gestureCtrl removeNoteAtIndex:lastChange.index];
+                }
+                else if([lastChange.obj isKindOfClass:[Actor class]]){
+                    [_gestureCtrl removeActorAtIndex:lastChange.index];
+                }
+                else if([lastChange.obj isKindOfClass:[SetPiece class]]){
+                    [_gestureCtrl removeSetPieceAtIndex:lastChange.index];
+                }
+                break; // End undo adding an object
+                
+            case -5: // Deleted an object, bring it back
+                if([lastChange.obj isKindOfClass:[Note class]]){
+                    [tempFrame.notes addObject:lastChange.obj];
+                    [self addNoteToStage:[tempFrame.notes lastObject]];
+                }
+                else if([lastChange.obj isKindOfClass:[Actor class]]){
+                    [tempFrame.actorsOnStage addObject:lastChange.obj];
+                    [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+                }
+                else if([lastChange.obj isKindOfClass:[SetPiece class]]){
+                    [tempFrame.props addObject:lastChange.obj];
+                    [self addSetPieceToStage:[tempFrame.props lastObject]];
+                }
+                break; // End undo deleting an object
+                
+            case -10: // Moved a piece
+                if([lastChange.obj isKindOfClass:[Note class]]){
+                    Note* prevNote = (Note*)lastChange.obj;
+                    Note* tempNote = [tempFrame.notes objectAtIndex:lastChange.index];
+                    [tempNote.notePosition updateX:[prevNote.notePosition xCoordinate] Y:[prevNote.notePosition yCoordinate]];
+                    UILabel* tempLbl = [[self contentView].noteLabels objectAtIndex:lastChange.index];
+                    [tempLbl setCenter:CGPointMake(tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate)];
+                }
+                break;
+            default: // Moved / pinched / rotated an object
+                break;
+        }
+        // remove the change from frame's undoArray
+        [tempFrame.undoArray removeLastObject];
+    }
 }
 
 // Redo the move that the user last did
@@ -282,9 +333,12 @@
  */
 
 
-// check if popover was dismissed.
+// Check if popover was dismissed.
+// Add any new pieces in the frame to the stage
+// Also save the change to the undoArray in case the user has a change of mind and wants to undo
+// rather than drag the piece to the trash.
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    // check to see if number of notes, actors, or setpieces inside frame had changed
+    // Check to see if number of notes, actors, or setpieces inside frame had changed
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
 
@@ -297,7 +351,8 @@
         Undo_Redo* newChange = [[Undo_Redo alloc] init];
         newChange.changeType = -1;
         newChange.index = [tempFrame.notes count] - 1;
-        [tempFrame.undoArray addObject:[tempFrame.notes lastObject]];
+        newChange.obj =[tempFrame.notes lastObject];
+        [tempFrame.undoArray addObject:newChange];
     }
     
     // a actor was added
@@ -307,7 +362,8 @@
         Undo_Redo* newChange = [[Undo_Redo alloc] init];
         newChange.changeType = -1;
         newChange.index = [tempFrame.actorsOnStage count] - 1;
-        [tempFrame.undoArray addObject:[tempFrame.actorsOnStage lastObject]];
+        newChange.obj =[tempFrame.actorsOnStage lastObject];
+        [tempFrame.undoArray addObject:newChange];
     }
     
     // a setpiece was added
@@ -316,7 +372,8 @@
         Undo_Redo* newChange = [[Undo_Redo alloc] init];
         newChange.changeType = -1;
         newChange.index = [tempFrame.props count] - 1;
-        [tempFrame.undoArray addObject:[tempFrame.props lastObject]];
+        newChange.obj =[tempFrame.props lastObject];
+        [tempFrame.undoArray addObject:newChange];
     }
     
     [[self view] setNeedsDisplay]; // refreshes the view
@@ -531,6 +588,9 @@
     // finally, add the label as a subview which will appear on stage
     [[self contentView].noteLabels addObject:tempLabel];
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
+    //NSInteger index = [[self contentView].noteLabels count] - 1;
+    //UIView* temp = [[self contentView].subviews lastObject];
+    //temp.tag = index;
 }
 
 - (void)addActorToStage:(Actor*)actor
