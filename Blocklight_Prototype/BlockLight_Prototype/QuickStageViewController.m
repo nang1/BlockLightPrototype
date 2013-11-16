@@ -206,6 +206,7 @@
             case -1: // Added an object, so delete it
                 if([lastChange.obj isKindOfClass:[Note class]]){
                     [_gestureCtrl removeNoteAtIndex:lastChange.index];
+					// add to redo array
                 }
                 else if([lastChange.obj isKindOfClass:[Actor class]]){
                     [_gestureCtrl removeActorAtIndex:lastChange.index];
@@ -235,18 +236,26 @@
                     // Change note position to its previous position
                     Note *prevNote = (Note*)lastChange.obj;
                     Note* tempNote = [tempFrame.notes objectAtIndex:lastChange.index];
-                    [tempNote.notePosition updateX:[prevNote.notePosition xCoordinate] Y:[prevNote.notePosition yCoordinate]];
-                    
-                    // Update view
-                    UILabel* tempLbl = [[self contentView].noteLabels objectAtIndex:lastChange.index];
-                    CGRect r = [tempLbl frame];
-                    r.origin.x = prevNote.notePosition.xCoordinate;
-                    r.origin.y = prevNote.notePosition.yCoordinate;
-                    [tempLbl setFrame:r];
-                    NSLog(@"Moved position %i, %i", prevNote.notePosition.xCoordinate, prevNote.notePosition.yCoordinate);
+					
+					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
+					if((prevNote.notePosition.xCoordinate != tempNote.notePosition.xCoordinate) && (prevNote.notePosition.yCoordinate != tempNote.notePosition.yCoordinate)){
+						[tempNote.notePosition updateX:[prevNote.notePosition xCoordinate] Y:[prevNote.notePosition yCoordinate]];
+						
+						// Update view
+						UILabel* tempLbl = [[self contentView].noteLabels objectAtIndex:lastChange.index];
+						CGRect r = [tempLbl frame];
+						r.origin.x = prevNote.notePosition.xCoordinate;
+						r.origin.y = prevNote.notePosition.yCoordinate;
+						[tempLbl setFrame:r];
+						NSLog(@"Moved position %i, %i", prevNote.notePosition.xCoordinate, prevNote.notePosition.yCoordinate);
+					}
                 }
+				else if([lastChange.obj isKindOfClass:[Actor class]]){
+				}
+				else if([lastChange.obj isKindOfClass:[SetPiece class]]){
+				}
                 break;
-            default: // Moved / pinched / rotated an object
+            default: // pinched / rotated an object
                 break;
         }
         // remove the change from frame's undoArray
@@ -311,34 +320,6 @@
     _tvPopoverCtrl.popover = _btnPopover;
     _tvPopoverCtrl.popoverNav = _popoverNavCtrl;
 }
-
-/* Undo - redo notes
- Adding something  - popoverControllerDidDismissPopover
- class - notes / actors / set piece
- index - array index of object
- OR
- save actual object
- index = -1
- Put record in frame.undoArray
- Undo - call correct remove___AtIndex
- 
- Deleting something - gestureCtrl : remove___AtIndex
- save actual object
- index = -5
- Undo - add object to end of correct array in frame
- use bool temp = [piece isKindOfClass:[SetPiece class]]; to figure out which array is should go in
- 
- Moving - gestureCtrl : panGestureMoveAround
- class
- index
- position
- OR
- save copy of object before moving
- index - (index of object in frame array)
- 
- Pinch and rotate similar to move, need to check which movement was done
- */
-
 
 // Check if popover was dismissed.
 // Add any new pieces in the frame to the stage

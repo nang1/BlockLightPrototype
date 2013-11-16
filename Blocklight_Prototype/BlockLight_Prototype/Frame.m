@@ -17,6 +17,7 @@
 @synthesize notes = _notes;
 @synthesize notesPresent = _notesPresent;
 @synthesize undoArray = _undoArray;
+@synthesize redoArray = _redoArray;
 
 -(id)init{
     self = [super init];
@@ -29,6 +30,7 @@
     _notes = [[NSMutableArray alloc] init];
     _notesPresent = FALSE;
     _undoArray = [[NSMutableArray alloc] init];
+	_redoArray = [[NSMutableArray alloc] init];
     
     return self;
 }

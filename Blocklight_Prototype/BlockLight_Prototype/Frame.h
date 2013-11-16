@@ -17,6 +17,7 @@
     BOOL _notesPresent; //show or hide notes
     
     NSMutableArray* _undoArray;
+	NSMutableArray* _redoArray;
 }
 
 @property (strong) UIImage* frameIcon;
@@ -26,5 +27,6 @@
 @property (strong) NSMutableArray* notes;
 @property BOOL notesPresent;
 @property (strong) NSMutableArray* undoArray;
+@property (strong) NSMutableArray* redoArray;
 
 @end
