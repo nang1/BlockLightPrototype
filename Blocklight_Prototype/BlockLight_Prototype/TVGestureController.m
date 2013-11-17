@@ -244,11 +244,12 @@
         {            
             pieceType = @"Note";
             index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
-            Note *tempNote = [[_frame.notes objectAtIndex:index] copy];
+            Note *tempNote = [_frame.notes objectAtIndex:index];
+            Note* noteCopy = [[_frame.notes objectAtIndex:index] copy];
             
             // Save position in undoArray before changing it
             newChange.changeType = -10;
-            newChange.obj = tempNote;
+            newChange.obj = noteCopy;
             newChange.index = index;
             [_frame.undoArray addObject:newChange];
             NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
@@ -283,6 +284,16 @@
                 pieceType = @"Actor";
                 index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
                 Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+                Actor* actorCopy = [[_frame.actorsOnStage objectAtIndex:index] copy];
+                
+                // Save position in undoArray before changing it
+                newChange.changeType = -10;
+                newChange.obj = actorCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"Prev position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
+                [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
+                NSLog(@"New position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
                 [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
             }
             else // non-actor tag, must be a set piece
@@ -290,6 +301,16 @@
                 pieceType = @"Set Piece";
                 index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
                 SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+                SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
+                
+                // Save position in undoArray before changing it
+                newChange.changeType = -10;
+                newChange.obj = pieceCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"Prev position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
+                [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
+                NSLog(@"New position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
                 [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
             }
         }

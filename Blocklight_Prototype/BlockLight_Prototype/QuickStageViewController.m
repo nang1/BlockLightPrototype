@@ -251,8 +251,40 @@
 					}
                 }
 				else if([lastChange.obj isKindOfClass:[Actor class]]){
-				}
+                    // Change actor position to its previous position
+                    Actor *prevActor = (Actor*)lastChange.obj;
+                    Actor* tempNote = [tempFrame.actorsOnStage objectAtIndex:lastChange.index];
+					
+					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
+					if((prevActor.actorPosition.xCoordinate != tempNote.actorPosition.xCoordinate) && (prevActor.actorPosition.yCoordinate != tempNote.actorPosition.yCoordinate)){
+						[tempNote.actorPosition updateX:[prevActor.actorPosition xCoordinate] Y:[prevActor.actorPosition yCoordinate]];
+						
+						// Update view
+						UIImageView* tempLbl = [[self contentView].actorArray objectAtIndex:lastChange.index];
+						CGRect r = [tempLbl frame];
+						r.origin.x = prevActor.actorPosition.xCoordinate;
+						r.origin.y = prevActor.actorPosition.yCoordinate;
+						[tempLbl setFrame:r];
+						NSLog(@"Moved position %i, %i", prevActor.actorPosition.xCoordinate, prevActor.actorPosition.yCoordinate);
+					}
+                }
 				else if([lastChange.obj isKindOfClass:[SetPiece class]]){
+                    // Change actor position to its previous position
+                    SetPiece *prevActor = (SetPiece*)lastChange.obj;
+                    SetPiece* tempNote = [tempFrame.props objectAtIndex:lastChange.index];
+					
+					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
+					if((prevActor.piecePosition.xCoordinate != tempNote.piecePosition.xCoordinate) && (prevActor.piecePosition.yCoordinate != tempNote.piecePosition.yCoordinate)){
+						[tempNote.piecePosition updateX:[prevActor.piecePosition xCoordinate] Y:[prevActor.piecePosition yCoordinate]];
+						
+						// Update view
+						UIImageView* tempLbl = [[self contentView].propsArray objectAtIndex:lastChange.index];
+						CGRect r = [tempLbl frame];
+						r.origin.x = prevActor.piecePosition.xCoordinate;
+						r.origin.y = prevActor.piecePosition.yCoordinate;
+						[tempLbl setFrame:r];
+						NSLog(@"Moved position %i, %i", prevActor.piecePosition.xCoordinate, prevActor.piecePosition.yCoordinate);
+					}
 				}
                 break;
             default: // pinched / rotated an object
