@@ -190,6 +190,7 @@
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Back Button" message:@"This button will move you back to the main menu. Will implement back button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
     [alert show];
 }
+
 // Undo the move that the user last did
 - (void)undoButton {
     // Get frame
@@ -206,7 +207,6 @@
             case -1: // Added an object, so delete it
                 if([lastChange.obj isKindOfClass:[Note class]]){
                     [_gestureCtrl removeNoteAtIndex:lastChange.index];
-					// add to redo array
                 }
                 else if([lastChange.obj isKindOfClass:[Actor class]]){
                     [_gestureCtrl removeActorAtIndex:lastChange.index];
@@ -220,85 +220,117 @@
                 if([lastChange.obj isKindOfClass:[Note class]]){
                     [tempFrame.notes addObject:lastChange.obj];
                     [self addNoteToStage:[tempFrame.notes lastObject]];
+                    // Save note's index for redo feature
+                    lastChange.index = [tempFrame.notes count] - 1;
                 }
                 else if([lastChange.obj isKindOfClass:[Actor class]]){
                     [tempFrame.actorsOnStage addObject:lastChange.obj];
                     [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+                    // Save actor's index for redo feature
+                    lastChange.index = [tempFrame.actorsOnStage count] - 1;
                 }
                 else if([lastChange.obj isKindOfClass:[SetPiece class]]){
                     [tempFrame.props addObject:lastChange.obj];
                     [self addSetPieceToStage:[tempFrame.props lastObject]];
+                    // Save set piece's index for redo feature
+                    lastChange.index = [tempFrame.props count] - 1;
                 }
                 break; // End undo deleting an object
                 
-            case -10: // Moved a piece
+            case -10: // Moved a piece. To undo, move it back to previous position
                 if([lastChange.obj isKindOfClass:[Note class]]){
                     // Change note position to its previous position
-                    Note *prevNote = (Note*)lastChange.obj;
-                    Note* tempNote = [tempFrame.notes objectAtIndex:lastChange.index];
-					
-					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
-					if((prevNote.notePosition.xCoordinate != tempNote.notePosition.xCoordinate) && (prevNote.notePosition.yCoordinate != tempNote.notePosition.yCoordinate)){
-						[tempNote.notePosition updateX:[prevNote.notePosition xCoordinate] Y:[prevNote.notePosition yCoordinate]];
-						
-						// Update view
-						UILabel* tempLbl = [[self contentView].noteLabels objectAtIndex:lastChange.index];
-						CGRect r = [tempLbl frame];
-						r.origin.x = prevNote.notePosition.xCoordinate;
-						r.origin.y = prevNote.notePosition.yCoordinate;
-						[tempLbl setFrame:r];
-						NSLog(@"Moved position %i, %i", prevNote.notePosition.xCoordinate, prevNote.notePosition.yCoordinate);
-					}
+                    Note *prevPos = (Note*)lastChange.obj;
+                    Note* currentPos = [tempFrame.notes objectAtIndex:lastChange.index];
+                    [currentPos.notePosition updateX:[prevPos.notePosition xCoordinate] Y:[prevPos.notePosition yCoordinate]];
+
+                    // Update View
+                    UILabel* tempView = [[self contentView].noteLabels objectAtIndex:lastChange.index];
+                    [self updateUndoRedoView:prevPos.notePosition ofObject:tempView];
                 }
-				else if([lastChange.obj isKindOfClass:[Actor class]]){
+                else if([lastChange.obj isKindOfClass:[Actor class]]){
                     // Change actor position to its previous position
-                    Actor *prevActor = (Actor*)lastChange.obj;
-                    Actor* tempNote = [tempFrame.actorsOnStage objectAtIndex:lastChange.index];
-					
-					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
-					if((prevActor.actorPosition.xCoordinate != tempNote.actorPosition.xCoordinate) && (prevActor.actorPosition.yCoordinate != tempNote.actorPosition.yCoordinate)){
-						[tempNote.actorPosition updateX:[prevActor.actorPosition xCoordinate] Y:[prevActor.actorPosition yCoordinate]];
+                    Actor *prevPos = (Actor*)lastChange.obj;
+                    Actor* currentPos = [tempFrame.actorsOnStage objectAtIndex:lastChange.index];
+                    [currentPos.actorPosition updateX:[prevPos.actorPosition xCoordinate] Y:[prevPos.actorPosition yCoordinate]];
 						
-						// Update view
-						UIImageView* tempLbl = [[self contentView].actorArray objectAtIndex:lastChange.index];
-						CGRect r = [tempLbl frame];
-						r.origin.x = prevActor.actorPosition.xCoordinate;
-						r.origin.y = prevActor.actorPosition.yCoordinate;
-						[tempLbl setFrame:r];
-						NSLog(@"Moved position %i, %i", prevActor.actorPosition.xCoordinate, prevActor.actorPosition.yCoordinate);
-					}
+                    // Update view
+                    UIImageView* tempView =[[self contentView].actorArray objectAtIndex:lastChange.index];
+                    [self updateUndoRedoView:prevPos.actorPosition ofObject:tempView];
                 }
 				else if([lastChange.obj isKindOfClass:[SetPiece class]]){
-                    // Change actor position to its previous position
-                    SetPiece *prevActor = (SetPiece*)lastChange.obj;
-                    SetPiece* tempNote = [tempFrame.props objectAtIndex:lastChange.index];
-					
-					// Haven't figured out why, but it will undo an action and put it in the same spot has current position, so just remove it and don't do anything.
-					if((prevActor.piecePosition.xCoordinate != tempNote.piecePosition.xCoordinate) && (prevActor.piecePosition.yCoordinate != tempNote.piecePosition.yCoordinate)){
-						[tempNote.piecePosition updateX:[prevActor.piecePosition xCoordinate] Y:[prevActor.piecePosition yCoordinate]];
+                    // Change set piece position to its previous position
+                    SetPiece *prevPos = (SetPiece*)lastChange.obj;
+                    SetPiece* currentPos = [tempFrame.props objectAtIndex:lastChange.index];
+                    [currentPos.piecePosition updateX:[prevPos.piecePosition xCoordinate] Y:[prevPos.piecePosition yCoordinate]];
 						
-						// Update view
-						UIImageView* tempLbl = [[self contentView].propsArray objectAtIndex:lastChange.index];
-						CGRect r = [tempLbl frame];
-						r.origin.x = prevActor.piecePosition.xCoordinate;
-						r.origin.y = prevActor.piecePosition.yCoordinate;
-						[tempLbl setFrame:r];
-						NSLog(@"Moved position %i, %i", prevActor.piecePosition.xCoordinate, prevActor.piecePosition.yCoordinate);
-					}
+                    // Update view
+                    UIImageView* tempView = [[self contentView].propsArray objectAtIndex:lastChange.index];
+                    [self updateUndoRedoView:prevPos.piecePosition ofObject:tempView];
 				}
                 break;
             default: // pinched / rotated an object
                 break;
         }
-        // remove the change from frame's undoArray
+        // lastChange was altered, make a copy and put into redoArray
+        Undo_Redo *changeCopy = [lastChange copy];
+        [tempFrame.redoArray addObject:changeCopy];
+        // remove the change from frame's undoArray, put into redoArray
         [tempFrame.undoArray removeLastObject];
     }
 }
 
+// An undo move was performed, need to update view to show movement
+-(void)updateUndoRedoView:(Position*)pos ofObject:(UIView*)obj{
+    CGRect r = [obj frame];
+    r.origin.x = pos.xCoordinate;
+    r.origin.y = pos.yCoordinate;
+    [obj setFrame:r];
+    NSLog(@"Moved position %i, %i", pos.xCoordinate, pos.yCoordinate);
+}
+
 // Redo the move that the user last did
 - (void)redoButton {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Redo Button" message:@"This button will redo the change caused by undo. Will implement redo button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    /*UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Redo Button" message:@"This button will redo the change caused by undo. Will implement redo button at a later time." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alert show];*/
+    // Get frame
+    Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+    Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+        
+    if([tempFrame.redoArray count] == 0){
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Redo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+            [alert show];
+    } else {
+        // Get last change
+        Undo_Redo* lastChange = [tempFrame.redoArray lastObject];
+        switch(lastChange.changeType){
+            case -1: // An object was deleted, bring it back
+                if([lastChange.obj isKindOfClass:[Note class]]){
+                    [tempFrame.notes addObject:lastChange.obj];
+                    [self addNoteToStage:[tempFrame.notes lastObject]];
+                    // Save note's index for redo feature
+                    //lastChange.index = [tempFrame.notes count] - 1;
+                }
+                else if([lastChange.obj isKindOfClass:[Actor class]]){
+                    [tempFrame.actorsOnStage addObject:lastChange.obj];
+                    [self addActorToStage:[tempFrame.actorsOnStage lastObject]];
+                    // Save actor's index for redo feature
+                    //lastChange.index = [tempFrame.actorsOnStage count] - 1;
+                }
+                else if([lastChange.obj isKindOfClass:[SetPiece class]]){
+                    [tempFrame.props addObject:lastChange.obj];
+                    [self addSetPieceToStage:[tempFrame.props lastObject]];
+                    // Save set piece's index for redo feature
+                    //lastChange.index = [tempFrame.props count] - 1;
+                }
+                NSLog(@"trying to add back an object");
+                break;
+            default:
+                break;
+        }
+        // remove change from frame's redoArray
+        [tempFrame.redoArray removeLastObject];
+    }
 }
 
 // Method for creating popover upon bar button press

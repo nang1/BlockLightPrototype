@@ -27,4 +27,14 @@
     return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone{
+    id copy = [[[self class] alloc] init];
+    if(copy){
+        [copy setObj:_obj];
+        [copy setChangeType:_changeType];
+        [copy setIndex:_index];
+    }
+    return copy;
+}
+
 @end

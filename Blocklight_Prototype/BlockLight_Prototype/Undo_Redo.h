@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Undo_Redo : NSObject {
+@interface Undo_Redo : NSObject <NSCopying> {
     NSObject* _obj; // object that was changed
     int _changeType; // indicates what change occured
     int _index; // index where object is
