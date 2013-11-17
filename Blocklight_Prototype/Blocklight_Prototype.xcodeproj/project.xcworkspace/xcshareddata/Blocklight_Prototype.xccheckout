@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C4E87AC0-9CB3-4DB7-91FE-E3D64B594DD0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Blocklight_Prototype</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E680C7E2-5CC5-4851-AE12-9C9D97F5BA28</key>
+		<string>https://github.com/nang1/BlockLightPrototype.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Blocklight_Prototype/Blocklight_Prototype.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E680C7E2-5CC5-4851-AE12-9C9D97F5BA28</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/nang1/BlockLightPrototype.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E680C7E2-5CC5-4851-AE12-9C9D97F5BA28</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E680C7E2-5CC5-4851-AE12-9C9D97F5BA28</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlockLightPrototype</string>
+		</dict>
+	</array>
+</dict>
+</plist>

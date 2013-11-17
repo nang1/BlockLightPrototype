@@ -233,6 +233,9 @@
     {
         //Put the code that you may want to execute when the UIView became larger than certain value or just to reset them back to their original transform scale
         
+        // Used to save position of piece before it was moved
+        Undo_Redo* newChange = [[Undo_Redo alloc] init];
+        
         NSString* pieceType = @""; // used to indicate type of piece to be deleted
         int index = 0; // used to indicate index of object to be deleted in array
         
@@ -241,9 +244,17 @@
         {            
             pieceType = @"Note";
             index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
-            Note* tempNote = [_frame.notes objectAtIndex:index];
-            [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
+            Note *tempNote = [_frame.notes objectAtIndex:index];
+            Note* noteCopy = [[_frame.notes objectAtIndex:index] copy];
             
+            // Save position in undoArray before changing it
+            newChange.changeType = -10;
+            newChange.obj = noteCopy;
+            newChange.index = index;
+            [_frame.undoArray addObject:newChange];
+            NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
+            [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
+            NSLog(@"New position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             /*
             // JNN: if we use CGPoint, we could get rid of Position.h and Position.m
             // JNN: TODO: move piece to end of array, or else figure out some way to keep ordering from back to front in tact
@@ -273,6 +284,16 @@
                 pieceType = @"Actor";
                 index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
                 Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+                Actor* actorCopy = [[_frame.actorsOnStage objectAtIndex:index] copy];
+                
+                // Save position in undoArray before changing it
+                newChange.changeType = -10;
+                newChange.obj = actorCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"Prev position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
+                [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
+                NSLog(@"New position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
                 [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
             }
             else // non-actor tag, must be a set piece
@@ -280,6 +301,16 @@
                 pieceType = @"Set Piece";
                 index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
                 SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+                SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
+                
+                // Save position in undoArray before changing it
+                newChange.changeType = -10;
+                newChange.obj = pieceCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"Prev position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
+                [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
+                NSLog(@"New position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
                 [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
             }
         }
@@ -325,12 +356,37 @@
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
         //NSLog(@"Throw in trash can");
-        if([alertView.title isEqual:@"Note"])
+        if([alertView.title isEqual:@"Note"]){
+            // Save object in case user wants the note back
+            //Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            //newChange.changeType = -5;
+            //newChange.obj = [_frame.notes objectAtIndex:alertView.tag];
+            //[_frame.undoArray addObject:newChange];
+            
+            // Alter last change to say it is a piece deletion, instead of moving a piece
+            Undo_Redo* tempAction = [_frame.undoArray lastObject];
+            tempAction.changeType = -5;
+            
             [self removeNoteAtIndex:alertView.tag];
-        else if([alertView.title isEqual:@"Set Piece"])
+        }
+        else if([alertView.title isEqual:@"Set Piece"]){
+            // Save object in case user wants the set piece back
+            Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            newChange.changeType = -5;
+            newChange.obj = [_frame.props objectAtIndex:alertView.tag];
+            [_frame.undoArray addObject:newChange];
+            
             [self removeSetPieceAtIndex:alertView.tag];
-        else if([alertView.title isEqualToString:@"Actor"])
+        }
+        else if([alertView.title isEqualToString:@"Actor"]){
+            // Save object in case user wants the note back
+            Undo_Redo* newChange = [[Undo_Redo alloc] init];
+            newChange.changeType = -5;
+            newChange.obj = [_frame.actorsOnStage objectAtIndex:alertView.tag];
+            [_frame.undoArray addObject:newChange];
+            
             [self removeActorAtIndex:alertView.tag];
+        }
     }
 }
 

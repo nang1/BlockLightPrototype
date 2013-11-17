@@ -14,6 +14,7 @@
 #import "Note.h"
 #import "SetPiece.h"
 #import "Actor.h"
+#import "Undo_Redo.h"
 
 @interface TVGestureController : UIViewController<UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
