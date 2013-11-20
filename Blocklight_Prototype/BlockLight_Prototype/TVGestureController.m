@@ -109,15 +109,28 @@
     // JNN: TODO: set scaling min and maximum values
     CGAffineTransform matrix = CGAffineTransformScale(piece.transform, newScale, newScale);
     [piece setTransform:matrix];
-    
+
     // so the next pinch gesture doesn't become skewed
     [gesture setScale:1];
-    
+
+    // Used to save size of piece before it is changed
+    Undo_Redo* newChange = [[Undo_Redo alloc] init];
+
     // save the matrix to the piece
     if([piece isMemberOfClass:[UILabel class]])
     {
         int index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
         Note* tempNote = [_frame.notes objectAtIndex:index];
+        // Save current size in undoArray before changing it
+        if([gesture state] == UIGestureRecognizerStateEnded){
+            Note* noteCopy = [[_frame.notes objectAtIndex:index] copy];
+            newChange.changeType = -10;
+            newChange.obj = noteCopy;
+            newChange.index = index;
+            [_frame.undoArray addObject:newChange];
+            NSLog(@"a piece was pinched");
+        }
+        // set new matrix
         tempNote.scaleRotationMatrix = matrix;
     }
     else if([piece isMemberOfClass:[UIImageView class]])
@@ -126,12 +139,32 @@
         {
             int index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
             Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+            // Save current size in undoArray before changing it
+            if([gesture state] == UIGestureRecognizerStateEnded){
+                Actor* actorCopy = [[_frame.actorsOnStage objectAtIndex:index] copy];
+                newChange.changeType = -10;
+                newChange.obj = actorCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                    NSLog(@"a piece was pinched");
+            }
+            // Set new size
             tempActor.scaleRotationMatrix = matrix;
         }
         else // set piece
         {
             int index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
             SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+            // Save current size in undoArray before changing it
+            if([gesture state] == UIGestureRecognizerStateEnded){
+                SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
+                newChange.changeType = -15;
+                newChange.obj = pieceCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                    NSLog(@"a piece was pinched");
+            }
+            // Set new size
             tempPiece.scaleRotationMatrix = matrix;
         }
     }
@@ -151,11 +184,25 @@
     // so the next rotation gesture doesn't become skewed
     [gesture setRotation:0];
     
+    // Used to save rotation of piece before it is changed
+    Undo_Redo* newChange = [[Undo_Redo alloc] init];
+    
     // save the matrix to the piece
     if([piece isMemberOfClass:[UILabel class]])
     {
         int index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
         Note* tempNote = [_frame.notes objectAtIndex:index];
+        
+        // Save current rotation in undoArray before changing it
+        if([gesture state] == UIGestureRecognizerStateEnded){
+            Note* noteCopy = [[_frame.notes objectAtIndex:index] copy];
+            newChange.changeType = -10;
+            newChange.obj = noteCopy;
+            newChange.index = index;
+            [_frame.undoArray addObject:newChange];
+            NSLog(@"a piece was rotated");
+        }
+        // Set new rotation
         tempNote.scaleRotationMatrix = matrix;
     }
     else if([piece isMemberOfClass:[UIImageView class]])
@@ -164,12 +211,34 @@
         {
             int index = [_quickStageView.actorArray indexOfObject:(UIImageView*)piece];
             Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
+            
+            // Save current rotation in undoArray before changing it
+            if([gesture state] == UIGestureRecognizerStateEnded){
+                Actor* actorCopy = [[_frame.actorsOnStage objectAtIndex:index] copy];
+                newChange.changeType = -10;
+                newChange.obj = actorCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"a piece was rotated");
+            }
+            // Set new rotation
             tempActor.scaleRotationMatrix = matrix;
         }
         else // set piece
         {
             int index = [_quickStageView.propsArray indexOfObject:(UIImageView*)piece];
             SetPiece* tempPiece = [_frame.props objectAtIndex:index];
+            
+            // Save current rotation in undoArray before changing it
+            if([gesture state] == UIGestureRecognizerStateEnded){
+                SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
+                newChange.changeType = -10;
+                newChange.obj = pieceCopy;
+                newChange.index = index;
+                [_frame.undoArray addObject:newChange];
+                NSLog(@"a piece was rotated");
+            }
+            // Set new rotation
             tempPiece.scaleRotationMatrix = matrix;
         }
     }
@@ -247,12 +316,12 @@
             Note *tempNote = [_frame.notes objectAtIndex:index];
             Note* noteCopy = [[_frame.notes objectAtIndex:index] copy];
             
-            // Save position in undoArray before changing it
+            // Save current position in undoArray before changing it
             newChange.changeType = -10;
             newChange.obj = noteCopy;
             newChange.index = index;
             [_frame.undoArray addObject:newChange];
-            NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
+            //NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
             NSLog(@"New position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             /*
@@ -286,15 +355,14 @@
                 Actor* tempActor = [_frame.actorsOnStage objectAtIndex:index];
                 Actor* actorCopy = [[_frame.actorsOnStage objectAtIndex:index] copy];
                 
-                // Save position in undoArray before changing it
+                // Save current position in undoArray before changing it
                 newChange.changeType = -10;
                 newChange.obj = actorCopy;
                 newChange.index = index;
                 [_frame.undoArray addObject:newChange];
-                NSLog(@"Prev position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
+                //NSLog(@"Prev position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
                 [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
                 NSLog(@"New position %i, %i", tempActor.actorPosition.xCoordinate, tempActor.actorPosition.yCoordinate);
-                [tempActor.actorPosition updateX:[piece center].x Y:[piece center].y];
             }
             else // non-actor tag, must be a set piece
             {
@@ -303,15 +371,14 @@
                 SetPiece* tempPiece = [_frame.props objectAtIndex:index];
                 SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
                 
-                // Save position in undoArray before changing it
+                // Save current position in undoArray before changing it
                 newChange.changeType = -10;
                 newChange.obj = pieceCopy;
                 newChange.index = index;
                 [_frame.undoArray addObject:newChange];
-                NSLog(@"Prev position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
+                //NSLog(@"Prev position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
                 [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
                 NSLog(@"New position %i, %i", tempPiece.piecePosition.xCoordinate, tempPiece.piecePosition.yCoordinate);
-                [tempPiece.piecePosition updateX:[piece center].x Y:[piece center].y];
             }
         }
         
@@ -357,12 +424,6 @@
     {
         //NSLog(@"Throw in trash can");
         if([alertView.title isEqual:@"Note"]){
-            // Save object in case user wants the note back
-            //Undo_Redo* newChange = [[Undo_Redo alloc] init];
-            //newChange.changeType = -5;
-            //newChange.obj = [_frame.notes objectAtIndex:alertView.tag];
-            //[_frame.undoArray addObject:newChange];
-            
             // Alter last change to say it is a piece deletion, instead of moving a piece
             Undo_Redo* tempAction = [_frame.undoArray lastObject];
             tempAction.changeType = -5;
