@@ -32,6 +32,7 @@
 	if (copy) {
 		[copy setNotePosition:[self.notePosition copyWithZone:zone]];
 		[copy setNoteStr:[NSMutableString stringWithString:self.noteStr]];
+        [copy setScaleRotationMatrix:_scaleRotationMatrix];
 	}
 	return copy;
 }

@@ -104,7 +104,7 @@
     // grab the view and the scale
     UIView *piece = [gesture view];
     CGFloat newScale = [gesture scale];
-
+    
     // calculate the new transformation matrix
     // JNN: TODO: set scaling min and maximum values
     CGAffineTransform matrix = CGAffineTransformScale(piece.transform, newScale, newScale);
@@ -158,7 +158,7 @@
             // Save current size in undoArray before changing it
             if([gesture state] == UIGestureRecognizerStateEnded){
                 SetPiece* pieceCopy = [[_frame.props objectAtIndex:index] copy];
-                newChange.changeType = -15;
+                newChange.changeType = -10;
                 newChange.obj = pieceCopy;
                 newChange.index = index;
                 [_frame.undoArray addObject:newChange];
@@ -187,7 +187,6 @@
     // Used to save rotation of piece before it is changed
     Undo_Redo* newChange = [[Undo_Redo alloc] init];
     
-    // save the matrix to the piece
     if([piece isMemberOfClass:[UILabel class]])
     {
         int index = [_quickStageView.noteLabels indexOfObject:(UILabel*)piece];
@@ -422,30 +421,18 @@
 {
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
     {
+        // Alter last change in undoArray to say it is a piece deletion, instead of moving a piece
+        Undo_Redo* tempAction = [_frame.undoArray lastObject];
+        tempAction.changeType = -5;
+        
         //NSLog(@"Throw in trash can");
         if([alertView.title isEqual:@"Note"]){
-            // Alter last change to say it is a piece deletion, instead of moving a piece
-            Undo_Redo* tempAction = [_frame.undoArray lastObject];
-            tempAction.changeType = -5;
-            
             [self removeNoteAtIndex:alertView.tag];
         }
         else if([alertView.title isEqual:@"Set Piece"]){
-            // Save object in case user wants the set piece back
-            Undo_Redo* newChange = [[Undo_Redo alloc] init];
-            newChange.changeType = -5;
-            newChange.obj = [_frame.props objectAtIndex:alertView.tag];
-            [_frame.undoArray addObject:newChange];
-            
             [self removeSetPieceAtIndex:alertView.tag];
         }
         else if([alertView.title isEqualToString:@"Actor"]){
-            // Save object in case user wants the note back
-            Undo_Redo* newChange = [[Undo_Redo alloc] init];
-            newChange.changeType = -5;
-            newChange.obj = [_frame.actorsOnStage objectAtIndex:alertView.tag];
-            [_frame.undoArray addObject:newChange];
-            
             [self removeActorAtIndex:alertView.tag];
         }
     }

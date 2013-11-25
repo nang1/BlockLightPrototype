@@ -37,6 +37,7 @@
 		[copy setActorName:[self deepLabelCopy:self.actorName] ];
 		[copy setActorPosition:[self.actorPosition copyWithZone:zone]];
 		[copy setActorIcon:[UIImage imageWithCGImage:self.actorIcon.CGImage]];
+        [copy setScaleRotationMatrix:_scaleRotationMatrix];
 	}
 	return copy;
 }
