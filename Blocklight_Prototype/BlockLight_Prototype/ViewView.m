@@ -67,14 +67,22 @@
                 case 2: // Switch for Spike Tape
                 {
                     cell.textLabel.text = @"Show Spike Tape";
-                    UISwitch* switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [switchview addTarget:self action:@selector(spikeTapeSwitch) forControlEvents:UIControlEventValueChanged];
-                    //[switchview setOn:[self contentView].grid animated:NO];
-                    
-                    cell.accessoryView = switchview;
+                    _spikeTapeSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_spikeTapeSwitchView addTarget:self action:@selector(spikeTapeSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_spikeTapeSwitchView setOn:_popoverCtrl.quickView.showSpikeTape animated:NO];
+                    cell.accessoryView = _spikeTapeSwitchView;
                 }
                     break;
-                case 3:
+                case 3: // Switch for Traffic Patterns
+                {
+                    cell.textLabel.text = @"Show Traffic Patterns";
+                    _trafficPatternSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_trafficPatternSwitchView addTarget:self action:@selector(trafficPatternSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_trafficPatternSwitchView setOn:_popoverCtrl.quickView.showTrafficTape animated:NO];
+                    cell.accessoryView = _trafficPatternSwitchView;
+                }
+                    break;
+                case 4:
                     //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
                     cell.textLabel.text = @"Show Stage Apron";
                     _apronSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
@@ -98,12 +106,6 @@
             cell.textLabel.textColor = [UIColor grayColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             break;
-        /*case 3: // Stage Apron
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
-            cell.textLabel.text = @"Stage Apron";
-            cell.textLabel.textColor = [UIColor grayColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            break;//*/
         default:
             cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuse"];
             break;
@@ -134,7 +136,7 @@
 
 // Determines the number of sections for a table
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger section = 3;
+    NSInteger section = 1;//3;
     return section;
 }
 
@@ -163,15 +165,6 @@
     }
     else if(section == 2){ // Audience View
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Audience View" message:@"Will show or hide something that interacts with the audience." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    }
-    else if(section == 3) // Stage Apron
-    {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Stage Apron"
-                                                        message:@"Will show or hide the stage apron."
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Ok", nil];
         [alert show];
     }
 }
@@ -215,8 +208,28 @@
 // User clicked the switch for showing/hiding spike tape
 - (void)spikeTapeSwitch
 {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spike Tape" message:@"Will show or hide the spike tape." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+    if([_spikeTapeSwitchView isOn])
+    {
+        _popoverCtrl.quickView.showSpikeTape = YES;
+    }
+    else // switched spike tape off
+    {
+        _popoverCtrl.quickView.showSpikeTape = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
+}
+
+-(void)trafficPatternSwitch
+{
+    if([_trafficPatternSwitchView isOn])
+    {
+        _popoverCtrl.quickView.showTrafficTape = YES;
+    }
+    else // switched spike tape off
+    {
+        _popoverCtrl.quickView.showTrafficTape = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
 
 /*
