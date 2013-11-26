@@ -47,12 +47,25 @@
     switch(section){
         case 0:
         {
-            cell.textLabel.text = @"Spike Tape";
-            UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-            [switchview addTarget:self action:@selector(spikeTape) forControlEvents:UIControlEventValueChanged];
-            //[switchview setOn:[self contentView].spikeTape animated:NO];
-            
-            cell.accessoryView = switchview;
+            switch(row)
+            {
+            case 0:
+                cell.textLabel.text = @"Draw Spike Tape";
+                _spikeTapeSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+                [_spikeTapeSwitch addTarget:self action:@selector(spikeTape) forControlEvents:UIControlEventValueChanged];
+                [_spikeTapeSwitch setOn:_popoverCtrl.quickView.makeSpikeTape animated:NO];
+                cell.accessoryView = _spikeTapeSwitch;
+                break;
+            case 1:
+                cell.textLabel.text = @"Draw Traffic Patterns";
+                _trafficPatternSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+                [_trafficPatternSwitch addTarget:self action:@selector(trafficPatterns) forControlEvents:UIControlEventValueChanged];
+                [_trafficPatternSwitch setOn:_popoverCtrl.quickView.makeTrafficTape animated:NO];
+                cell.accessoryView = _trafficPatternSwitch;
+                break;
+            default:
+                break;
+            }
         }
             break;
         
@@ -115,7 +128,7 @@
     
     switch (section) {
         case 0:
-            rows = 1;
+            rows = 2;
             break;
             
         case 1:
@@ -147,7 +160,7 @@
     TVPopoverViewController* newPopViewCtrl;
     switch(section){
         case 0:
-            // spike tape
+            // spike tape and traffic patterns
             break;
         case 1: // Go to list of set pieces
             switch (row) {
@@ -209,10 +222,36 @@
     }
 }
 
-- (void)spikeTape {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Spike Tape" message:@"Supposed to show or hide spike tape." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    [alert show];
+- (void)spikeTape
+{
+    if([_spikeTapeSwitch isOn])
+    {
+        _popoverCtrl.quickView.makeSpikeTape = YES;
+        _popoverCtrl.quickView.makeTrafficTape = NO;
+        [_trafficPatternSwitch setOn:NO animated:YES];
+    }
+    else // switched spike tape off
+    {
+        _popoverCtrl.quickView.makeSpikeTape = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
 }
+
+-(void)trafficPatterns
+{
+    if([_trafficPatternSwitch isOn])
+    {
+        _popoverCtrl.quickView.makeTrafficTape = YES;
+        _popoverCtrl.quickView.makeSpikeTape = NO;
+        [_spikeTapeSwitch setOn:NO animated:YES];
+    }
+    else // switched spike tape off
+    {
+        _popoverCtrl.quickView.makeTrafficTape = NO;
+    }
+    [_popoverCtrl.quickView setNeedsDisplay];
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

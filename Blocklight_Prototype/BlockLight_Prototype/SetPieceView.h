@@ -17,6 +17,8 @@
     TVPopoverViewController* _popoverCtrl;
     
     Frame* _frame; // where all the set pieces are stored
+    UISwitch* _spikeTapeSwitch;
+    UISwitch* _trafficPatternSwitch;
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
@@ -24,5 +26,6 @@
 // These methods may need to be modified as we add the implementation
 - (id)initWithFrame:(CGRect) frame withProductionFrame:(Frame*)currentFrame withViewController:(TVPopoverViewController*)viewController;
 - (void)spikeTape;
+- (void)trafficPatterns;
 
 @end

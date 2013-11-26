@@ -63,6 +63,7 @@
 		86572CD017E8BC950081513F /* bg-production.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 86572C8417E8BA040081513F /* bg-production.jpg */; };
 		86572CDA17E8C0E10081513F /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CD917E8C0E10081513F /* NoteView.m */; };
 		86572CDB17E8C12E0081513F /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CD917E8C0E10081513F /* NoteView.m */; };
+		86725B111844FCB80001D48F /* Line.m in Sources */ = {isa = PBXBuildFile; fileRef = 86725B101844FCB80001D48F /* Line.m */; };
 		867CB8EF17F2349A00E8B0F5 /* TVGestureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8EC17F2349A00E8B0F5 /* TVGestureController.m */; };
 		867CB8F017F2349A00E8B0F5 /* TVPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8EE17F2349A00E8B0F5 /* TVPopoverViewController.m */; };
 		867CB8F717F2393900E8B0F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8F417F2393900E8B0F5 /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -182,6 +183,8 @@
 		86572CA617E8BA040081513F /* UserData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
 		86572CD817E8C0E10081513F /* NoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteView.h; sourceTree = "<group>"; };
 		86572CD917E8C0E10081513F /* NoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteView.m; sourceTree = "<group>"; };
+		86725B0F1844FCB80001D48F /* Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Line.h; path = BlockLight_Prototype/Line.h; sourceTree = SOURCE_ROOT; };
+		86725B101844FCB80001D48F /* Line.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Line.m; path = BlockLight_Prototype/Line.m; sourceTree = SOURCE_ROOT; };
 		867CB8E917F2340500E8B0F5 /* Defaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Defaults.h; path = BlockLight_Prototype/Defaults.h; sourceTree = SOURCE_ROOT; };
 		867CB8EB17F2349A00E8B0F5 /* TVGestureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TVGestureController.h; path = BlockLight_Prototype/TVGestureController.h; sourceTree = SOURCE_ROOT; };
 		867CB8EC17F2349A00E8B0F5 /* TVGestureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TVGestureController.m; path = BlockLight_Prototype/TVGestureController.m; sourceTree = SOURCE_ROOT; };
@@ -444,6 +447,8 @@
 				86572CA017E8BA040081513F /* Scene.m */,
 				86572CA117E8BA040081513F /* SetPiece.h */,
 				86572CA217E8BA040081513F /* SetPiece.m */,
+				86725B0F1844FCB80001D48F /* Line.h */,
+				86725B101844FCB80001D48F /* Line.m */,
 				86572CA317E8BA040081513F /* Stage.h */,
 				86572CA417E8BA040081513F /* Stage.m */,
 				86572CA517E8BA040081513F /* UserData.h */,
@@ -671,6 +676,7 @@
 				8BB977D7180F1A52001C1EDE /* GridOptionsView.m in Sources */,
 				8B85A8C6180F3DB700E3A26D /* ActorView.m in Sources */,
 				8B9C16F718159BA80087C814 /* SetPieceListView.m in Sources */,
+				86725B111844FCB80001D48F /* Line.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

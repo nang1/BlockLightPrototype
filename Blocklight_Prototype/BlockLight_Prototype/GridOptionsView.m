@@ -64,32 +64,7 @@
                     [_gridSwitchView setOn:_popoverCtrl.production.stage.grid animated: NO];
                     cell.accessoryView = _gridSwitchView;
                     break;
-                case 1: // show ruler switch
-                    cell.textLabel.text = @"Show Ruler";
-                    _rulerSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [_rulerSwitchView addTarget:self action:@selector(rulerSwitch) forControlEvents:UIControlEventValueChanged];
-                    [_rulerSwitchView setOn:_popoverCtrl.production.stage.ruler animated: NO];
-                    cell.accessoryView = _rulerSwitchView;
-                    break;
-                case 2: // measurement switch
-                {
-                    cell.textLabel.text = @"Use Metric System"; // Feet or Meters
-                    _metricSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                    [_metricSwitchView addTarget:self action:@selector(metricSwitch) forControlEvents:UIControlEventValueChanged];
-                    
-                    if(_popoverCtrl.production.stage.measurementType == FEET)
-                    {
-                        [_metricSwitchView setOn:NO animated:NO];
-                    }
-                    else // meters
-                    {
-                        [_metricSwitchView setOn:YES animated:NO];
-                    }
-                    
-                    cell.accessoryView = _metricSwitchView;
-                }
-                    break;
-                case 3: // grid types radio buttons/table
+                case 1: // grid types radio buttons/table
                 {
                     cell.textLabel.text = @"Grid Type";
                     
@@ -128,6 +103,31 @@
                     [cell addSubview:_horizontal];
                     [cell addSubview:vText];
                     [cell addSubview:_vertical];
+                }
+                    break;
+                case 2: // show ruler switch
+                    cell.textLabel.text = @"Show Ruler";
+                    _rulerSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_rulerSwitchView addTarget:self action:@selector(rulerSwitch) forControlEvents:UIControlEventValueChanged];
+                    [_rulerSwitchView setOn:_popoverCtrl.production.stage.ruler animated: NO];
+                    cell.accessoryView = _rulerSwitchView;
+                    break;
+                case 3: // measurement switch
+                {
+                    cell.textLabel.text = @"Use Metric System"; // Feet or Meters
+                    _metricSwitchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [_metricSwitchView addTarget:self action:@selector(metricSwitch) forControlEvents:UIControlEventValueChanged];
+                    
+                    if(_popoverCtrl.production.stage.measurementType == FEET)
+                    {
+                        [_metricSwitchView setOn:NO animated:NO];
+                    }
+                    else // meters
+                    {
+                        [_metricSwitchView setOn:YES animated:NO];
+                    }
+                    
+                    cell.accessoryView = _metricSwitchView;
                 }
                     break;
                 default:

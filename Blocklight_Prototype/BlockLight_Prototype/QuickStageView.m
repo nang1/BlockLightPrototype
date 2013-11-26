@@ -10,12 +10,20 @@
 
 @implementation QuickStageView
 
-@synthesize spikeTape = _spikeTape;
-@synthesize myPath = _myPath;
-@synthesize brushPattern = _brushPattern;
-@synthesize noteLabels = _noteLabels;
-@synthesize hiddenNotes = _hiddenNotes;
+@synthesize stage = _stage;
 @synthesize first = _first;
+@synthesize makeSpikeTape = _makeSpikeTape;
+@synthesize showSpikeTape = _showSpikeTape;
+@synthesize spikePath = _spikePath;
+@synthesize spikeBrushColor = _spikeBrushColor;
+@synthesize spikeTapeArray = _spikeTapeArray;
+@synthesize makeTrafficTape = _makeTrafficTape;
+@synthesize showTrafficTape = _showTrafficTape;
+@synthesize trafficPath = _trafficPath;
+@synthesize trafficBrushColor = _trafficBrushColor;
+@synthesize trafficTapeArray = _trafficTapeArray;
+@synthesize hiddenNotes = _hiddenNotes;
+@synthesize noteLabels = _noteLabels;
 @synthesize propsArray = _propsArray;
 @synthesize actorArray = _actorArray;
 @synthesize rulerLabelsArray = _rulerLabelsArray;
@@ -32,23 +40,39 @@
         
     _stage = stage;
     
-    _myPath = [[UIBezierPath alloc] init];
-    _myPath.lineCapStyle = kCGLineCapRound;
-    _myPath.miterLimit = 0;
-    _myPath.lineWidth = 4;
-    _brushPattern = [UIColor redColor];
     _first = YES;
-    //_spikeTape = YES; // had just put this line to make sure drawing lines worked
-    
-    // create array to hold note labels
-    _noteLabels = [[NSMutableArray alloc] init];
     _hiddenNotes = NO;
-    // array to hold set pieces
-    _propsArray = [[NSMutableArray alloc] init];
-    // array to hold actors
-    _actorArray = [[NSMutableArray alloc] init];
-    // array to hold ruler labels
-    _rulerLabelsArray = [[NSMutableArray alloc] init];
+
+    // create array to hold pieces that will be shown in view
+    _noteLabels = [[NSMutableArray alloc] init]; // notes
+    _propsArray = [[NSMutableArray alloc] init]; // set pieces
+    _actorArray = [[NSMutableArray alloc] init]; // actors
+    _rulerLabelsArray = [[NSMutableArray alloc] init]; // ruler labels
+    _spikeTapeArray = [[NSMutableArray alloc] init]; // spike tape
+    _trafficTapeArray = [[NSMutableArray alloc] init]; // traffic patterns
+
+    // set up spike tape variables
+    _makeSpikeTape = NO;
+    _showSpikeTape = YES;
+    _spikePath = [[UIBezierPath alloc] init];
+    _spikePath.lineCapStyle = kCGLineCapRound;
+    _spikePath.miterLimit = 0;
+    _spikePath.lineWidth = 4;
+    _spikeBrushColor = [UIColor redColor];
+    _currentTape = [[Line alloc] init]; // JNN: temporary
+    
+    // set up traffic pattern variables
+    _makeTrafficTape = NO;
+    _showTrafficTape = YES;
+    _trafficPath = [[UIBezierPath alloc] init];
+    _trafficPath.lineCapStyle = kCGLineCapRound;
+    _trafficPath.miterLimit = 0;
+    _trafficPath.lineWidth = 4;
+    _trafficBrushColor = [UIColor blueColor];
+    _currentTraffic = [[Line alloc] init]; // JNN: temporary
+    
+    // set up traffic pattern variables
+    _currentTraffic = [[Line alloc] init]; // JNN: temporary
     
     return self;
 }
@@ -100,11 +124,6 @@
     {
         if(_stage.horizontalGrid)
         {
-            // display horizatonal grid lines
-            /*for(float i = 0; i < 764; i+=40*_spacing){
-                CGContextMoveToPoint(context, 0, i);
-                CGContextAddLineToPoint(context, 1024, i);
-            }//*/
             for(float i = 25; i <= 625; i+=600/[_stage.gridSpacing floatValue])
             {
                 // draw horizontal line
@@ -132,11 +151,6 @@
         
         if(_stage.verticalGrid)
         {
-            // display vertical grid lines
-            /*for(float i = 0; i < 1024; i+=40*_spacing){
-                CGContextMoveToPoint(context, i, 0);
-                CGContextAddLineToPoint(context, i, 768);
-            }//*/
             for(float i = 50; i <= 975; i+=925/[_stage.gridSpacing floatValue])
             {
                 // draw vertical line
@@ -163,10 +177,52 @@
         }
     }
     
-    CGContextStrokePath(context);
+    if(_showSpikeTape)
+    {
+        // give path new points from spikeTapeArray
+        [_spikePath removeAllPoints];
+        for(Line *tape in _spikeTapeArray)
+        {
+            [_spikePath moveToPoint: CGPointMake([tape start].xCoordinate, [tape start].yCoordinate)];
+            [_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+        }
+        
+        // actually draw the path
+        CGContextStrokePath(context);
+        [_spikeBrushColor setStroke];
+        [_spikePath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+    }
     
-    [brushPattern setStroke];
-    [_myPath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+    if(_showTrafficTape)
+    {
+        // give path new points from trafficTapeArray
+        [_trafficPath removeAllPoints];
+        for(Line *tape in _trafficTapeArray)
+        {
+            [_trafficPath moveToPoint: CGPointMake([tape start].xCoordinate, [tape start].yCoordinate)];
+            [_trafficPath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+        }
+        
+        // make the path dashed
+        float pattern[] = {5, 10}; // { dash_size, gap }
+        [_trafficPath setLineDash:pattern count:2 phase:1];
+
+        // Psuedo code, do not touch or JNN gets angry
+        // Draw Arrow Head (triangle)
+        // vec2 direction = new vec2(startpoint - endpoint).normalize();
+        // vec2 perpendicular = new vec2(-direction.y, direction.x).normalize();
+        // point1 = direction*distance + perpendicular * distance;
+        // point2 = direction*distance - perpendicular * distance;
+        // point3 = endpoint
+        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+
+        // actually draw the path
+        CGContextStrokePath(context);
+        [_trafficBrushColor setStroke];
+        [_trafficPath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+    }
     
     // Trash can
     UIImage* bg =  [UIImage imageNamed:@"trash.png"]; // 50 x 50
@@ -176,19 +232,42 @@
 }
 
 #pragma mark - Touch Methods
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if(_spikeTape) {
-        if(first){
-            first = NO;
-            UITouch* mytouch = [[touches allObjects] objectAtIndex:0];
-            [_myPath moveToPoint:[mytouch locationInView:self]];
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(_makeSpikeTape)
+    {
+        UITouch* myTouch = [[touches allObjects] objectAtIndex:0];
+        if(_first)
+        {
+            [_currentTape.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
+            //[_currentTape setStart:[mytouch locationInView:self]];
         }
-        else {
-            first = YES;
-            UITouch* myTouch = [[touches allObjects] objectAtIndex:0];
-            [_myPath addLineToPoint:[myTouch locationInView:self]];
+        else
+        {
+            [_currentTape.end updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
+            [_spikeTapeArray addObject:[_currentTape copy]];
+            //[_currentTape setEnd:[myTouch locationInView:self]];
             [self setNeedsDisplay];
         }
+        _first = !_first;
+    }
+    
+    if(_makeTrafficTape)
+    {
+        UITouch* myTouch = [[touches allObjects] objectAtIndex:0];
+        if(_first)
+        {
+            [_currentTraffic.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
+            //[_currentTape setStart:[mytouch locationInView:self]];
+        }
+        else
+        {
+            [_currentTraffic.end updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
+            [_trafficTapeArray addObject:[_currentTraffic copy]];
+            //[_currentTraffic setEnd:[myTouch locationInView:self]];
+            [self setNeedsDisplay];
+        }
+        _first = !_first;
     }
 }
 @end
