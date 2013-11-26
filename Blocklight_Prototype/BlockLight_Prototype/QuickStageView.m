@@ -14,13 +14,9 @@
 @synthesize first = _first;
 @synthesize makeSpikeTape = _makeSpikeTape;
 @synthesize showSpikeTape = _showSpikeTape;
-@synthesize spikePath = _spikePath;
-@synthesize spikeBrushColor = _spikeBrushColor;
 @synthesize spikeTapeArray = _spikeTapeArray;
 @synthesize makeTrafficTape = _makeTrafficTape;
 @synthesize showTrafficTape = _showTrafficTape;
-@synthesize trafficPath = _trafficPath;
-@synthesize trafficBrushColor = _trafficBrushColor;
 @synthesize trafficTapeArray = _trafficTapeArray;
 @synthesize hiddenNotes = _hiddenNotes;
 @synthesize noteLabels = _noteLabels;
@@ -54,24 +50,11 @@
     // set up spike tape variables
     _makeSpikeTape = NO;
     _showSpikeTape = YES;
-    _spikePath = [[UIBezierPath alloc] init];
-    _spikePath.lineCapStyle = kCGLineCapRound;
-    _spikePath.miterLimit = 0;
-    _spikePath.lineWidth = 4;
-    _spikeBrushColor = [UIColor redColor];
     _currentTape = [[Line alloc] init]; // JNN: temporary
     
     // set up traffic pattern variables
     _makeTrafficTape = NO;
     _showTrafficTape = YES;
-    _trafficPath = [[UIBezierPath alloc] init];
-    _trafficPath.lineCapStyle = kCGLineCapRound;
-    _trafficPath.miterLimit = 0;
-    _trafficPath.lineWidth = 4;
-    _trafficBrushColor = [UIColor blueColor];
-    _currentTraffic = [[Line alloc] init]; // JNN: temporary
-    
-    // set up traffic pattern variables
     _currentTraffic = [[Line alloc] init]; // JNN: temporary
     
     return self;
@@ -179,52 +162,86 @@
     
     if(_showSpikeTape)
     {
-        // give path new points from spikeTapeArray
-        [_spikePath removeAllPoints];
+        // create a UIBezierPath which is used to draw the spike tape
+        UIBezierPath* spikePath = [[UIBezierPath alloc] init];
+        spikePath.lineCapStyle = kCGLineCapRound;
+        spikePath.miterLimit = 0;
+        spikePath.lineWidth = 4;
+        
+        // give path points from spikeTapeArray
         for(Line *tape in _spikeTapeArray)
         {
-            [_spikePath moveToPoint: CGPointMake([tape start].xCoordinate, [tape start].yCoordinate)];
-            [_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+            [spikePath moveToPoint: CGPointMake([tape start].xCoordinate, [tape start].yCoordinate)];
+            [spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
         }
         
         // actually draw the path
         CGContextStrokePath(context);
-        [_spikeBrushColor setStroke];
-        [_spikePath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+        [[UIColor redColor] setStroke];
+        [spikePath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
     }
     
     if(_showTrafficTape)
     {
-        // give path new points from trafficTapeArray
-        [_trafficPath removeAllPoints];
+        // create a UIBezierPath which is used to draw the traffic patterns
+        UIBezierPath* trafficPath = [[UIBezierPath alloc] init];
+        trafficPath.lineCapStyle = kCGLineCapRound;
+        trafficPath.miterLimit = 0;
+        trafficPath.lineWidth = 4;
+        
+        // make the traffic pattern path dashed
+        float pattern[] = {5, 10}; // { dash_size, gap_size }
+        [trafficPath setLineDash:pattern count:2 phase:1];
+        
+        // create another UIBezierPath to draw the arrowheads
+        UIBezierPath* arrowheads = [[UIBezierPath alloc] init];
+        arrowheads.lineCapStyle = kCGLineCapRound;
+        arrowheads.lineWidth = 4.0f;
+        
+        // give both paths points from trafficTapeArray
         for(Line *tape in _trafficTapeArray)
         {
-            [_trafficPath moveToPoint: CGPointMake([tape start].xCoordinate, [tape start].yCoordinate)];
-            [_trafficPath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
+            CGPoint startPoint = CGPointMake([tape start].xCoordinate, [tape start].yCoordinate);
+            CGPoint endPoint = CGPointMake([tape end].xCoordinate, [tape end].yCoordinate);
+            
+            // the traffic path just follows the line
+            [trafficPath moveToPoint: startPoint];
+            [trafficPath addLineToPoint: endPoint];
+            
+            // to draw the arrow heads, first need to calculate the direction and normal vectors
+            // calculate the direction vector towards the tail and normalize it
+            float xValue = startPoint.x - endPoint.x;
+            float yValue = startPoint.y - endPoint.y;//[tape start].yCoordinate - [tape end].yCoordinate;
+            CGPoint direction = CGPointMake(xValue, yValue);
+            direction.x = direction.x * 10.0 / sqrtf(xValue * xValue + yValue * yValue);
+            direction.y = direction.y * 10.0 / sqrtf(xValue * xValue + yValue * yValue);
+            
+            // calculate the normal (i.e. the perpendicular) vector based off the direction
+            CGPoint normal = CGPointMake(-direction.y * 0.5, direction.x * 0.5);
+            
+            // the arrow heads are triangles starting at the end of the line
+            [arrowheads moveToPoint: endPoint];
+
+            // endpoint + direction * 10.0 + normal * 5.0
+            CGPoint tailPoint = CGPointMake(endPoint.x + direction.x + normal.x, endPoint.y + direction.y +normal.y);
+            [arrowheads addLineToPoint:tailPoint];
+            
+            // endpoint + direction * 10.0 - normal * 5.0
+            tailPoint = CGPointMake(endPoint.x + direction.x - normal.x, endPoint.y + direction.y - normal.y);
+            [arrowheads addLineToPoint:tailPoint];
+            
+            // don't forget to close the triangle
+            [arrowheads addLineToPoint:endPoint];
         }
         
-        // make the path dashed
-        float pattern[] = {5, 10}; // { dash_size, gap }
-        [_trafficPath setLineDash:pattern count:2 phase:1];
-
-        // Psuedo code, do not touch or JNN gets angry
-        // Draw Arrow Head (triangle)
-        // vec2 direction = new vec2(startpoint - endpoint).normalize();
-        // vec2 perpendicular = new vec2(-direction.y, direction.x).normalize();
-        // point1 = direction*distance + perpendicular * distance;
-        // point2 = direction*distance - perpendicular * distance;
-        // point3 = endpoint
-        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
-        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
-        //[_spikePath addLineToPoint: CGPointMake([tape end].xCoordinate, [tape end].yCoordinate)];
-
         // actually draw the path
         CGContextStrokePath(context);
-        [_trafficBrushColor setStroke];
-        [_trafficPath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+        [[UIColor blueColor] setStroke];
+        [trafficPath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+        [arrowheads strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
     }
     
-    // Trash can
+    // Trash can icon (so user knows where to drag their pieces to remove them from stage)
     UIImage* bg =  [UIImage imageNamed:@"trash.png"]; // 50 x 50
     //UIImage* bg =  [UIImage imageNamed:@"trash1.png"]; // 64 x 64
     // assuming width of 768px: (width-64px)/2-imageW/2 = 768/2-64/2 = 320
@@ -232,6 +249,13 @@
 }
 
 #pragma mark - Touch Methods
+// (see: https://developer.apple.com/Library/ios/documentation/UIKit/Reference/UIResponder_Class/Reference/Reference.html )
+// touch methods should be done in a separate GlassView with a transparent UIView over the QuickStageView
+// this way, the GlassView will detect touchesBegan, touchesMoved, and touchesEnded events in the UIResponder
+// and prevent the user from modifying actors, notes, and setpieces while _makeSpikeTape or _makeTrafficTape is on
+// the GlassViewController should have a reference to the current Frame of the Scene in order to add
+// spike tape and traffic pattern lines to the Frame and further promote the Model-View-Controller architecture
+// due to time constrainsts, we compromised and placed it here so the user can at least see something
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(_makeSpikeTape)
@@ -239,14 +263,14 @@
         UITouch* myTouch = [[touches allObjects] objectAtIndex:0];
         if(_first)
         {
-            [_currentTape.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
             //[_currentTape setStart:[mytouch locationInView:self]];
+            [_currentTape.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
         }
         else
         {
+            //[_currentTape setEnd:[myTouch locationInView:self]];
             [_currentTape.end updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
             [_spikeTapeArray addObject:[_currentTape copy]];
-            //[_currentTape setEnd:[myTouch locationInView:self]];
             [self setNeedsDisplay];
         }
         _first = !_first;
@@ -257,14 +281,14 @@
         UITouch* myTouch = [[touches allObjects] objectAtIndex:0];
         if(_first)
         {
-            [_currentTraffic.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
             //[_currentTape setStart:[mytouch locationInView:self]];
+            [_currentTraffic.start updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
         }
         else
         {
+            //[_currentTraffic setEnd:[myTouch locationInView:self]];
             [_currentTraffic.end updateX:[myTouch locationInView:self].x Y:[myTouch locationInView:self].y];
             [_trafficTapeArray addObject:[_currentTraffic copy]];
-            //[_currentTraffic setEnd:[myTouch locationInView:self]];
             [self setNeedsDisplay];
         }
         _first = !_first;
