@@ -228,6 +228,7 @@
     {
         _popoverCtrl.quickView.makeSpikeTape = YES;
         _popoverCtrl.quickView.makeTrafficTape = NO;
+        _popoverCtrl.quickView.first = YES;
         [_trafficPatternSwitch setOn:NO animated:YES];
     }
     else // switched spike tape off
@@ -243,6 +244,7 @@
     {
         _popoverCtrl.quickView.makeTrafficTape = YES;
         _popoverCtrl.quickView.makeSpikeTape = NO;
+        _popoverCtrl.quickView.first = YES;
         [_spikeTapeSwitch setOn:NO animated:YES];
     }
     else // switched spike tape off

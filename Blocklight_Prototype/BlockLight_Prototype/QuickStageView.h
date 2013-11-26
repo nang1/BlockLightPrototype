@@ -15,19 +15,15 @@
     
 	BOOL _first; // when drawing lines, this indicates whether this is the starting or ending point of the line
     
-    BOOL _makeSpikeTape;
+    BOOL _makeSpikeTape; // draw spike tape mode
     BOOL _showSpikeTape;
-    UIBezierPath *_spikePath;
-    UIColor *_spikeBrushColor;
-    NSMutableArray* _spikeTapeArray; // array to hold spike tape
+    NSMutableArray* _spikeTapeArray; // array to hold spike tape lines
     Line* _currentTape; // the current spike tape being created
     
-    BOOL _makeTrafficTape;
+    BOOL _makeTrafficTape; // draw traffic tape mode
     BOOL _showTrafficTape;
-    UIBezierPath *_trafficPath;
-    UIColor *_trafficBrushColor;
-    NSMutableArray* _trafficTapeArray; // array to hold spike tape
-    Line* _currentTraffic;
+    NSMutableArray* _trafficTapeArray; // array to hold traffic tape lines
+    Line* _currentTraffic; // the current traffic line being created
     
     BOOL _hiddenNotes;
     NSMutableArray* _noteLabels; // array to hold notes on stage
@@ -42,14 +38,10 @@
 
 @property BOOL makeSpikeTape;
 @property BOOL showSpikeTape;
-@property (strong) UIBezierPath* spikePath;
-@property (strong) UIColor* spikeBrushColor;
 @property (strong) NSMutableArray* spikeTapeArray;
 
 @property BOOL makeTrafficTape;
 @property BOOL showTrafficTape;
-@property (strong) UIBezierPath* trafficPath;
-@property (strong) UIColor* trafficBrushColor;
 @property (strong) NSMutableArray* trafficTapeArray;
 
 @property BOOL hiddenNotes;
