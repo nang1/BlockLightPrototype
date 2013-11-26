@@ -191,52 +191,16 @@
     [alert show];
 }
 
-// Undo the move that the user last did
-- (void)undoButton {
-    // Get frame
-    Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
-    Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
-
-    if([tempFrame.undoArray count] == 0){
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Undo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-        [alert show];
-    } else {
-        // Get last change
-        Undo_Redo* lastChange = [tempFrame.undoArray lastObject];
-        switch(lastChange.changeType){
-            case -1: // Added an object. To undo, delete it
-                [self UndoRedoDelete:lastChange];
-                break; // End undo adding an object
-                
-            case -5: // Deleted an object. To undo, bring it back
-                [self UndoRedoAdd:lastChange withFrame:tempFrame];
-                break; // End undo deleting an object
-                
-            case -10: // Moved/pinch/rotated a piece. To undo, go back to previous settings
-                [self UndoRedoGesture:lastChange withFrame:tempFrame];
-                break; // End undo a movement/pinch/rotatation
-                
-            default:
-                break;
-        }
-        //[self UndoRedoAction:lastChange withFrame:tempFrame];
-        // lastChange was altered, make a copy and put into redoArray
-        Undo_Redo *changeCopy = [lastChange copy];
-        [tempFrame.redoArray addObject:changeCopy];
-        // remove the change from frame's undoArray
-        [tempFrame.undoArray removeLastObject];
-    }
-}
-
+#pragma mark Methods to perform undo and redo
 -(void)UndoRedoAction:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame {
     switch(lastChange.changeType){
         case -1: // An object was deleted, bring it back
-            [self UndoRedoAdd:lastChange withFrame:tempFrame];
+            [self UndoRedoDelete:lastChange];
             lastChange.changeType = -5;
             break;
             
         case -5: // An object was added, now delete it
-            [self UndoRedoDelete:lastChange];
+            [self UndoRedoAdd:lastChange withFrame:tempFrame];
             lastChange.changeType = -1;
             break;
             
@@ -251,14 +215,8 @@
 
 // An undo/redo move was performed, need to update view to show movement
 -(void)UndoRedoUpdateView:(Position*)pos ofObject:(UIView*)obj withScale:(CGAffineTransform)newScale{
-    CGAffineTransform matrix = CGAffineTransformConcat(CGAffineTransformIdentity, newScale);
-    [obj setTransform:matrix]; // save the pinch / rotation that view now has
-    
-    CGRect r = [obj frame];
-    r.origin.x = pos.xCoordinate;
-    r.origin.y = pos.yCoordinate;
-    [obj setFrame:r];
-    //NSLog(@"Undo moved to position %i, %i", pos.xCoordinate, pos.yCoordinate);
+    [obj setCenter:CGPointMake(pos.xCoordinate, pos.yCoordinate)];
+    [obj setTransform:newScale];
 }
 
 // Undo/redo action is to delete an object that was added to the frame
@@ -354,6 +312,30 @@
     NSLog(@"Undo/Redo move/pinch/rotate gesture");
 }
 
+// Undo the move that the user last did
+- (void)undoButton {
+    // Get frame
+    Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+    Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
+    
+    if([tempFrame.undoArray count] == 0){
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Undo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+        [alert show];
+    } else {
+        // Get last change
+        Undo_Redo* lastChange = [tempFrame.undoArray lastObject];
+        [self UndoRedoAction:lastChange withFrame:tempFrame];
+        
+        // lastChange was altered during UndoRedoAction
+        // make a copy and put into redoArray
+        Undo_Redo *changeCopy = [lastChange copy];
+        [tempFrame.redoArray addObject:changeCopy];
+        
+        // remove the change from frame's undoArray
+        [tempFrame.undoArray removeLastObject];
+    }
+}
+
 // Redo the move that the user last did
 - (void)redoButton {
     // Get frame
@@ -366,23 +348,10 @@
     } else {
         // Get last change
         Undo_Redo* lastChange = [tempFrame.redoArray lastObject];
-        switch(lastChange.changeType){
-            case -1: // An object was deleted, bring it back
-                [self UndoRedoAdd:lastChange withFrame:tempFrame];
-                break; // End Redo adding object
-                
-            case -5: // An object was un-deleted, now delete it
-                [self UndoRedoDelete:lastChange];
-                break;
-            case -10: // An object's position was undone, redo it
-                [self UndoRedoGesture:lastChange withFrame:tempFrame];
-                break;
-            default:
-                break;
-        }
-        //[self UndoRedoAction:lastChange withFrame:tempFrame];
+        [self UndoRedoAction:lastChange withFrame:tempFrame];
         
-        // lastChange was altered, make a copy and put into undoArray
+        // lastChange was altered during UndoRedoAction
+        // make a copy and put into undoArray
         Undo_Redo *changeCopy = [lastChange copy];
         [tempFrame.undoArray addObject:changeCopy];
         
@@ -607,7 +576,6 @@
 	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Current Frame", @"Copy Current Frame", @"New Frame", nil];
 	
 	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
-	
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
