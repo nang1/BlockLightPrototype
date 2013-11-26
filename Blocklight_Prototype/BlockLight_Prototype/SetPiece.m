@@ -46,6 +46,7 @@
 	if (copy){
 		[copy setPiecePosition:[self.piecePosition copyWithZone:zone]];
 		[copy setIcon:[UIImage imageWithCGImage:self.icon.CGImage]];
+        [copy setScaleRotationMatrix:_scaleRotationMatrix];
 	}
 	return copy;
 }
