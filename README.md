@@ -1,7 +1,8 @@
 BlockLightPrototype
 ===================
 
-Commenting Guidelines (Subject to Change):
+#Commenting Guidelines (Subject to Change):
+```Objective C
 /*************************************************
  * @class: ClassName
  * @author: Programmers
@@ -30,6 +31,7 @@ Commenting Guidelines (Subject to Change):
  * @return: returnVariable ( alternative: @result )
  * @throws: Exception (if any, alternative: @exception )
  *************************************************/
+```
 
 There's also:
 @enum: for Enumerated Types
