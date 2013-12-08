@@ -1,7 +1,7 @@
 BlockLightPrototype
 ===================
 
-#Commenting Guidelines (Subject to Change):
+##Commenting Guidelines (Subject to Change):
 ```ObjectiveC
 /*************************************************
  * @class: ClassName
@@ -33,7 +33,4 @@ BlockLightPrototype
  *************************************************/
 ```
 
-There's also:
-@enum: for Enumerated Types
-@namespace: for Namespaces
-and others which I'm too lazy to test
+There's also: @enum and @namespace for Enumerated Types and Namespaces respectively, and also others which I'm too lazy to test
