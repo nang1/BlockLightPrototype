@@ -2,6 +2,12 @@
 //  TVGestureController.h
 //  Prototype
 //
+//  Generic Gesture Controller class which manages
+//  the pan, pinch, rotate, and long press gestures
+//  used in the BlockLight Application.
+//  Does not manage tap, swipe, and screen edge pan gestures.
+//  See: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIGestureRecognizer_Class/Reference/Reference.html
+//
 //  Created by nang1 on 9/24/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //

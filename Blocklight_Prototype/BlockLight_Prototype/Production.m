@@ -19,6 +19,11 @@
 @synthesize stageManager = _stageManager;
 // @synthesize layouts = _layouts;
 
+/*************************************************
+ * @function: init
+ * @discussion: initializes a Production object with a stage and a scene
+ * @return: id to model instance
+ *************************************************/
 -(id) init{
     self = [super init];
     
@@ -32,9 +37,13 @@
     
     return self;
 }
-/* Adds a new scene to the production
-    Imports: Scene.h
- */
+
+/*************************************************
+ * @function: addScene
+ * @discussion: Adds a new scene to the production
+ * @return: void
+ * @see: Scene.h
+ *************************************************/
 -(void)addScene{
     Scene* newScene = [[Scene alloc] init];
     [_scenes addObject: newScene];
@@ -44,13 +53,23 @@
     _curScene = [_scenes count];
 }
 
-// JNN: added. gets the current scene of the production
+/*************************************************
+ * @function: getCurScene
+ * @discussion: wrapper to get the current scene of the production
+ * @return: Scene*
+ * @see: Scene.h
+ *************************************************/
 -(Scene*)getCurScene
 {
     return [_scenes objectAtIndex: _curScene];
 }
 
-// JNN: added. gets the current frame from the current scene
+/*************************************************
+ * @function: getCurScene
+ * @discussion: wrapper to get the current frame from the current scene
+ * @return: Frame*
+ * @see: Frame.h
+ *************************************************/
 -(Frame*)getCurFrameFromScene
 {
     return [[self getCurScene] getCurFrame];

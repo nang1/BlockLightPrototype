@@ -2,6 +2,12 @@
 //  TVGestureController.m
 //  Prototype
 //
+//  Generic Gesture Controller class which manages
+//  the pan, pinch, rotate, and long press gestures
+//  used in the BlockLight Application.
+//  Does not manage tap, swipe, and screen edge pan gestures.
+//  See: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIGestureRecognizer_Class/Reference/Reference.html
+//
 //  Created by nang1 on 9/24/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
@@ -13,6 +19,16 @@
 @synthesize frame = _frame;
 @synthesize quickStageView = _quickStageView;
 
+/*************************************************
+ * @function: initWithFrame2 __ withStageView
+ * @discussion: initialize the TVGesureController with a Frame and QuickStageView
+ * @param: Frame* frame
+ *     - The frame whose data is modified when a gesture is made
+ * @param: QuickStageView* stageView
+ *     - The QuickStageView which tracks the gestures
+ * @return: id to this instance
+ * @see: Frame.h
+ *************************************************/
 -(id) initWithFrame2:(Frame*)frame withStageView:(QuickStageView *)stageView
 {
     self = [super init];
@@ -27,27 +43,59 @@
     return self;
 }
 
+/*************************************************
+ * @function: changeFrame
+ * @discussion: swaps the controller's current Frame so it has reference to the data
+ * @param: Frame* frame
+ *     - The new frame whose data is to be modified
+ *************************************************/
 -(void) changeFrame:(Frame*)frame
 {
     _frame = frame;
 }
 
+/*************************************************
+ * @function: viewDidLoad
+ * @discussion: what should happen after the view loads?
+ *     (inherited from: UIViewController*)
+ *************************************************/
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
 
+/*************************************************
+ * @function: viewDidLoad
+ * @discussion: what should happen when the memory is low?
+ *     (inherited from: UIViewController*)
+ *************************************************/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+/*************************************************
+ * @function: shouldAutorotateToInterfaceOrientation
+ * @discussion: should the application rotate?
+ *     (inherited from: UIViewController*)
+ * @param: UIInterfaceOrientation interfaceOrientation
+ *    - the current UIInterfaceOrientation of the device
+ * @return: BOOL, whether or not the app should autorotate
+ *************************************************/
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
 	return YES;
 }
 
+/*************************************************
+ * @function: addGestureRecognizersToView
+ * @discussion: adds the pan, pinch, rotation, and long press
+ *     gesture recognizers to a view in which this controller manages
+ * @param: UIView* view
+ *     - The UIView to add the recognizers to
+ *************************************************/
 -(void)addGestureRecognizersToView:(UIView *)view
 {
     // create gesture recognizers
@@ -72,7 +120,7 @@
     [view setUserInteractionEnabled:YES];
 }
 
-/*
+/* // used to click and drag piece from one view to the next
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -90,23 +138,31 @@
 }
 //*/
 
-#pragma mark Gesture Recognizing Methods
+#pragma mark - Gesture Recognizing Methods -
 
-// so multiple gestures can be recognized
+/*************************************************
+ * @function: gestureRecognizer __ shouldRecognizeSimultaneouslyWithGestureRecognizer
+ * @discussion: yes, multiple gestures should be recognized
+ * @param: UIGestureRecognizer* gestureRecognizer
+ * @param: UIGestureRecognizer* otherGestureRecognizer
+ *************************************************/
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
 }
 
-// for resizing pieces
+/*************************************************
+ * @function: pinchGesture
+ * @discussion: pinch gestures used for resizing pieces
+ * @param: UIPinchGestureRecognizer* gesture
+ *************************************************/
 -(void)pinchGesture:(UIPinchGestureRecognizer*) gesture
 {
     // grab the view and the scale
     UIView *piece = [gesture view];
-    CGFloat newScale = [gesture scale];
+    CGFloat newScale = [gesture scale]; // TODO: set scaling min and maximum values
 
     // calculate the new transformation matrix
-    // JNN: TODO: set scaling min and maximum values
     CGAffineTransform matrix = CGAffineTransformScale(piece.transform, newScale, newScale);
     [piece setTransform:matrix];
     
@@ -137,7 +193,11 @@
     }
 }
 
-// for rotating pieces
+/*************************************************
+ * @function: rotateGesture
+ * @discussion: rotate gestures for rotating pieces
+ * @param: UIRotationGestureRecognizer* gesture
+ *************************************************/
 -(void)rotateGesture:(UIRotationGestureRecognizer*)gesture
 {
     // grab the view and rotation
@@ -175,47 +235,39 @@
     }
 }
 
-// for bringing up menu with additional actions
+/*************************************************
+ * @function: pressHoldGesture
+ * @discussion: press and hold gestures for bringing up menu with additional actions
+ *     TODO: create popover with options to edit/delete currently selected piece
+ * @param: UILongPressGestureRecognizer* gesture
+ *************************************************/
 -(void)pressHoldGesture:(UILongPressGestureRecognizer*)gesture
 {
     if([gesture state] == UIGestureRecognizerStateBegan)
     {
+        // TODO: add popup menu options for press and hold gesture
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Don't Touch Me!" message:@"Will provide popup menu with options to delete/modify pieces." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
     }
 }
 
-// for moving pieces around
+/*************************************************
+ * @function: pressHoldGesture
+ * @discussion: pan gestures for moving pieces around
+ * @param: UIPanGestureRecognizer* gesture
+ *************************************************/
 -(void)panGestureMoveAround:(UIPanGestureRecognizer*) gesture
 {
-    /* // JNN reference: please do not delete
-    CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
-    CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
-    // 20px for the status bar, and 44px for the navigation bar
-     
-    // all stage pieces gets placed on view in following order:
-    // notes, set pieces, actors, from first to last
-     
-    UIInterfaceOrientation orientation = [[UIDevice currentDevice] orientation];
-    
-    if (orientation==UIInterfaceOrientationLandscapeLeft) // rightside up
-    {
-        NSLog(@"left");
-    }
-    else if(orientation == UIInterfaceOrientationLandscapeRight) // upside down
-    {
-        NSLog(@"right");
-    }
-    //*/
-    
+    // grab the view and bring it into the front
     UIView *piece = [gesture view];
-    [_quickStageView bringSubviewToFront:piece];
+    [_quickStageView bringSubviewToFront:piece]; // TODO: Manage ordering of pieces in view
     
     //We pass in the gesture to a method that will help us align our touches so that the pan and pinch will seem to originate between the fingers instead of other points or center point of the UIView
     //[self adjustAnchorPointForGestureRecognizer:gesture];
     
     if ([gesture state] == UIGestureRecognizerStateChanged)
     {
+        // grab the translation
         CGPoint translation = [gesture translationInView:[piece superview]];
         
         // x should be between ?? and ???
@@ -226,8 +278,11 @@
         float newY = MAX([piece center].y + lroundf(translation.y), 25);
         newY = MIN(newY, 600);
         
-        [piece setCenter:CGPointMake([piece center].x + lroundf(translation.x), newY)];
+        // so the next translation doesn't become skewed
         [gesture setTranslation:CGPointZero inView:[piece superview]];
+    
+        // translate the view by moving the center of the piece
+        [piece setCenter:CGPointMake([piece center].x + lroundf(translation.x), newY)];
     }
     else if([gesture state] == UIGestureRecognizerStateEnded)
     {
@@ -235,9 +290,10 @@
         
         // Used to save position of piece before it was moved
         Undo_Redo* newChange = [[Undo_Redo alloc] init];
-        
-        NSString* pieceType = @""; // used to indicate type of piece to be deleted
-        int index = 0; // used to indicate index of object to be deleted in array
+
+        // variables used to indicate type of piece and index of object in the array in case piece gets deleted
+        NSString* pieceType = @"";
+        int index = 0;
         
         // A note was moved
         if([piece isMemberOfClass:[UILabel class]])
@@ -255,6 +311,7 @@
             NSLog(@"Prev position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
             [tempNote.notePosition updateX:[piece center].x Y:[piece center].y];
             NSLog(@"New position %i, %i", tempNote.notePosition.xCoordinate, tempNote.notePosition.yCoordinate);
+            
             /*
             // JNN: if we use CGPoint, we could get rid of Position.h and Position.m
             // JNN: TODO: move piece to end of array, or else figure out some way to keep ordering from back to front in tact
@@ -273,7 +330,7 @@
                     break;
                 }
             }
-             // JNN: ...I'll figure something out
+             // JNN: ...I failed to figure out the best way to do this...
             //*/
         }
         // An actor or set piece was moved
@@ -327,7 +384,7 @@
     }
 }
 
-/*
+/* // was supposed to be used to make identifying pieces easier, but never really got around to implementing it
 -(NSString*)identifyPiece:(UIView*)view
 {
     NSString* toReturn = @"";
@@ -350,7 +407,14 @@
 }
  //*/
 
-#pragma mark Trash Can methods
+#pragma mark - Trash Can methods -
+
+/*************************************************
+ * @function: alertView __ didDismissWithButtonIndex
+ * @discussion: manages the alert sent out when a piece is dragged to the trash can
+ * @param: UIAlertView* alertView
+ * @param: NSInteger buttonIndex
+ *************************************************/
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) // pressed Ok, buttonIndex == 0 if user pressed cancel, do nothing
@@ -390,9 +454,15 @@
     }
 }
 
+/*************************************************
+ * @function: isOnTrashCan
+ * @discussion: checks the location of the UIView if is within the bounding area of the trash can
+ * @param: UIView* piece
+ * @return: BOOL - whether or not the UIView is on the trash can
+ *************************************************/
 -(BOOL)isOnTrashCan:(UIView*)piece
 {
-    // trash can drawn at (0,320,64,64)
+    // trash can is drawn at location (0,320,64,64), see QuickStageView.m
     if((0 < [piece center].x) && ([piece center].x < 64)
        &&(320 < [piece center].y) && ([piece center].y < 384))
     {
@@ -404,7 +474,14 @@
     }
 }
 
-#pragma mark Remove Piece Functions
+#pragma mark - Remove Piece Methods -
+
+/*************************************************
+ * @function: removeNoteAtIndex
+ * @discussion: removes a note when user drags it to the trash can
+ * @param: int i
+ *      - the index of the note in the Frame and QuickStageView arrays
+ *************************************************/
 -(void) removeNoteAtIndex:(int)i
 {
     if((i < 0) || (i >= [_frame.notes count]))
@@ -419,6 +496,12 @@
     [_quickStageView setNeedsDisplay];
 }
 
+/*************************************************
+ * @function: removeActorAtIndex
+ * @discussion: removes an actor when user drags it to the trash can
+ * @param: int i
+ *      - the index of the actor in the Frame and QuickStageView arrays
+ *************************************************/
 -(void) removeActorAtIndex:(int)i
 {
     if((i < 0) || (i >= [_frame.actorsOnStage count]))
@@ -433,6 +516,12 @@
     [_quickStageView setNeedsDisplay];
 }
 
+/*************************************************
+ * @function: removeSetPieceAtIndex
+ * @discussion: removes a set piece when user drags it to the trash can
+ * @param: int i
+ *      - the index of the set piece in the Frame and QuickStageView arrays
+ *************************************************/
 -(void) removeSetPieceAtIndex:(int)i
 {
     if((i < 0) || (i >= [_frame.props count]))

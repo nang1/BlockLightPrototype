@@ -13,6 +13,12 @@
 @synthesize nameTextBox = _nameTextBox;
 @synthesize popoverCtrl = _popoverCtrl;
 
+/*************************************************
+ * @function: initWithFrame
+ * @discussion: Auto-generated code
+ * @param: CGRect frame
+ * @return: id to this instance
+ *************************************************/
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -22,6 +28,14 @@
     return self;
 }
 
+/*************************************************
+ * @function: initWithFrame __ withProductionFrame __ withViewController
+ * @discussion: initializes the view with a frame and popover view controller
+ * @param: CGRect frame
+ * @param: Frame* currentFrame
+ * @param: TVPopoverViewController* viewController
+ * @return: id to this instance
+ *************************************************/
 -(id)initWithFrame:(CGRect)frame withProductionFrame: (Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController
 {
     self = [super initWithFrame:frame];
@@ -44,7 +58,7 @@
     _nameTextBox.layer.cornerRadius = 5;
     _nameTextBox.clipsToBounds = YES;
     
-    //* // JNN: extra stuff for text field that's not really needed
+    // extra stuff for text field that's not really needed
     _nameTextBox.borderStyle = UITextBorderStyleRoundedRect;
     _nameTextBox.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameTextBox.adjustsFontSizeToFitWidth = YES;
@@ -54,7 +68,7 @@
     _nameTextBox.autocapitalizationType = UITextAutocapitalizationTypeWords;
     _nameTextBox.placeholder = @"Insert Name";
     [_nameTextBox setDelegate:self];
-    //*/
+    [_nameTextBox becomeFirstResponder];
     
     // label
     UILabel* textLabel = [[UILabel alloc] initWithFrame: CGRectMake(10, 10, 100, 15)];
@@ -79,8 +93,11 @@
     return self;
 }
 
-// User clicks "Add Performer" button
-// Save the name entered in the textbox
+/*************************************************
+ * @function: addActor
+ * @discussion: User clicks "Add Performer" button
+ *     Save the name entered in the textbox
+ *************************************************/
 - (void)addActor {
     if([_nameTextBox.text length] == 0)
     {
@@ -109,8 +126,14 @@
 }
 */
 
-#pragma mark UITextFieldDelegate Code
+#pragma mark - UITextFieldDelegate Code -
 
+/*************************************************
+ * @function: textFieldShouldReturn
+ * @discussion: what happens when the user types enter(return)
+ * @param: UITextField* textField
+ * @return: BOOL
+ *************************************************/
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];

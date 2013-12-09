@@ -22,7 +22,6 @@
 @property (strong) NSMutableArray* frames;
 @property NSInteger curFrame;
 
-//JNN: added
 -(Frame*)getCurFrame;
 
 @end

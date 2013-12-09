@@ -24,7 +24,17 @@
 @synthesize actorArray = _actorArray;
 @synthesize rulerLabelsArray = _rulerLabelsArray;
 
-#pragma mark Constructors
+// JNN: strangely placed #pragma mark ...
+#pragma mark - Constructor -
+
+/*************************************************
+ * @function: initWithFrame __ andViewController __ andStage
+ * @discussion: initializes the view with a controller and a stage
+ * @param: CGRect frame
+ * @param: id viewController // possibly redundant
+ * @param: Stage* stage
+ * @return: id to this instance
+ *************************************************/
 - (id)initWithFrame:(CGRect)frame andViewController:(id)viewController andStage:(Stage *)stage
 {
     self = [super initWithFrame:frame];
@@ -60,10 +70,17 @@
     return self;
 }
 
-// Only override drawRect: if you perform custom drawing.
-// gets called everytime [self setNeedsDisplay]
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {    
+/*************************************************
+ * @function: drawRect
+ * @discussion: Only override drawRect: if you perform custom drawing.
+ *     An empty implementation adversely affects performance during animation.
+ *     For BlockLight's purposes, we do perform custom drawing.
+ *     Gets called everytime [self setNeedsDisplay] is called.
+ *     Draws the Stage, Grid Lines, Spike Tape, and Traffic Patterns.
+ * @param: CGRect frame
+ *************************************************/
+- (void)drawRect:(CGRect)rect
+{
     // Draw Stage
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -105,14 +122,17 @@
     // user enables grid view
     if(_stage.grid)
     {
+        // grid type horizontal
         if(_stage.horizontalGrid)
         {
+            // y values range from 25 pixels to 625 pixels
             for(float i = 25; i <= 625; i+=600/[_stage.gridSpacing floatValue])
             {
                 // draw horizontal line
                 CGContextMoveToPoint(context, 50, i);
                 CGContextAddLineToPoint(context, 974, i);
 
+                // make ruler labels if enabled
                 if(_stage.ruler)
                 {
                     UILabel* temp = [[UILabel alloc] initWithFrame:CGRectMake(50,i,90,20)];
@@ -132,14 +152,17 @@
             }
         }
         
+        // grid type vertical
         if(_stage.verticalGrid)
         {
+            // x values domain from 50 pixels to 975 pixels
             for(float i = 50; i <= 975; i+=925/[_stage.gridSpacing floatValue])
             {
                 // draw vertical line
                 CGContextMoveToPoint(context, i, 25);
                 CGContextAddLineToPoint(context, i, 625);
 
+                // make ruler labels if enabled
                 if(_stage.ruler)
                 {
                     UILabel* temp = [[UILabel alloc] initWithFrame:CGRectMake(i,25,90,20)];
@@ -244,18 +267,37 @@
     // Trash can icon (so user knows where to drag their pieces to remove them from stage)
     UIImage* bg =  [UIImage imageNamed:@"trash.png"]; // 50 x 50
     //UIImage* bg =  [UIImage imageNamed:@"trash1.png"]; // 64 x 64
-    // assuming width of 768px: (width-64px)/2-imageW/2 = 768/2-64/2 = 320
+    /*
+     // references:
+     CGFloat height = [UIScreen mainScreen].currentMode.size.height; // 1024px
+     CGFloat width = [UIScreen mainScreen].currentMode.size.width; // 768px
+     // 20px for the status bar, and 44px for the navigation bar
+     // assuming width of 768px: (width-(status_bar + navigation_bar))/2-imageW/2 = (768-(20+44))/2-64/2 = 320
+     //*/
     [bg drawInRect:CGRectMake(0,320,50,50) blendMode:kCGBlendModeNormal alpha:1.0];
 }
 
-#pragma mark - Touch Methods
-// (see: https://developer.apple.com/Library/ios/documentation/UIKit/Reference/UIResponder_Class/Reference/Reference.html )
-// touch methods should be done in a separate GlassView with a transparent UIView over the QuickStageView
-// this way, the GlassView will detect touchesBegan, touchesMoved, and touchesEnded events in the UIResponder
-// and prevent the user from modifying actors, notes, and setpieces while _makeSpikeTape or _makeTrafficTape is on
-// the GlassViewController should have a reference to the current Frame of the Scene in order to add
-// spike tape and traffic pattern lines to the Frame and further promote the Model-View-Controller architecture
-// due to time constrainsts, we compromised and placed it here so the user can at least see something
+#pragma mark - Touch Methods -
+
+/*************************************************
+ * @function: touchesBegan __ withEvent
+ * @discussion: touch methods should be done in a separate GlassView
+ *     with a transparent UIView over the QuickStageView.
+ *     <p>
+ *     This way, the GlassView will detect touchesBegan, touchesMoved,
+ *     and touchesEnded events in the UIResponder and prevent the user
+ *     from modifying actors, notes, and setpieces while
+ *     _makeSpikeTape or _makeTrafficTape is on.
+ *     <p>
+ *     The GlassViewController should have a reference to the current Frame
+ *     of the Scene in order to add spike tape and traffic pattern lines
+ *     to the Frame and further promote the Model-View-Controller architecture.
+ *     <p>
+ *     Due to time constrainsts, we compromised and placed it here in QuickStageView
+ *     so the user can at least see and interact with the wanted functionality.
+ * @param: CGRect frame
+ * @see: https://developer.apple.com/Library/ios/documentation/UIKit/Reference/UIResponder_Class/Reference/Reference.html
+ *************************************************/
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(_makeSpikeTape)

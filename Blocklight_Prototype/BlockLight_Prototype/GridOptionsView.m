@@ -31,7 +31,14 @@
 }
  */
 
-- (id)initWithViewController:(TVPopoverViewController *)viewController {
+/*************************************************
+ * @function: initWithViewController
+ * @discussion: initializes the view with a popover view controller
+ * @param: TVPopoverViewController* viewController
+ * @return: id to this instance
+ *************************************************/
+- (id)initWithViewController:(TVPopoverViewController *)viewController
+{
     self = [super initWithFrame:CGRectMake(0, 0,320, 216) style:UITableViewStyleGrouped];
     
     if(self == nil)
@@ -45,16 +52,25 @@
     return self;
 }
 
-// UITableView Datasource for grid options view popover
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+/*************************************************
+ * @function: tableView __ cellForRowAtIndexPath
+ * @discussion: UITableView Datasource for Grid Options View Popover
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: UITableViewCell*
+ *************************************************/
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
     
     UITableViewCell* cell;
     
     // Grid options in popover
-    switch(section) {
-        case 0: { // adjust grid lines
+    switch(section)
+    {
+        case 0: // adjust grid lines
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuse"];
             switch(row) {
                 case 0: // show grid switch
@@ -64,9 +80,12 @@
                     [_gridSwitchView setOn:_popoverCtrl.production.stage.grid animated: NO];
                     cell.accessoryView = _gridSwitchView;
                     break;
-                case 1: // grid types radio buttons/table
+                case 1: // grid types check box buttons
                 {
                     cell.textLabel.text = @"Grid Type";
+                    
+                    // TODO: make UI more intuitive and less cramped. currently:
+                    // blue circle = on, red square = off
                     
                     // horizontal text
                     UILabel* hText = [[UILabel alloc] initWithFrame:CGRectMake(100, 10, 50, 30)];
@@ -201,7 +220,13 @@
     return cell;
 }
 
-// Set section headings
+/*************************************************
+ * @function: tableView __ titleForHeaderInSection
+ * @discussion: Set section headings
+ * @param: UITableView* tableView
+ * @param: NSInteger section
+ * @return: NSString
+ *************************************************/
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName = @"";
@@ -222,14 +247,28 @@
     return sectionName;
 }
 
-// Set height for table
--(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+/*************************************************
+ * @function: tableView __ heightForRowAtIndexPath
+ * @discussion: Set height for table
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: CGFloat
+ *************************************************/
+-(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     CGFloat height = 50.0;
     return height;
 }
 
-// Determines the number of rows in a section
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+/*************************************************
+ * @function: tableView __ numberOfRowsInSection
+ * @discussion: Determines the number of rows in a section
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: NSInteger
+ *************************************************/
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     NSInteger rows = 0;
     
     if(section == 0)
@@ -242,23 +281,37 @@
     return rows;
 }
 
-// Determines the number of sections for the table
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger sections = 3;
-    
+/*************************************************
+ * @function: numberOfSectionsInTableView
+ * @discussion: Determines the number of sections for a table
+ * @param: UITableView* tableView
+ * @return: NSInteger
+ *************************************************/
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger sections = 3;    
     return sections;
 }
 
-// How to respond to row that got selected
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+/*************************************************
+ * @function: tableView __ didSelectRowAtIndexPath
+ * @discussion: How to respond to a row that got selected
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ *************************************************/
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     //NSInteger section = [indexPath section];
     //NSInteger row = [indexPath row];
     [self deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark Switch Functions
+#pragma mark - Switch Functions -
 
-// User clicked the switch for showing/hiding grid lines
+/*************************************************
+ * @function: gridSwitch
+ * @discussion: User clicked the switch for showing/hiding grid lines
+ *************************************************/
 - (void)gridSwitch
 {
     if([_gridSwitchView isOn])
@@ -272,7 +325,10 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-// User clicked the switch for showing/hiding ruler
+/*************************************************
+ * @function: rulerSwitch
+ * @discussion: User clicked the switch for showing/hiding ruler
+ *************************************************/
 - (void)rulerSwitch
 {
     if([_rulerSwitchView isOn])
@@ -286,7 +342,10 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-// User clicked the switch for changing from feet to meters
+/*************************************************
+ * @function: metricSwitch
+ * @discussion: User clicked the switch for changing from feet to meters
+ *************************************************/
 - (void)metricSwitch
 {
     if([_metricSwitchView isOn]) // meters
@@ -300,8 +359,12 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-#pragma mark Button Press
-// user pressed the horizontal check box
+#pragma mark - Button Press -
+
+/*************************************************
+ * @function: horzButton
+ * @discussion: User pressed the horizontal check box
+ *************************************************/
 -(void)horzButton
 {
     if(_horizontal.selected)
@@ -317,7 +380,10 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-// user pressed the vertical check box
+/*************************************************
+ * @function: vertButton
+ * @discussion: User pressed the vertical check box
+ *************************************************/
 -(void)vertButton
 {
     if(_vertical.selected)
@@ -333,9 +399,12 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-#pragma mark Slider Functions
+#pragma mark - Slider Functions -
 
-// user changed slider that controls spacing of the grid
+/*************************************************
+ * @function: spacingChange
+ * @discussion: User changed slider that controls spacing of the grid
+ *************************************************/
 - (void)spacingChange
 {
     _popoverCtrl.production.stage.gridSpacing = [NSNumber numberWithFloat:_spacingSlider.value];
@@ -343,7 +412,10 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
-// user changed slider that controls opacity of grid
+/*************************************************
+ * @function: opacityChange
+ * @discussion: User changed slider that controls opacity of the grid
+ *************************************************/
 - (void)opacityChange
 {
     _popoverCtrl.production.stage.gridOpacity = [NSNumber numberWithFloat:_opacitySlider.value];

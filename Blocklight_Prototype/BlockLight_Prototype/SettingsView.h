@@ -3,7 +3,7 @@
 //  Previously: DimensionsView.h
 //  Blocklight_Prototype
 //
-//  Created by Barrett Ames on 7/30/12.
+//  Originally Created by Barrett Ames on 7/30/12.
 //  Recreated by Jordan Nguyen on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
@@ -20,18 +20,12 @@
     UITextField* _stageName;
     UITextField* _stageWidth;
     UITextField* _stageHeight;
-    /*
-    UIButton* _selectPreset;
-    //*/
 }
 
 @property (strong) TVPopoverViewController* popoverCtrl;
 @property (strong) UITextField* stageName;
 @property (strong) UITextField* stageWidth;
 @property (strong) UITextField* stageHeight;
-/*
-@property (strong) UIButton* selectPreset;
-//*/
 
 - (id)initWithViewController:(TVPopoverViewController*)viewController;
 
