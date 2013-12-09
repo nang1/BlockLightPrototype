@@ -16,6 +16,11 @@
 @synthesize start = _start;
 @synthesize end = _end;
 
+/*************************************************
+ * @function: init
+ * @discussion: initializes a Line object with a start and end point
+ * @return: id to model instance
+ *************************************************/
 -(id) init{
     self = [super init];
     
@@ -30,12 +35,17 @@
     return self;
 }
 
+/*************************************************
+ * @function: copyWithZone
+ * @discussion: creates a copy of this model instance
+ * @param: NSZone* zone
+ * @return: id to new model instance copy
+ *************************************************/
 -(id)copyWithZone:(NSZone *)zone
 {
 	id copy = [[[self class]alloc]init];
 	if (copy)
     {
-        // TODO: copy properties
         [copy setStart:[self.start copyWithZone:zone]];
         [copy setEnd:[self.end copyWithZone:zone]];
 	}

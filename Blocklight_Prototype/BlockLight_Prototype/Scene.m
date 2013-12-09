@@ -14,6 +14,11 @@
 @synthesize frames = _frames;
 @synthesize curFrame = _curFrame;
 
+/*************************************************
+ * @function: init
+ * @discussion: initializes a Scene object with a frame
+ * @return: id to model instance
+ *************************************************/
 -(id)init{
     self = [super init];
     
@@ -26,7 +31,14 @@
     return self;
 }
 
-// JNN: added, gets current frame
+#pragma mark - Section Header to Group Like Functions -
+
+/*************************************************
+ * @function: getCurFrame
+ * @discussion: wrapper to get the current frame of the scene
+ * @return: Frame*
+ * @see: Frame.h
+ *************************************************/
 -(Frame*)getCurFrame
 {
     return [_frames objectAtIndex:_curFrame];

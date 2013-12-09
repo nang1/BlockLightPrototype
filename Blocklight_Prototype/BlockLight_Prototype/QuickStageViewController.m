@@ -8,10 +8,6 @@
 
 #import "QuickStageViewController.h"
 
-@interface QuickStageViewController ()
-
-@end
-
 @implementation QuickStageViewController
 
 @synthesize quickProduction = _quickProduction;
@@ -36,10 +32,17 @@
 }
  */
 
-#pragma mark Accessors
-// don't get what this is exactly, but its used multiple times
-// JNN: used as a quick wrapper to get QuickStageView instead of having to typecast the UIView all the time
-- (QuickStageView*)contentView {
+#pragma mark - Accessors -
+
+/*************************************************
+ * @function: contentView
+ * @discussion: used as a quick wrapper to get the QuickStageView
+ *    associated with the controller instead of having to typecast
+ *    the current UIView all the time
+ * @return: QuickStageView*
+ *************************************************/
+- (QuickStageView*)contentView
+{
     return (QuickStageView*)self.view;
 }
 
@@ -54,12 +57,13 @@
     [_newScene.frames addObject:[[Frame alloc] init]];
     [_newScene.frames addObject:[[Frame alloc] init]];
     [_quickProduction.scenes addObject:_newScene];
-	   
+    
+    // set the QuickStageView as the view
     QuickStageView* _stageView = [[QuickStageView alloc] initWithFrame:CGRectZero andViewController:self andStage:_quickProduction.stage];
     self.view = _stageView;
     
-    // JNN: not sure if this works
-    _gestureCtrl = [[TVGestureController alloc] initWithFrame2: [_newScene.frames objectAtIndex:_newScene.curFrame] withStageView:_stageView];
+    // make the gesture controller with the current frame and view
+    _gestureCtrl = [[TVGestureController alloc] initWithFrame2:[_newScene getCurFrame] withStageView:_stageView];
 }
 
 // This function does additional setup after loadView()
@@ -158,8 +162,6 @@
 	// Add button and table to view
 	[[self contentView] addSubview:_productionOptions];
 	[[self contentView] addSubview:_timeline];
-
-    
 }
 
 - (void)viewDidUnload {
@@ -171,6 +173,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	// TODO: some of these viewControllers have this correct, and others don't, need to resolve this
+    // JNN: may have already been fixed now
 	return YES;
 }
 
@@ -179,7 +182,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-/** Methods that tool bar buttons call when selected **/
+#pragma mark - Methods that tool bar buttons call when selected -
+
 // Go back to main menu
 - (void)backToMain{
     /* This means we need to go back to a Split View
@@ -360,36 +364,47 @@
     }
 }
 
-// Method for creating popover upon bar button press
+/*************************************************
+ * @function: pressPopoverButton
+ * @discussion: Method for creating popover upon bar button press
+ * @param: UIBarButtonItem* btn
+ *     - the UIBarButtonItem the user had pressed
+ *************************************************/
 -(void) pressPopoverButton:(UIBarButtonItem *)btn
 {
-    EditTools type = GRID; // JNN: just giving it some default value
+    EditTools type = GRID; // just giving it some default value
     
-    // JNN: instead of checking the buttons, could check btn.title or btn.tag instead
+    // instead of checking the buttons, could check btn.title or btn.tag instead
     if([btn isEqual:_settingsBtn])
     {
-        type = SETTINGS; // Stage editor view
+        type = SETTINGS; // Stage editor view to edit the name, width, and height of the stage
+        // See: SettingsView.m
     }
     else if([btn isEqual:_viewButton])
     {
         type = VIEWS; // Shows view options such as grid lines, opacity, etc.
         // this is where we enable or disable certain stage options for the stage view
+        // See: ViewView.m and GridOptionsView.m
     }
     else if([btn isEqual:_propsButton])
     {
         type = PROPS; // Gives a popover to select props for stage
+        // See: SetPieceView.m and SetPieceListView.m
     }
     else if([btn isEqual:_notesButton])
     {
         type = NOTES; // Adds a note to the stage
+        // See: NoteView.m
     }
     else if([btn isEqual:_actorsButton])
     {
         type = ACTORS; // Create a picker/popup to select an actor
+        // See: ActorView.m
     }
     else if([btn isEqual:_sceneButton])
     {
         type = SCENES; // Create a picker/popover to select a scene
+        // TODO: Currently doesn't have a view
     }
     else // GRID or PROPSLIST, don't create a popover here
     {    // These popovers are created from VIEW and PROPS respectively
@@ -412,16 +427,24 @@
     _tvPopoverCtrl.popoverNav = _popoverNavCtrl;
 }
 
-// Check if popover was dismissed.
-// Add any new pieces in the frame to the stage
-// Also save the change to the undoArray in case the user has a change of mind and wants to undo
-// rather than drag the piece to the trash.
+/*************************************************
+ * @function: popoverControllerDidDismissPopover
+ * @discussion: Checks if the popover was dismissed.
+ *    Add any new pieces in the frame to the stage (in a roundabout manner).
+ *    Also save the change to the undoArray in case the user has a change
+ *    of mind and wants to undo rather than drag the piece to the trash.
+ * @param: UIPopoverController* popoverController
+ *    - The UIPopoverController which was dismissed
+ *************************************************/
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    // Check to see if number of notes, actors, or setpieces inside frame had changed
-    Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
-    Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
-
+    
+    // the title of the stage changes when you modify it in the SettingsView
+    // self.navigation.title should change when the user finishes typing
+    // ...yeah, I cheated and made it change whenever the popover is dismissed
     self.navigationItem.title = _quickProduction.stage.name;
+    
+    // Check to see if number of notes, actors, or setpieces inside frame had changed
+    Frame *tempFrame = [_quickProduction getCurFrameFromScene];
     
     // a note was added
     if([tempFrame.notes count] > [[self contentView].noteLabels count])
@@ -457,6 +480,8 @@
     
     [[self view] setNeedsDisplay]; // refreshes the view
 }
+
+#pragma mark - Timeline Table Methods -
 
 -(NSInteger) tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section{
 	NSInteger rows = 0;
@@ -494,12 +519,12 @@
 -(void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	
 	if ([tableView isEqual:_timeline]){
-		Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
+        Scene* scene = [_quickProduction getCurScene];
 	    scene.curFrame = indexPath.row;
 		
 		//NSLog(@"Current frame is: %d",scene.curFrame);
 
-		Frame* frame = [scene.frames objectAtIndex:scene.curFrame];
+        Frame* frame = [scene getCurFrame];
         // Consider clearing the undoArray
         // [frame.undoArray removeAllObjects];
         [_gestureCtrl changeFrame:frame]; // the frame had changed
@@ -507,38 +532,28 @@
         // remove current objects from view
 		for (UILabel *lbl in [self contentView].noteLabels)
 		{
-				[lbl removeFromSuperview];
+            [lbl removeFromSuperview];
 		}
-        
         for(UIImageView *tempView in [self contentView].propsArray){
             [tempView removeFromSuperview];
         }
-        
         for(UIImageView *tempView in [self contentView].actorArray){
             [tempView removeFromSuperview];
         }
 
-		// remove all notes in current view notes array
+		// remove all notes, props, and actors in current view's arrays
 		[[self contentView].noteLabels removeAllObjects];
+        [[self contentView].propsArray removeAllObjects];
+        [[self contentView].actorArray removeAllObjects];
 		
-		// add new notes
+		// add new notes, props, and actors from frame
 		for(Note* note in frame.notes)
         {
             [self addNoteToStage:note];
 		}
-        
-        // remove all props in current view props array
-        [[self contentView].propsArray removeAllObjects];
-        
-        // add new props
         for(SetPiece* piece in frame.props){
             [self addSetPieceToStage:piece];
         }
-        
-        // remove all actors in current view actors array
-        [[self contentView].actorArray removeAllObjects];
-        
-        // add new actors
         for(Actor* piece in frame.actorsOnStage){
             [self addActorToStage:piece];
         }
@@ -640,16 +655,21 @@
 	}
 }
 
-#pragma mark Methods for adding pieces to stage
+#pragma mark - Add Pieces to Stage Methods -
 
+/*************************************************
+ * @function: addNoteToStage
+ * @discussion: Adds a note piece to the stage
+ * @param: Note* note
+ *     - The note to add to the stage
+ *************************************************/
 - (void)addNoteToStage:(Note*)note
 {
     // create label for the note
     UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(600, 30, 200, 300)];
     //UILabel *tempLabel = [[UILabel alloc] initWithFrame:CGRectMake(note.notePosition.xCoordinate, note.notePosition.yCoordinate, 100,50)];
     tempLabel.text = note.noteStr;
-    //tempLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    tempLabel.lineBreakMode = NSLineBreakByClipping;
+    tempLabel.lineBreakMode = NSLineBreakByClipping; // NSLineBreakByWordWrapping;
     tempLabel.numberOfLines = 0;
     tempLabel.textColor = [UIColor blackColor];
     tempLabel.backgroundColor = [UIColor clearColor];
@@ -668,6 +688,12 @@
     [[self contentView] addSubview: [[self contentView].noteLabels lastObject]];
 }
 
+/*************************************************
+ * @function: addActorToStage
+ * @discussion: Adds an actor piece to the stage
+ * @param: Actor* actor
+ *     - The actor to add to the stage
+ *************************************************/
 - (void)addActorToStage:(Actor*)actor
 {
     UIImageView* newActorIconView = [[UIImageView alloc] initWithImage:actor.actorIcon];
@@ -693,6 +719,12 @@
     [[self contentView] addSubview:[[self contentView].actorArray lastObject]];
 }
 
+/*************************************************
+ * @function: addSetPieceToStage
+ * @discussion: Adds a set piece to the stage
+ * @param: SetPiece* newPiece
+ *     - The set piece to add to the stage
+ *************************************************/
 - (void)addSetPieceToStage:(SetPiece*)newPiece
 {       
     UIImageView* newIconView = [[UIImageView alloc] initWithImage:newPiece.icon];

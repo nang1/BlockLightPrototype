@@ -15,34 +15,9 @@
 		86572C4717E8B9A70081513F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C4617E8B9A70081513F /* CoreData.framework */; };
 		86572C4D17E8B9A70081513F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86572C4B17E8B9A70081513F /* InfoPlist.strings */; };
 		86572C4F17E8B9A70081513F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C4E17E8B9A70081513F /* main.m */; };
-		86572C5317E8B9A70081513F /* edu_asuAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C5217E8B9A70081513F /* edu_asuAppDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86572C5517E8B9A70081513F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 86572C5417E8B9A70081513F /* Default.png */; };
 		86572C5717E8B9A70081513F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 86572C5617E8B9A70081513F /* Default@2x.png */; };
 		86572C5917E8B9A70081513F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 86572C5817E8B9A70081513F /* Default-568h@2x.png */; };
-		86572C6417E8B9A70081513F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C6317E8B9A70081513F /* SenTestingKit.framework */; };
-		86572C6517E8B9A70081513F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C4017E8B9A70081513F /* UIKit.framework */; };
-		86572C6617E8B9A70081513F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C4217E8B9A70081513F /* Foundation.framework */; };
-		86572C6717E8B9A70081513F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86572C4617E8B9A70081513F /* CoreData.framework */; };
-		86572C6F17E8B9A70081513F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86572C6D17E8B9A70081513F /* InfoPlist.strings */; };
-		86572C7217E8B9A70081513F /* Blocklight_PrototypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C7117E8B9A70081513F /* Blocklight_PrototypeTests.m */; };
-		86572CA717E8BA040081513F /* bg-main.png in Resources */ = {isa = PBXBuildFile; fileRef = 86572C8317E8BA040081513F /* bg-main.png */; };
-		86572CA817E8BA040081513F /* bg-production.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 86572C8417E8BA040081513F /* bg-production.jpg */; };
-		86572CA917E8BA040081513F /* TimeLineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8617E8BA040081513F /* TimeLineViewCell.m */; };
-		86572CAA17E8BA040081513F /* QuickStageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8817E8BA040081513F /* QuickStageView.m */; };
-		86572CAB17E8BA040081513F /* GridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8A17E8BA040081513F /* GridTableViewCell.m */; };
-		86572CAC17E8BA040081513F /* QuickStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8C17E8BA040081513F /* QuickStageViewController.m */; };
-		86572CAD17E8BA040081513F /* TVNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8E17E8BA040081513F /* TVNavigationController.m */; };
-		86572CAE17E8BA040081513F /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9017E8BA040081513F /* Actor.m */; };
-		86572CAF17E8BA040081513F /* Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9217E8BA040081513F /* Frame.m */; };
-		86572CB017E8BA040081513F /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9417E8BA040081513F /* Group.m */; };
-		86572CB117E8BA040081513F /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9617E8BA040081513F /* Note.m */; };
-		86572CB217E8BA040081513F /* Performer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9817E8BA040081513F /* Performer.m */; };
-		86572CB317E8BA040081513F /* Position.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9A17E8BA040081513F /* Position.m */; };
-		86572CB417E8BA040081513F /* Production.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9C17E8BA040081513F /* Production.m */; };
-		86572CB617E8BA040081513F /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA017E8BA040081513F /* Scene.m */; };
-		86572CB717E8BA040081513F /* SetPiece.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA217E8BA040081513F /* SetPiece.m */; };
-		86572CB817E8BA040081513F /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA417E8BA040081513F /* Stage.m */; };
-		86572CB917E8BA040081513F /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CA617E8BA040081513F /* UserData.m */; };
 		86572CBE17E8BBD30081513F /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9017E8BA040081513F /* Actor.m */; };
 		86572CBF17E8BBF00081513F /* Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9217E8BA040081513F /* Frame.m */; };
 		86572CC017E8BBFA0081513F /* TimeLineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8617E8BA040081513F /* TimeLineViewCell.m */; };
@@ -61,7 +36,6 @@
 		86572CCE17E8BC6B0081513F /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9417E8BA040081513F /* Group.m */; };
 		86572CCF17E8BC950081513F /* bg-main.png in Resources */ = {isa = PBXBuildFile; fileRef = 86572C8317E8BA040081513F /* bg-main.png */; };
 		86572CD017E8BC950081513F /* bg-production.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 86572C8417E8BA040081513F /* bg-production.jpg */; };
-		86572CDA17E8C0E10081513F /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CD917E8C0E10081513F /* NoteView.m */; };
 		86572CDB17E8C12E0081513F /* NoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572CD917E8C0E10081513F /* NoteView.m */; };
 		86725B111844FCB80001D48F /* Line.m in Sources */ = {isa = PBXBuildFile; fileRef = 86725B101844FCB80001D48F /* Line.m */; };
 		867CB8EF17F2349A00E8B0F5 /* TVGestureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 867CB8EC17F2349A00E8B0F5 /* TVGestureController.m */; };
@@ -114,20 +88,9 @@
 		8BC8BB8B17F3A2F900E949B1 /* SetPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8BB8A17F3A2F900E949B1 /* SetPieceView.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		86572C6817E8B9A70081513F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 86572C3317E8B9A70081513F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 86572C3B17E8B9A70081513F;
-			remoteInfo = Blocklight_Prototype;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		861C2BA717FB9734006FC951 /* trash1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash1.png; sourceTree = "<group>"; };
 		861C2BAE17FCE521006FC951 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
-		86572C3C17E8B9A70081513F /* Blocklight_Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocklight_Prototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86572C4017E8B9A70081513F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		86572C4217E8B9A70081513F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		86572C4417E8B9A70081513F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -136,17 +99,10 @@
 		86572C4C17E8B9A70081513F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		86572C4E17E8B9A70081513F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		86572C5017E8B9A70081513F /* Blocklight_Prototype-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blocklight_Prototype-Prefix.pch"; sourceTree = "<group>"; };
-		86572C5117E8B9A70081513F /* edu_asuAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = edu_asuAppDelegate.h; sourceTree = "<group>"; };
-		86572C5217E8B9A70081513F /* edu_asuAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = edu_asuAppDelegate.m; sourceTree = "<group>"; };
 		86572C5417E8B9A70081513F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		86572C5617E8B9A70081513F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		86572C5817E8B9A70081513F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		86572C6217E8B9A70081513F /* Blocklight_PrototypeTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Blocklight_PrototypeTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86572C6317E8B9A70081513F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		86572C6C17E8B9A70081513F /* Blocklight_PrototypeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Blocklight_PrototypeTests-Info.plist"; sourceTree = "<group>"; };
-		86572C6E17E8B9A70081513F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		86572C7017E8B9A70081513F /* Blocklight_PrototypeTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Blocklight_PrototypeTests.h; sourceTree = "<group>"; };
-		86572C7117E8B9A70081513F /* Blocklight_PrototypeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Blocklight_PrototypeTests.m; sourceTree = "<group>"; };
 		86572C8317E8BA040081513F /* bg-main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-main.png"; sourceTree = "<group>"; };
 		86572C8417E8BA040081513F /* bg-production.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "bg-production.jpg"; sourceTree = "<group>"; };
 		86572C8517E8BA040081513F /* TimeLineViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLineViewCell.h; sourceTree = "<group>"; };
@@ -194,6 +150,7 @@
 		867CB8F417F2393900E8B0F5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BlockLight_Prototype/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		867CB8F617F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Blocklight_Prototype.xcdatamodel; sourceTree = "<group>"; };
 		867DE55A18105340008BD719 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		86DB243718457C0E00207CF5 /* Blocklight_Prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blocklight_Prototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86EA9CB5180EF4CA00D030C0 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = BlockLight_Prototype/SettingsView.h; sourceTree = SOURCE_ROOT; };
 		86EA9CB6180EF4CA00D030C0 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = BlockLight_Prototype/SettingsView.m; sourceTree = SOURCE_ROOT; };
 		86EA9CB9180F091100D030C0 /* production-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "production-settings.png"; sourceTree = "<group>"; };
@@ -258,17 +215,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		86572C5E17E8B9A70081513F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86572C6417E8B9A70081513F /* SenTestingKit.framework in Frameworks */,
-				86572C6517E8B9A70081513F /* UIKit.framework in Frameworks */,
-				86572C6617E8B9A70081513F /* Foundation.framework in Frameworks */,
-				86572C6717E8B9A70081513F /* CoreData.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -278,19 +224,9 @@
 				867DE55A18105340008BD719 /* Default-Landscape~ipad.png */,
 				8B85A8C1180F3BD200E3A26D /* Icon-72.png */,
 				86572C4817E8B9A70081513F /* Blocklight_Prototype */,
-				86572C6A17E8B9A70081513F /* Blocklight_PrototypeTests */,
 				86572C3F17E8B9A70081513F /* Frameworks */,
-				86572C3D17E8B9A70081513F /* Products */,
+				86DB243718457C0E00207CF5 /* Blocklight_Prototype.app */,
 			);
-			sourceTree = "<group>";
-		};
-		86572C3D17E8B9A70081513F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				86572C3C17E8B9A70081513F /* Blocklight_Prototype.app */,
-				86572C6217E8B9A70081513F /* Blocklight_PrototypeTests.octest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		86572C3F17E8B9A70081513F /* Frameworks */ = {
@@ -316,8 +252,6 @@
 				86572CBB17E8BA230081513F /* Views */,
 				86572CBC17E8BA3B0081513F /* Controllers */,
 				86572CBD17E8BA500081513F /* Models */,
-				86572C5117E8B9A70081513F /* edu_asuAppDelegate.h */,
-				86572C5217E8B9A70081513F /* edu_asuAppDelegate.m */,
 				86572C4917E8B9A70081513F /* Supporting Files */,
 			);
 			path = Blocklight_Prototype;
@@ -333,25 +267,6 @@
 				86572C5417E8B9A70081513F /* Default.png */,
 				86572C5617E8B9A70081513F /* Default@2x.png */,
 				86572C5817E8B9A70081513F /* Default-568h@2x.png */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		86572C6A17E8B9A70081513F /* Blocklight_PrototypeTests */ = {
-			isa = PBXGroup;
-			children = (
-				86572C7017E8B9A70081513F /* Blocklight_PrototypeTests.h */,
-				86572C7117E8B9A70081513F /* Blocklight_PrototypeTests.m */,
-				86572C6B17E8B9A70081513F /* Supporting Files */,
-			);
-			path = Blocklight_PrototypeTests;
-			sourceTree = "<group>";
-		};
-		86572C6B17E8B9A70081513F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				86572C6C17E8B9A70081513F /* Blocklight_PrototypeTests-Info.plist */,
-				86572C6D17E8B9A70081513F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -510,27 +425,8 @@
 			);
 			name = Blocklight_Prototype;
 			productName = Blocklight_Prototype;
-			productReference = 86572C3C17E8B9A70081513F /* Blocklight_Prototype.app */;
+			productReference = 86DB243718457C0E00207CF5 /* Blocklight_Prototype.app */;
 			productType = "com.apple.product-type.application";
-		};
-		86572C6117E8B9A70081513F /* Blocklight_PrototypeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 86572C7817E8B9A70081513F /* Build configuration list for PBXNativeTarget "Blocklight_PrototypeTests" */;
-			buildPhases = (
-				86572C5D17E8B9A70081513F /* Sources */,
-				86572C5E17E8B9A70081513F /* Frameworks */,
-				86572C5F17E8B9A70081513F /* Resources */,
-				86572C6017E8B9A70081513F /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				86572C6917E8B9A70081513F /* PBXTargetDependency */,
-			);
-			name = Blocklight_PrototypeTests;
-			productName = Blocklight_PrototypeTests;
-			productReference = 86572C6217E8B9A70081513F /* Blocklight_PrototypeTests.octest */;
-			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -550,12 +446,11 @@
 				en,
 			);
 			mainGroup = 86572C3117E8B9A70081513F;
-			productRefGroup = 86572C3D17E8B9A70081513F /* Products */;
+			productRefGroup = 86572C3117E8B9A70081513F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				86572C3B17E8B9A70081513F /* Blocklight_Prototype */,
-				86572C6117E8B9A70081513F /* Blocklight_PrototypeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -613,33 +508,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		86572C5F17E8B9A70081513F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86572C6F17E8B9A70081513F /* InfoPlist.strings in Resources */,
-				86572CA717E8BA040081513F /* bg-main.png in Resources */,
-				86572CA817E8BA040081513F /* bg-production.jpg in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		86572C6017E8B9A70081513F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		86572C3817E8B9A70081513F /* Sources */ = {
@@ -647,7 +516,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				86572C4F17E8B9A70081513F /* main.m in Sources */,
-				86572C5317E8B9A70081513F /* edu_asuAppDelegate.m in Sources */,
 				86572CBE17E8BBD30081513F /* Actor.m in Sources */,
 				86572CBF17E8BBF00081513F /* Frame.m in Sources */,
 				86572CCE17E8BC6B0081513F /* Group.m in Sources */,
@@ -680,54 +548,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		86572C5D17E8B9A70081513F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86572C7217E8B9A70081513F /* Blocklight_PrototypeTests.m in Sources */,
-				86572CA917E8BA040081513F /* TimeLineViewCell.m in Sources */,
-				86572CAA17E8BA040081513F /* QuickStageView.m in Sources */,
-				86572CAB17E8BA040081513F /* GridTableViewCell.m in Sources */,
-				86572CAC17E8BA040081513F /* QuickStageViewController.m in Sources */,
-				86572CAD17E8BA040081513F /* TVNavigationController.m in Sources */,
-				86572CAE17E8BA040081513F /* Actor.m in Sources */,
-				86572CAF17E8BA040081513F /* Frame.m in Sources */,
-				86572CB017E8BA040081513F /* Group.m in Sources */,
-				86572CB117E8BA040081513F /* Note.m in Sources */,
-				86572CB217E8BA040081513F /* Performer.m in Sources */,
-				86572CB317E8BA040081513F /* Position.m in Sources */,
-				86572CB417E8BA040081513F /* Production.m in Sources */,
-				86572CB617E8BA040081513F /* Scene.m in Sources */,
-				86572CB717E8BA040081513F /* SetPiece.m in Sources */,
-				86572CB817E8BA040081513F /* Stage.m in Sources */,
-				86572CB917E8BA040081513F /* UserData.m in Sources */,
-				86572CDA17E8C0E10081513F /* NoteView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		86572C6917E8B9A70081513F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 86572C3B17E8B9A70081513F /* Blocklight_Prototype */;
-			targetProxy = 86572C6817E8B9A70081513F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		86572C4B17E8B9A70081513F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				86572C4C17E8B9A70081513F /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		86572C6D17E8B9A70081513F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				86572C6E17E8B9A70081513F /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -809,40 +636,6 @@
 			};
 			name = Release;
 		};
-		86572C7917E8B9A70081513F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Blocklight_Prototype.app/Blocklight_Prototype";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Blocklight_Prototype/Blocklight_Prototype-Prefix.pch";
-				INFOPLIST_FILE = "Blocklight_PrototypeTests/Blocklight_PrototypeTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		86572C7A17E8B9A70081513F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Blocklight_Prototype.app/Blocklight_Prototype";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Blocklight_Prototype/Blocklight_Prototype-Prefix.pch";
-				INFOPLIST_FILE = "Blocklight_PrototypeTests/Blocklight_PrototypeTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -860,15 +653,6 @@
 			buildConfigurations = (
 				86572C7617E8B9A70081513F /* Debug */,
 				86572C7717E8B9A70081513F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		86572C7817E8B9A70081513F /* Build configuration list for PBXNativeTarget "Blocklight_PrototypeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				86572C7917E8B9A70081513F /* Debug */,
-				86572C7A17E8B9A70081513F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -32,7 +32,7 @@
 // @property (strong) NSMutableDictionary* layouts;
 
 -(void)addScene;
--(Scene*)getCurScene; // JNN: added
--(Frame*)getCurFrameFromScene; // JNN: added
+-(Scene*)getCurScene;
+-(Frame*)getCurFrameFromScene;
 
 @end

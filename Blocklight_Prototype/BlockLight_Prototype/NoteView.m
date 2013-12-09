@@ -14,7 +14,12 @@
 //@synthesize frame = _frame; // JNN: ???
 @synthesize popoverCtrl = _popoverCtrl;
 
-///* Auto-generated code
+/*************************************************
+ * @function: initWithFrame
+ * @discussion: Auto-generated code
+ * @param: CGRect frame
+ * @return: id to this instance
+ *************************************************/
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -24,8 +29,15 @@
     }
     return self;
 }
-//*/
 
+/*************************************************
+ * @function: initWithFrame __ withProductionFrame __ withViewController
+ * @discussion: initializes the view with a frame and popover view controller
+ * @param: CGRect frame
+ * @param: Frame* currentFrame
+ * @param: TVPopoverViewController* viewController
+ * @return: id to this instance
+ *************************************************/
 -(id)initWithFrame:(CGRect)frame withProductionFrame: (Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController
 {
     self = [super initWithFrame:frame];
@@ -46,6 +58,7 @@
     [_noteTextBox.layer setBorderWidth:2.0];
     _noteTextBox.layer.cornerRadius = 5;
     _noteTextBox.clipsToBounds = YES;
+    [_noteTextBox becomeFirstResponder];
     
     // label
     UILabel* textLabel = [[UILabel alloc] initWithFrame: CGRectMake(10, 10, 100, 15)];
@@ -78,8 +91,11 @@
 }
 */
 
-// User clicks "Add Note" button
-// Save text that was entered in the textbox in a new Note
+/*************************************************
+ * @function: addNewNote
+ * @discussion: User clicks "Add Note" button
+ *     Save text that was entered in the textbox in a new Note
+ *************************************************/
 -(void)addNewNote
 {
     if([_noteTextBox.text length] == 0)
