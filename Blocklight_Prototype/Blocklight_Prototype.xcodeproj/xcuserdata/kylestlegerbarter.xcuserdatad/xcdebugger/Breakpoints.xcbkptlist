@@ -13,7 +13,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "361"
          endingLineNumber = "361"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkName = "-UndoRedoGesture:withFrame:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -39,7 +39,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "359"
          endingLineNumber = "359"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkName = "-UndoRedoGesture:withFrame:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -52,7 +52,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "454"
          endingLineNumber = "454"
-         landmarkName = "-actionSheet:clickedButtonAtIndex:"
+         landmarkName = "-pressPopoverButton:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

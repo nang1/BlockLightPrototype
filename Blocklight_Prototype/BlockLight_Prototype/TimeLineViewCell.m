@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
+
+
 #import "TimeLineViewCell.h"
 
 @implementation TimeLineViewCell
@@ -19,19 +21,18 @@
     return self;
 }
 
+/*************************************************
+ * @function: - (void)setSelected:(BOOL)selected animated:(BOOL)animated
+ * @discussion: Sets selected frame in production
+ * @param: bool selected
+ * @param: bool animated
+ * @return: void
+ *************************************************/
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+
 	
-	
-	// Configure the view for the selected state
-	/*if(selected)
-		self.backgroundColor =[self.backgroundColor colorWithAlphaComponent:1.0f];
-	else
-		self.backgroundColor =[self.backgroundColor colorWithAlphaComponent:0.4f];
-     */
-    
-    // This is in Andrew's code, need to ask about difference from code above
     if(selected){
         
     }

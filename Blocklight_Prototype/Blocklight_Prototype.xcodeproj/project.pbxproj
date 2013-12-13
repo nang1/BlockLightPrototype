@@ -21,7 +21,6 @@
 		86572CBE17E8BBD30081513F /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9017E8BA040081513F /* Actor.m */; };
 		86572CBF17E8BBF00081513F /* Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C9217E8BA040081513F /* Frame.m */; };
 		86572CC017E8BBFA0081513F /* TimeLineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8617E8BA040081513F /* TimeLineViewCell.m */; };
-		86572CC117E8BC010081513F /* GridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8A17E8BA040081513F /* GridTableViewCell.m */; };
 		86572CC217E8BC0E0081513F /* TVNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8E17E8BA040081513F /* TVNavigationController.m */; };
 		86572CC317E8BC160081513F /* QuickStageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8817E8BA040081513F /* QuickStageView.m */; };
 		86572CC417E8BC1E0081513F /* QuickStageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86572C8C17E8BA040081513F /* QuickStageViewController.m */; };
@@ -109,8 +108,6 @@
 		86572C8617E8BA040081513F /* TimeLineViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeLineViewCell.m; sourceTree = "<group>"; };
 		86572C8717E8BA040081513F /* QuickStageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickStageView.h; sourceTree = "<group>"; };
 		86572C8817E8BA040081513F /* QuickStageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickStageView.m; sourceTree = "<group>"; };
-		86572C8917E8BA040081513F /* GridTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridTableViewCell.h; sourceTree = "<group>"; };
-		86572C8A17E8BA040081513F /* GridTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridTableViewCell.m; sourceTree = "<group>"; };
 		86572C8B17E8BA040081513F /* QuickStageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickStageViewController.h; sourceTree = "<group>"; };
 		86572C8C17E8BA040081513F /* QuickStageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickStageViewController.m; sourceTree = "<group>"; };
 		86572C8D17E8BA040081513F /* TVNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVNavigationController.h; sourceTree = "<group>"; };
@@ -323,8 +320,6 @@
 				8B85A8C3180F3D4E00E3A26D /* PopoverViews */,
 				86572C8717E8BA040081513F /* QuickStageView.h */,
 				86572C8817E8BA040081513F /* QuickStageView.m */,
-				86572C8917E8BA040081513F /* GridTableViewCell.h */,
-				86572C8A17E8BA040081513F /* GridTableViewCell.m */,
 				86572C8517E8BA040081513F /* TimeLineViewCell.h */,
 				86572C8617E8BA040081513F /* TimeLineViewCell.m */,
 			);
@@ -534,7 +529,6 @@
 				867CB8F017F2349A00E8B0F5 /* TVPopoverViewController.m in Sources */,
 				867CB8EF17F2349A00E8B0F5 /* TVGestureController.m in Sources */,
 				86572CDB17E8C12E0081513F /* NoteView.m in Sources */,
-				86572CC117E8BC010081513F /* GridTableViewCell.m in Sources */,
 				86572CC017E8BBFA0081513F /* TimeLineViewCell.m in Sources */,
 				867CB8F717F2393900E8B0F5 /* AppDelegate.m in Sources */,
 				867CB8F817F2393900E8B0F5 /* Blocklight_Prototype.xcdatamodeld in Sources */,
