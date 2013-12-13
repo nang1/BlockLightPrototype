@@ -2,7 +2,9 @@
 //  UserData.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that holds information about a user's account.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -14,6 +16,11 @@
 @synthesize uniqueGroupID = _uniqueGroupID;
 @synthesize uniquePerformerID = _uniquePerformerID;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a userData object
+ * @return: id to model instance
+ ************************************************************/
 -(id) init{
     self = [super init];
     
@@ -27,16 +34,26 @@
     return self;
 }
 
-// increments uniqueGroupID so we're ready to give an id to the new group
-// this function is called after creating a new group
+/*************************************************************
+ * @function: nextUniqueGroupID
+ * @discussion: Increments uniqueGroupID, so we're ready to give an id
+ *              to the next new group that is created. This method
+ *              is called after creating a new group.
+ * @return: id to model instance
+ ************************************************************/
 -(NSNumber*)nextUniqueGroupID{
     NSNumber* next = [NSNumber numberWithInt:_uniqueGroupID.intValue +1];
     _uniqueGroupID = next;
     return  next;
 }
 
-// increments uniquePerformerId so we're ready to give an id to the new peformer
-// this function is called after creating a new performer
+/*************************************************************
+ * @function: nextUniquePerformerID
+ * @discussion: Increments uniquePerformerId, so we're ready to give
+ *              an id to the next new performer. This method is
+ *              called after creating a new performer.
+ * @return: id to model instance
+ ************************************************************/
 -(NSNumber*)nextUniquePerformerID{
     NSNumber* next = [NSNumber numberWithInt:_uniquePerformerID.intValue +1];
     _uniquePerformerID = next;

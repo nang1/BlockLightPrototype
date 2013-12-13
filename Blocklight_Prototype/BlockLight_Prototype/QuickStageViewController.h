@@ -2,7 +2,9 @@
 //  QuickStageViewController.h
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A controller that handles the user actions in the quick stage editor.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -19,7 +21,6 @@
 #import "Undo_Redo.h"
 
 @class TVPopoverViewController;
-//@class TVGestureController;
 
 @interface QuickStageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate>{
     Production* _quickProduction;

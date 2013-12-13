@@ -66,7 +66,7 @@
 }
 
 /*************************************************
- * @function: viewDidLoad
+ * @function: didReceiveMemoryWarning
  * @discussion: what should happen when the memory is low?
  *     (inherited from: UIViewController*)
  *************************************************/

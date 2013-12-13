@@ -2,7 +2,9 @@
 //  Group.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model holding all the information about a theater group.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -15,6 +17,11 @@
 @synthesize performers = _performers;
 @synthesize productions = _productions;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a Group object
+ * @return: id to model instance
+ ************************************************************/
 -(id)init{
     self =[super init];
     

@@ -2,7 +2,10 @@
 //  Undo_Redo.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 11/15/13.
+//  A model that information about an action a user performed on some item.
+//  The changeType variable indicates which user action it is.
+// 
+//  Created by Nicole Ang on 11/15/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 
