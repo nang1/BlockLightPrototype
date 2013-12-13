@@ -2,24 +2,26 @@
 //  SetPieceListView.m
 //  Blocklight_Prototype
 //
+//  Popover view to let the user look at a list of set pieces and
+//  select one to add to the stage.
+//  Depending on what the user selected in SetPieceView, a
+//  different list will show
+//
 //  Created by nang1 on 10/21/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
-// Displays a list of set pieces for the user to add to the stage
-// Depending on what the user selected in SetPieceView, a different list will show
 
-/* NOTE: When changing number of set pieces availabe, be sure to update the methods:
+/* NOTE: When changing number of set pieces available, be sure to update the methods:
  *           numberOfRowsInSection
  *           display<ListType>Cell
- *           selected<ListType>Item
- *           and edit SetPiece.m
+ *           and edit SetPiece.m to have the correct image for the set piece
  *
  *       When changing number of categories, update the methods:
  *           cellForRowAtIndexPath
  *           didSelectRowAtIndexPath
  *           titleForHeaderInSection
  *           numberOfSectionsInTableView
- *           and edit SetPieceView.m and Defaults.h
+ *           and edit SetPieceView.m and Defaults.h to include/remove the category
  */
 #import "SetPieceListView.h"
 
@@ -27,6 +29,12 @@
 
 @synthesize popoverCtrl = _popoverCtrl;
 
+/*************************************************
+ * @function: initWithFrame
+ * @discussion: initializes the view in a s
+ * @param: CGRect frame
+ * @return: id to this instance
+ *************************************************/
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -36,6 +44,15 @@
     return self;
 }
 
+/*********************************************************************
+ * @function: initWithFrame __withProductionFrame __withViewController
+ * @discussion: initializes the view
+ * @param: CGRect frame
+ * @param: Frame* currentFrame - saves which frame the user is currently
+ *                               looking at
+ * @param: TVPopoverViewController* viewController
+ * @return: id to this instance
+ **********************************************************************/
 - (id)initWithFrame:(CGRect) frame withProductionFrame:(Frame*)currentFrame withViewController:(TVPopoverViewController*)viewController{
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     
@@ -59,11 +76,25 @@
     return self;
 }
 
+/*********************************************************************
+ * @function: setListType
+ * @discussion: Called by SetPieceView to change the list to a specific
+ *              category of set pieces.
+ * @param: listType lType - indicates what prop category the list is
+ * @return: id to this instance
+ **********************************************************************/
 - (void)setListType:(ListType)lType {
     listType = lType;
 }
 
-// UITableView Datasource for Set Pieces List Popover
+/***************************************************************
+ * @function: tableView __ cellForRowAtIndexPath
+ * @discussion: UITableView Datasource for Set Piece List Popover.
+ *              Figures out what should be shown in each cell.
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: UITableViewCell* - what the cell should contain
+ ***************************************************************/
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
@@ -116,13 +147,25 @@
     return cell;
 }
 
-// Set height for table row
+/********************************************************
+ * @function: tableView __ heightForRowAtIndexPath
+ * @discussion: Set height for table row
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: CGFloat
+ ********************************************************/
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat height = 50.0;
     return height;
 }
 
-// Set section headings
+/*************************************************
+ * @function: tableView __ titleForHeaderInSection
+ * @discussion: Set section headings
+ * @param: UITableView* tableView
+ * @param: NSInteger section
+ * @return: NSString
+ *************************************************/
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName = @"";
@@ -170,7 +213,13 @@
     return sectionName;
 }
 
-// Determines the number of rows in a section
+/*********************************************************
+ * @function: tableView __ numberOfRowsInSection
+ * @discussion: Determines the number of rows in a section
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: NSInteger
+ *********************************************************/
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 3;
     
@@ -217,7 +266,12 @@
     return rows;
 }
 
-// Determines number of sections for a table
+/*************************************************************
+ * @function: numberOfSectionsInTableView
+ * @discussion: Determines the number of sections for a table
+ * @param: UITableView* tableView
+ * @return: NSInteger
+ *************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger section = 1;
     
@@ -228,7 +282,12 @@
     return section;
 }
 
-// How to respond to a row that got selected
+/*************************************************************
+ * @function: tableView __ didSelectRowAtIndexPath
+ * @discussion: How to respond to a row that got selected
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ *************************************************************/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // add new set piece
@@ -237,7 +296,13 @@
     [_popoverCtrl dismissPopoverView];
 }
 
-// This table row is displaying a plant set piece
+/*************************************************************
+ * @function: displayPlantCell __ inRow
+ * @discussion: Display plant icon next to label so that the user knows
+ *              what it looks like before selecting it.
+ * @param: UITableViewCell* cell - edit the cell 
+ * @param: NSInteger row - where the cell is
+ *************************************************************/
 - (void) displayPlantCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
@@ -281,7 +346,13 @@
     }
 }
 
-// This table row is displaying a stair set piece
+/*************************************************************
+ * @function: displayStairCell __ inRow
+ * @discussion: Display stair set piece icon next to label so that
+ *              the user knows what it looks like before selecting it.
+ * @param: UITableViewCell* cell - edit the cell
+ * @param: NSInteger row - where the cell is
+ *************************************************************/
 - (void) displayStairCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
@@ -301,7 +372,13 @@
     }
 }
 
-// This table row is displaying a platform set piece
+/*************************************************************
+ * @function: displayPlatformCell __ inRow
+ * @discussion: Display platform icon next to label so that the user knows
+ *              what it looks like before selecting it.
+ * @param: UITableViewCell* cell - edit the cell
+ * @param: NSInteger row - where the cell is
+ *************************************************************/
 - (void) displayPlatformCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
@@ -314,7 +391,13 @@
     }
 }
 
-// This table row is displaying a furniture set piece
+/*************************************************************
+ * @function: displayFurnitureCell __ inRow
+ * @discussion: Display furniture icon next to label so that the user knows
+ *              what it looks like before selecting it.
+ * @param: UITableViewCell* cell - edit the cell
+ * @param: NSInteger row - where the cell is
+ *************************************************************/
 - (void) displayFurnitureCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:
@@ -358,7 +441,13 @@
     }
 }
 
-// This table row is displaying an uncategorized set piece
+/*************************************************************
+ * @function: displayUncategorizedCell __ inRow
+ * @discussion: Display uncategorized icon next to label so that the user knows
+ *              what it looks like before selecting it.
+ * @param: UITableViewCell* cell - edit the cell
+ * @param: NSInteger row - where the cell is
+ *************************************************************/
 - (void) displayUncategorizedCell:(UITableViewCell*)cell inRow:(NSInteger)row {
     switch (row) {
         case 0:

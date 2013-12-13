@@ -2,7 +2,11 @@
 //  Defaults.h
 //  Prototype
 //
-//  Created by game on 9/21/13.
+//  This file holds enumerations that help us know a specific type
+//  instead of using arbitrary values and having to record in the comments
+//  what they mean.
+//
+//  Created by Nicole Ang on 9/21/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 

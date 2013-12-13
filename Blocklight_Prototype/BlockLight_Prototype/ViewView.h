@@ -2,7 +2,9 @@
 //  ViewView.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 9/25/13.
+//  A view that provides options to change what can be seen on the stage.
+// 
+//  Created by Nicole Ang on 9/25/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 

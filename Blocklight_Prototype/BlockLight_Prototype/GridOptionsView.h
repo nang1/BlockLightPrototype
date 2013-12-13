@@ -2,7 +2,10 @@
 //  GridOptionsView.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 10/16/13.
+//  This view is called from the ViewView popover.
+//  It allows the user to edit the grid lines on the stage.
+//
+//  Created by Nicole Ang on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 

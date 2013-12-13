@@ -2,7 +2,10 @@
 //  AppDelegate.h
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  Controls the inital start-up of BlockLight.
+//  Also handles what happens when the user exists the application.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 

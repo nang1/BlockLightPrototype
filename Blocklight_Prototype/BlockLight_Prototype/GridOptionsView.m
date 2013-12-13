@@ -2,7 +2,10 @@
 //  GridOptionsView.m
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 10/16/13.
+//  This view is called from the ViewView popover.
+//  It allows the user to edit the grid lines on the stage.
+//
+//  Created by Nicole Ang on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 // This popover adjusts the grid that can be displayed on the stage
@@ -57,7 +60,7 @@
  * @discussion: UITableView Datasource for Grid Options View Popover
  * @param: UITableView* tableView
  * @param: NSIndexPath* indexPath
- * @return: UITableViewCell*
+ * @return: UITableViewCell* - what the cell should contain
  *************************************************/
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

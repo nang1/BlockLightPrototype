@@ -3,6 +3,11 @@
 //  Previously: DimensionsView.h
 //  Blocklight_Prototype
 //
+//  This view allows the user to edit the stage's name
+//  width, and height.
+//  Planned functionality: Save / Load Layout
+//      This will save or load certain stage settings.
+// 
 //  Originally Created by Barrett Ames on 7/30/12.
 //  Recreated by Jordan Nguyen on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.

@@ -234,7 +234,7 @@
  * @discussion: Figure out what action needs to be performed
  * @param: Undo_Redo* lastChange - object with the information about 
  *                                 the last thing the user did
- *         Frame* tempFrame - need to know which frame to update
+ * @param: Frame* tempFrame - need to know which frame to update
  *                            when performing the undo/redo
  *********************************************************/
 -(void)UndoRedoAction:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame {
@@ -263,8 +263,8 @@
  * @discussion: An undo/redo move was performed, need to update
  *              the view to show the change.
  * @param: Position* pos - where the item should be moved to
- *         UIView* obj - the view that needs to be updated
- *         CGAffineTransform newScale - the scale and rotation of the object's view
+ * @param: UIView* obj - the view that needs to be updated
+ * @param: CGAffineTransform newScale - the scale and rotation of the object's view
  *********************************************************/
 -(void)UndoRedoUpdateView:(Position*)pos ofObject:(UIView*)obj withScale:(CGAffineTransform)newScale{
     [obj setCenter:CGPointMake(pos.xCoordinate, pos.yCoordinate)];
@@ -297,7 +297,7 @@
  *              was deleted from the frame. Find out what object it is
  *              and add it from the corresponding array.
  * @param: Undo_Redo* lastChange - information about the object that was added
- *         Frame* tempFrame - the frame to add the object back into
+ * @param: Frame* tempFrame - the frame to add the object back into
  *********************************************************/
 -(void)UndoRedoAdd:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame{
     if([lastChange.obj isKindOfClass:[Note class]]){
@@ -326,7 +326,7 @@
  * @discussion: An undo/redo pan/pinch/rotate gesture. Find out what object it is
  *              and change its position and scaleRotationMatrix.
  * @param: Undo_Redo* lastChange - information about the object that was added
- *         Frame* tempFrame - the frame that the changed item is located in
+ * @param: Frame* tempFrame - the frame that the changed item is located in
  *********************************************************/
 -(void)UndoRedoGesture:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame {
     if([lastChange.obj isKindOfClass:[Note class]]){

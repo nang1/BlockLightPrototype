@@ -2,7 +2,10 @@
 //  QuickStageView.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  View to show the stage that the use can edit and position
+//  actors, notes, and set pieces on.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 

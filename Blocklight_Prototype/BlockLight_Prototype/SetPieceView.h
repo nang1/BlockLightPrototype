@@ -2,7 +2,11 @@
 //  SetPieceView.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 9/25/13.
+//  A view that lets the user pick whether or not to draw
+//  spike tape or traffic patterns. Also lets the user see the
+//  categories of the set pieces in the aplication.
+//
+//  Created by Nicole Ang on 9/25/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 
