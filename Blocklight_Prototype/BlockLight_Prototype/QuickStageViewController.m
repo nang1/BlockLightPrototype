@@ -724,7 +724,12 @@
             {
 				Scene *scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
 				
-				// Don't delete if there is only one frame left - probably breaks the app =(
+				// *********
+				// TODO (CRITICAL):
+				// Need to handle the case where you delete the FIRST frame in the array.
+				// If you delete the first frame, the app crashes at the moment.
+				// *********
+				
 				if([scene.frames count] != 1){
 					[scene.frames removeObjectAtIndex:scene.curFrame];
 					[_timeline reloadData];
