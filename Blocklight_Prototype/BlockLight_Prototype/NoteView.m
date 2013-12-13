@@ -2,7 +2,9 @@
 //  NoteView.m
 //  Prototype
 //
-//  Created by game on 9/9/13.
+//  Popover view that allows the user to add a note.
+//
+//  Created by Nicole Ang on 9/9/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -16,7 +18,7 @@
 
 /*************************************************
  * @function: initWithFrame
- * @discussion: Auto-generated code
+ * @discussion: Auto-generated code to initialize view
  * @param: CGRect frame
  * @return: id to this instance
  *************************************************/
@@ -119,6 +121,7 @@
     // just to check if note has been added to current frame
     // NSLog(@"Added new note, Number of notes: %d\n",[tempFrame.notes count]);
     
+    // Close the popover and return to stage editor
     [_popoverCtrl dismissPopoverView];
 }
 

@@ -2,7 +2,9 @@
 //  NoteView.h
 //  Prototype
 //
-//  Created by game on 9/9/13.
+//  Popover view to let the user add a note.
+// 
+//  Created by Nicole Ang on 9/9/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -23,7 +25,7 @@
 }
 
 @property (nonatomic, strong) UITextView* noteTextBox;
-//@property (strong) Frame* frame; // keeping this commented
+//@property (strong) Frame* frame; // keeping this commented b/c of an error
 @property (strong) TVPopoverViewController* popoverCtrl;
 
 -(id)initWithFrame:(CGRect)frame withProductionFrame: (Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController;

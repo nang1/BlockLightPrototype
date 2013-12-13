@@ -3,6 +3,11 @@
 //  Previously: DimensionsView.m
 //  Blocklight_Prototype
 //
+//  This view allows the user to edit the stage's name
+//  width, and height.
+//  Planned functionality: Save / Load Layouts
+//          This will save or load certain stage settings.
+//
 //  Originally Created by Barrett Ames on 7/30/12.
 //  Recreated by Jordan Nguyen on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
@@ -45,7 +50,7 @@
  * @discussion: UITableView Datasource for Settings View Popover
  * @param: UITableView* tableView
  * @param: NSIndexPath* indexPath
- * @return: UITableViewCell*
+ * @return: UITableViewCell* - what should be in the cell
  *************************************************/
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -219,7 +224,7 @@
 
 /*************************************************
  * @function: tableView __ heightForRowAtIndexPath
- * @discussion: Set height for table
+ * @discussion: Set height for table row
  * @param: UITableView* tableView
  * @param: NSIndexPath* indexPath
  * @return: CGFloat

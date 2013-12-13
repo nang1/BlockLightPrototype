@@ -14,6 +14,11 @@
 
 @interface Line : NSObject <NSCopying>
 {
+    /*************
+     * NOTE: Planned to use CGPoints to hold the positions of the objects.
+     *       But Xcode was giving some bizarre errors, so we create a custom
+     *       class, Position, to store it.
+     ************/
     //CGPoint* _start;
     //CGPoint* _end;
     Position* _start;

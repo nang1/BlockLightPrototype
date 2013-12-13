@@ -2,7 +2,9 @@
 //  ActorView.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 10/16/13.
+//  Popover view to let the user add a performer.
+//
+//  Created by Nicole Ang on 10/16/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 

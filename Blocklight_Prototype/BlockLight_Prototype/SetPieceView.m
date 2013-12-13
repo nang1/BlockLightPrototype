@@ -2,7 +2,11 @@
 //  SetPieceView.m
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 9/25/13.
+//  A view that lets the user pick whether or not to draw
+//  spike tape or traffic patterns. Also lets the user see the
+//  categories of the set pieces in the aplication.
+//
+//  Created by Nicole Ang on 9/25/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 
@@ -12,6 +16,12 @@
 
 @synthesize popoverCtrl = _popoverCtrl;
 
+/*************************************************
+ * @function: initWithFrame
+ * @discussion: initializes the view in a s
+ * @param: CGRect frame
+ * @return: id to this instance
+ *************************************************/
  - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -21,8 +31,18 @@
     return self;
 }
 
+/*************************************************
+ * @function: initWithFrame __withProductionFrame __withViewController
+ * @discussion: initializes the view
+ * @param: CGRect frame
+ * @param: Frame* currentFrame - saves which frame the user is currently
+ *                               looking at
+ * @param: TVPopoverViewController* viewController
+ * @return: id to this instance
+ *************************************************/
 - (id)initWithFrame:(CGRect)frame withProductionFrame:(Frame*)currentFrame withViewController:(TVPopoverViewController *)viewController {
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
+    
     if(self == nil)
         return nil;
     
@@ -36,7 +56,14 @@
     return self;
 }
 
-// UITableView Datasource for Set Piece Popover
+/***************************************************************
+ * @function: tableView __ cellForRowAtIndexPath
+ * @discussion: UITableView Datasource for Set Piece Popover.
+ *              Figures out what should be shown in each cell.
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: UITableViewCell* - what the cell should contain
+ ***************************************************************/
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
@@ -116,13 +143,25 @@
     return cell;
 }
 
-// Set height for table
+/********************************************************
+ * @function: tableView __ heightForRowAtIndexPath
+ * @discussion: Set height for table row
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: CGFloat
+ ********************************************************/
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 50.0;
     return height;
 }
 
-// Determines the number of rows in a section
+/*********************************************************
+ * @function: tableView __ numberOfRowsInSection
+ * @discussion: Determines the number of rows in a section
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: NSInteger
+ *********************************************************/
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
     
@@ -142,13 +181,23 @@
     return rows;
 }
 
-// Determines the number of sections for a table
+/*************************************************************
+ * @function: numberOfSectionsInTableView
+ * @discussion: Determines the number of sections for a table
+ * @param: UITableView* tableView
+ * @return: NSInteger
+ *************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger section = 2;
     return section;
 }
 
-// How to respond to a row that got selected
+/*************************************************************
+ * @function: tableView __ didSelectRowAtIndexPath
+ * @discussion: How to respond to a row that got selected
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ *************************************************************/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
@@ -159,47 +208,47 @@
     
     TVPopoverViewController* newPopViewCtrl;
     switch(section){
-        case 0:
-            // spike tape and traffic patterns
+        case 0: // Spike tape and traffic patterns section
+            // These are handled by the action listeners. Methods are down below.
             break;
-        case 1: // Go to list of set pieces
+        case 1: // Go to a specific list of set pieces
             switch (row) {
-                case 0:
+                case 0: // ALL props
                 {
-                    //create a new popover with the same information
+                    //create a new popover with the same production information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
                     [newPopViewCtrl setPropListType:(ListType)ALL];
                 }
                     break;
-                case 1:
+                case 1: // PLANTS props
                 {
-                    //create a new popover with the same information
+                    //create a new popover with the same production information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
                     [newPopViewCtrl setPropListType:(ListType)PLANTS];
                 }
                     break;
-                case 2:
+                case 2: // STAIRS props
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
                     [newPopViewCtrl setPropListType:(ListType)STAIRS];
                 }
                     break;
-                case 3:
+                case 3: // PLATFORMS props
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
                     [newPopViewCtrl setPropListType:(ListType)PLATFORMS];
                 }
                     break;
-                case 4:
+                case 4: // FURNITURE props
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
                     [newPopViewCtrl setPropListType:(ListType)FURNITURE];
                 }
                     break;
-                case 5:
+                case 5: // UNCATEGORIZED props
                 {
                     //create a new popover with the same information
                     newPopViewCtrl = [[TVPopoverViewController alloc] initPopoverView:(EditTools)PROPSLIST withStage:tempView withProduction:tempProduction];
@@ -222,6 +271,11 @@
     }
 }
 
+/**********************************************************
+ * @function: spikeTape
+ * @discussion: The user clicked on the 'Draw Spike Tape' switch
+ *              This either enables or disables the draw feature.
+ *********************************************************/
 - (void)spikeTape
 {
     if([_spikeTapeSwitch isOn])
@@ -238,6 +292,11 @@
     [_popoverCtrl.quickView setNeedsDisplay];
 }
 
+/**********************************************************
+ * @function: trafficPatterns
+ * @discussion: The user clicked on the 'Draw Traffic Pattern' switch
+ *              This either enables or disables the draw feature.
+ *********************************************************/
 -(void)trafficPatterns
 {
     if([_trafficPatternSwitch isOn])

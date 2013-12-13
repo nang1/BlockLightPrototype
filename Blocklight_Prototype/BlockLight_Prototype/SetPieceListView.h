@@ -2,7 +2,12 @@
 //  SetPieceListView.h
 //  Blocklight_Prototype
 //
-//  Created by nang1 on 10/21/13.
+//  Popover view to let the user look at a list of set pieces and
+//  select one to add to the stage.
+//  Depending on what the user selected in SetPieceView, a
+//  different list will show
+// 
+//  Created by Nicole Ang on 10/21/13.
 //  Copyright (c) 2013 BlockLight. All rights reserved.
 //
 

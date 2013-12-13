@@ -16,7 +16,6 @@
     CGAffineTransform _scaleRotationMatrix; // scale and rotation of set piece
     UIImage * _icon;
     Position* _piecePosition;
-    CGPoint* whatever;
 }
 
 @property CGAffineTransform scaleRotationMatrix;
