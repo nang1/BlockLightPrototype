@@ -2,7 +2,9 @@
 //  Group.h
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model to holding information about a theater group.
+//  
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -10,8 +12,8 @@
 
 @interface Group : NSObject {
     NSString* _name;
-    NSMutableArray* _performers;
-    NSMutableArray* _productions;
+    NSMutableArray* _performers; // All the performers in this group
+    NSMutableArray* _productions; // All the productions created by/for this group
     NSNumber* _uniqueID;
 }
 

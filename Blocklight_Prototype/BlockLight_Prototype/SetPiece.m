@@ -2,7 +2,9 @@
 //  SetPiece.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that holds information about a set piece.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -14,6 +16,11 @@
 @synthesize icon = _icon;
 @synthesize piecePosition = _piecePosition;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a Set Piece object
+ * @return: id to model instance
+ ************************************************************/
 -(id) init{
     self = [super init];
     
@@ -26,6 +33,12 @@
     return self;
 }
 
+/*************************************************************
+ * @function: initWithImage
+ * @discussion: initializes a SetPiece object with a specific image
+ * @param: UIImage* icon - image of the set piece
+ * @return: id to model instance
+ ************************************************************/
 -(id) initWithImage:(UIImage*)icon
 {
     self = [super init];
@@ -40,6 +53,12 @@
     return self;
 }
 
+/*************************************************************
+ * @function: copyWithZone
+ * @discussion: creates a copy of this model instance
+ * @param: NSZone* zone
+ * @return: id to new model instance copy
+ ************************************************************/
 -(id)copyWithZone:(NSZone *)zone
 {
 	id copy = [[[self class]alloc]init];

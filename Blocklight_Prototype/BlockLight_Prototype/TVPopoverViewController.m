@@ -2,7 +2,11 @@
 //  TVPopoverViewController.m
 //  Prototype
 //
-//  Created by nang1 on 9/21/13.
+//  A controller class that controls what view will appear in the popover
+//  when the user clicks on a button in the navigation bar in the
+//  stage editor.
+//
+//  Created by Nicole Ang on 9/21/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -19,6 +23,15 @@
 @synthesize production = _production;
 @synthesize popoverNav = _popoverNav;
 
+/*************************************************************
+ * @function: initPopoverView __withStage __withProduction
+ * @discussion: initializes a popover view depending on the given parameters
+ * @param: EditTools type - indicates what kind of popover should be shown
+ *         QuickStageView* quickStage - connects to the quickstage view that the user sees
+ *         Production* production - used to find out what is the current scene and frame
+ *                                  that the user is currently on
+ * @return: id to model instance
+ ************************************************************/
 - (id)initPopoverView:(EditTools)_type withStage:(QuickStageView*) quickStage withProduction:(Production*)production {
     self = [super init];
     
@@ -156,22 +169,41 @@
     return self;
 }
 
+/**********************************************************
+ * @function: viewDidLoad
+ * @discussion: what should happen after the view loads?
+ *     (inherited from: UIViewController*)
+ *********************************************************/
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
 
+/*********************************************************
+ * @function: didReceiveMemoryWarning
+ * @discussion: what should happen when the memory is low?
+ *     (inherited from: UIViewController*)
+ *********************************************************/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 // used to set the category of set pieces list
+/**********************************************************
+ * @function: setPropListType
+ * @discussion: Sets the category of Set Pieces List
+ * @param: ListType pType - indicates type of list that should
+ *                          be displayed
+ *********************************************************/
 - (void)setPropListType:(ListType)pType {
     [(SetPieceListView*)self.view setListType:pType];
 }
 
-// dismiss this popover view
+/**********************************************************
+ * @function: dismissPopoverView
+ * @discussion: dismiss this popover view
+ *********************************************************/
 - (void)dismissPopoverView {
     //dismiss popover with or w/o animation
     [_popover dismissPopoverAnimated:NO];

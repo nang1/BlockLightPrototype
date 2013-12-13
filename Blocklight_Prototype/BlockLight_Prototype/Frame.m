@@ -2,7 +2,10 @@
 //  Frame.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that stores all the items that have been set to the stage
+//  for a particular frame.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -19,6 +22,11 @@
 @synthesize undoArray = _undoArray;
 @synthesize redoArray = _redoArray;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a Frame object
+ * @return: id to model instance
+ ************************************************************/
 -(id)init{
     self = [super init];
     
@@ -35,6 +43,12 @@
     return self;
 }
 
+/*************************************************************
+ * @function: copyWithZone
+ * @discussion: creates a copy of this model instance
+ * @param: NSZone* zone
+ * @return: id to new model instance copy
+ ************************************************************/
 -(id)copyWithZone:(NSZone *)zone
 {
 	id copy = [[[self class] alloc] init];

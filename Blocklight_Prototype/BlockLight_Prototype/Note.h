@@ -2,7 +2,9 @@
 //  Note.h
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that holds information about a Note object.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -10,7 +12,7 @@
 #import "Position.h"
 
 @interface Note : UIPanGestureRecognizer <NSCopying>{
-    CGAffineTransform _scaleRotationMatrix;
+    CGAffineTransform _scaleRotationMatrix; // Defines scale(size) and rotation of note.
     NSString* _noteStr;
     Position* _notePosition;
 }

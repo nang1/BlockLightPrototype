@@ -2,7 +2,9 @@
 //  Actor.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that stores the name, postion, and image of an actor.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -16,6 +18,11 @@
 @synthesize actorPosition = _actorPosition;
 @synthesize actorIcon = _actorIcon;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes an Actor object
+ * @return: id to model instance
+ ************************************************************/
 -(id)init{
     self = [super init];
     
@@ -30,6 +37,13 @@
     
     return self;
 }
+
+/*************************************************************
+ * @function: copyWithZone
+ * @discussion: creates a copy of this model instance
+ * @param: NSZone* zone
+ * @return: id to new model instance copy
+ ************************************************************/
 -(id)copyWithZone:(NSZone *)zone
 {
 	id copy = [[[self class]alloc]init];
@@ -48,25 +62,18 @@
 	return dup;
 }
 
-/* Save feature
+/* Used for Save feature - hasn't been adjusted for new architecture
+ // Save the object
  - (void)encodeWithCoder:(NSCoder *)encoder{
  [encoder encodeObject:_actorID forKey:@"actorID"];
- // If using the Position model, encode using this
  [encoder encodeObject:_actorPosition forKey:@"actorPosition"];
- // If position was changed to a CGPoint, encode using something like this
- NSValue* tempVal = [NSValue value:_actorPosition withObjCType:@encoder(CGPoint)];
- [encoder encodeObject:tempVal forKey:@"actorPosition"];
  }
  
+ // load the object from wherever it was saved
  - (id)initWithCoder:(NSCoder *)decoder{
  if(self = [super init]){
  	self.actorID = [decoder decodeObjectForKey:@"actorID"];
  	self.actorPosition = [decoder decodeObjectForKey:@"actorPosition"];
- 
- 	// To decode a CGPoint, use something like this
- 	NSValue *decodedValue = [decoder decodeObjectForKey:@"point"];
- 	CGPoint point;
- 	[decodedValue getValue:&point];
  }
  return self;
  }

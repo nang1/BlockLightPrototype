@@ -2,7 +2,9 @@
 //  Note.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that holds information about a note object.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -14,6 +16,11 @@
 @synthesize noteStr = _noteStr;
 @synthesize notePosition = _notePosition;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a Note object
+ * @return: id to model instance
+ ************************************************************/
 -(id)init{
     self = [super init];
     
@@ -26,6 +33,12 @@
     return self;
 }
 
+/*************************************************************
+ * @function: copyWithZone
+ * @discussion: creates a copy of this model instance
+ * @param: NSZone* zone
+ * @return: id to new model instance copy
+ ************************************************************/
 -(id)copyWithZone:(NSZone *)zone
 {
 	id copy = [[[self class] alloc] init];

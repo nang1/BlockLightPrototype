@@ -2,7 +2,10 @@
 //  QuickStageViewController.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A controller that handles all the user interactions in the quick
+//  stage editor.
+//
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -46,10 +49,16 @@
     return (QuickStageView*)self.view;
 }
 
-// Imports: Production.h - calls Scene.h
+/**********************************************************
+ * @function: loadView
+ * @discussion: Creates the quick stage editor view. 
+ *              uses imports: Production.h which calls init method
+ *              in Scene.h
+ *********************************************************/
 - (void)loadView {
-    // this production is meant only as scratch paper
-    // the user must save it otherwise it all data will be removed
+    // This production is meant only as scratch paper
+    // The user must save it otherwise it all data will be removed upon
+    // exiting the application.
     _quickProduction = [[Production alloc] init];
     
     // create initial scene and frame to start
@@ -66,7 +75,12 @@
     _gestureCtrl = [[TVGestureController alloc] initWithFrame2:[_newScene getCurFrame] withStageView:_stageView];
 }
 
-// This function does additional setup after loadView()
+/**********************************************************
+ * @function: viewDidLoad
+ * @discussion: This method provides additional setup after loadView()
+ *              It sets up the navigation bar at the top of the screen
+ *              and the frame timeline at the bottom of the screen.
+ *********************************************************/
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -92,7 +106,7 @@
                                                   target:self
                                                   action:@selector(pressPopoverButton:)];
 
-    // add left-side tool bar buttons
+    // add left-side tool bar buttons to navigation bar
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:back, undo, redo, _settingsBtn, _viewButton, nil];
     
     // set title to production's stage name
@@ -116,7 +130,7 @@
                                                    target:self
                                                    action:@selector(pressPopoverButton:)];
     
-    // add right-side tool bar buttons
+    // add right-side tool bar buttons to navigation bar
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:_propsButton, _notesButton, _actorsButton, _sceneButton, nil];
     
     // Add a timeline view for frames at the bottom of the screen
@@ -159,24 +173,39 @@
 	[_productionOptions addTarget:self action:@selector(productionOptionsAS) forControlEvents:UIControlEventTouchUpInside];
     
     
-	// Add button and table to view
+	// Add production settings button and timeline table to quick stage view
 	[[self contentView] addSubview:_productionOptions];
 	[[self contentView] addSubview:_timeline];
 }
 
+/**********************************************************
+ * @function: viewDidUnload
+ * @discussion: what should happen after the view unloads?
+ *     (inherited from: UIViewController*)
+ *********************************************************/
 - (void)viewDidUnload {
 	[super viewDidUnload];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
+/**********************************************************
+ * @function: shouldAutorotateToInterfaceOrientation
+ * @discussion: Indicates whether to support different orientations or not.
+ *    TODO: some of these viewControllers have this correct, and others
+ *          others don't, need to resolve this.
+ *           Update: may have already been fixed now.
+ *********************************************************/
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-	// TODO: some of these viewControllers have this correct, and others don't, need to resolve this
-    // JNN: may have already been fixed now
 	return YES;
 }
 
+/*********************************************************
+ * @function: didReceiveMemoryWarning
+ * @discussion: what should happen when the memory is low?
+ *     (inherited from: UIViewController*)
+ *********************************************************/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -184,9 +213,13 @@
 
 #pragma mark - Methods that tool bar buttons call when selected -
 
-// Go back to main menu
+/*********************************************************
+ * @function: backToMain
+ * @discussion: User clicked the 'Back' button. This should go back to the 
+ *              main menu.
+ *********************************************************/
 - (void)backToMain{
-    /* This means we need to go back to a Split View
+    /* This means we need to go back to a Split View. Refer to older version of BlockLight
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     
     [mainDelegate toggleEditViewWithGroup:_group];
@@ -196,6 +229,14 @@
 }
 
 #pragma mark Methods to perform undo and redo
+/*********************************************************
+ * @function: UndoRedoAction __withFrame
+ * @discussion: Figure out what action needs to be performed
+ * @param: Undo_Redo* lastChange - object with the information about 
+ *                                 the last thing the user did
+ *         Frame* tempFrame - need to know which frame to update
+ *                            when performing the undo/redo
+ *********************************************************/
 -(void)UndoRedoAction:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame {
     switch(lastChange.changeType){
         case -1: // An object was deleted, bring it back
@@ -217,13 +258,26 @@
     }
 }
 
-// An undo/redo move was performed, need to update view to show movement
+/*********************************************************
+ * @function: UndoRedoUpdateView __ofObject __ withScale
+ * @discussion: An undo/redo move was performed, need to update
+ *              the view to show the change.
+ * @param: Position* pos - where the item should be moved to
+ *         UIView* obj - the view that needs to be updated
+ *         CGAffineTransform newScale - the scale and rotation of the object's view
+ *********************************************************/
 -(void)UndoRedoUpdateView:(Position*)pos ofObject:(UIView*)obj withScale:(CGAffineTransform)newScale{
     [obj setCenter:CGPointMake(pos.xCoordinate, pos.yCoordinate)];
     [obj setTransform:newScale];
 }
 
-// Undo/redo action is to delete an object that was added to the frame
+/*********************************************************
+ * @function: UndoRedoDelete
+ * @discussion: An undo/redo action is to delete an object that
+ *              was added to the frame. Find out what object it is
+ *              and remove it from the corresponding array.
+ * @param: Undo_Redo* lastChange - information about the object that was added
+ *********************************************************/
 -(void)UndoRedoDelete:(Undo_Redo*)lastChange{
     if([lastChange.obj isKindOfClass:[Note class]]){
         [_gestureCtrl removeNoteAtIndex:lastChange.index];
@@ -237,7 +291,14 @@
     NSLog(@"Undo adding object / Redo deleting object");
 }
 
-// Undo/Redo action is to add an object that was deleted from the frame
+/*********************************************************
+ * @function: UndoRedoAdd __withFrame
+ * @discussion: An undo/redo action is to add an object that
+ *              was deleted from the frame. Find out what object it is
+ *              and add it from the corresponding array.
+ * @param: Undo_Redo* lastChange - information about the object that was added
+ *         Frame* tempFrame - the frame to add the object back into
+ *********************************************************/
 -(void)UndoRedoAdd:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame{
     if([lastChange.obj isKindOfClass:[Note class]]){
         [tempFrame.notes addObject:lastChange.obj];
@@ -260,7 +321,13 @@
     NSLog(@"Undo deleting object / Redo adding new object");
 }
 
-// Undo/Redo movement/pinch/rotate gesture
+/*********************************************************
+ * @function: UndoRedoGesture
+ * @discussion: An undo/redo pan/pinch/rotate gesture. Find out what object it is
+ *              and change its position and scaleRotationMatrix.
+ * @param: Undo_Redo* lastChange - information about the object that was added
+ *         Frame* tempFrame - the frame that the changed item is located in
+ *********************************************************/
 -(void)UndoRedoGesture:(Undo_Redo*)lastChange withFrame:(Frame*)tempFrame {
     if([lastChange.obj isKindOfClass:[Note class]]){
         // Change note position to its previous position
@@ -316,13 +383,17 @@
     NSLog(@"Undo/Redo move/pinch/rotate gesture");
 }
 
-// Undo the move that the user last did
+/*********************************************************
+ * @function: undoButton
+ * @discussion: Undo the move that the user last did
+ *********************************************************/
 - (void)undoButton {
-    // Get frame
+    // Get frame that the user is currently viewing
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
     
     if([tempFrame.undoArray count] == 0){
+        // No action to undo
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Undo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
         [alert show];
     } else {
@@ -340,13 +411,17 @@
     }
 }
 
-// Redo the move that the user last did
+/*********************************************************
+ * @function: redoButton
+ * @discussion: Redo the move that the user last did
+ *********************************************************/
 - (void)redoButton {
     // Get frame
     Scene *tempScene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
     Frame *tempFrame = [tempScene.frames objectAtIndex:tempScene.curFrame];
     
     if([tempFrame.redoArray count] == 0){
+        // No moves to redo
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Redo Button" message:@"No saved action to undo." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
             [alert show];
     } else {
@@ -407,7 +482,7 @@
         // TODO: Currently doesn't have a view
     }
     else // GRID or PROPSLIST, don't create a popover here
-    {    // These popovers are created from VIEW and PROPS respectively
+    {    // These popovers are created from the VIEW and PROPS popovers respectively
         return;
     }
     
@@ -482,7 +557,13 @@
 }
 
 #pragma mark - Timeline Table Methods -
-
+/*************************************************
+ * @function: tableView __ numberOfRowsInSection
+ * @discussion: Determines the number of rows in a section
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: NSInteger
+ *************************************************/
 -(NSInteger) tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section{
 	NSInteger rows = 0;
 	Scene* scene = [_quickProduction.scenes objectAtIndex:_quickProduction.curScene];
@@ -493,7 +574,12 @@
 	return rows;
 }
 
-
+/*************************************************
+ * @function: numberOfSectionsInTableView
+ * @discussion: Determines the number of sections for a table
+ * @param: UITableView* tableView
+ * @return: NSInteger
+ *************************************************/
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
 	NSInteger sections = 1;
@@ -507,6 +593,13 @@
 	return sections;
 }
 
+/*************************************************
+ * @function: tableView __ heightForRowAtIndexPath
+ * @discussion: Set height for table
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: CGFloat
+ *************************************************/
 -(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 	CGFloat height = 50.0;
 	if ([tableView isEqual:_timeline]){
@@ -516,18 +609,26 @@
 	return height;
 }
 
+/*************************************************
+ * @function: tableView __ didSelectRowAtIndexPath
+ * @discussion: How to respond to a row that got selected
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ *************************************************/
 -(void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	
 	if ([tableView isEqual:_timeline]){
+        // User clicked on a frame in the timeline
         Scene* scene = [_quickProduction getCurScene];
 	    scene.curFrame = indexPath.row;
 		
 		//NSLog(@"Current frame is: %d",scene.curFrame);
 
         Frame* frame = [scene getCurFrame];
-        // Consider clearing the undoArray
+        // Consider clearing the undo/redoArray before switching to the frame
         // [frame.undoArray removeAllObjects];
-        [_gestureCtrl changeFrame:frame]; // the frame had changed
+        // [frame.redoArray removeAllObjects];
+        [_gestureCtrl changeFrame:frame]; // the view has switched frames
 
         // remove current objects from view
 		for (UILabel *lbl in [self contentView].noteLabels)
@@ -546,7 +647,7 @@
         [[self contentView].propsArray removeAllObjects];
         [[self contentView].actorArray removeAllObjects];
 		
-		// add new notes, props, and actors from frame
+		// add new notes, props, and actors from selected frame
 		for(Note* note in frame.notes)
         {
             [self addNoteToStage:note];
@@ -562,6 +663,14 @@
 	}
 }
 
+/*************************************************
+ * @function: tableView __ cellForRowAtIndexPath
+ * @discussion: UITableView Datasource for view Popover
+ *     NOTE: took out some of the rows in the old Blocklight code
+ * @param: UITableView* tableView
+ * @param: NSIndexPath* indexPath
+ * @return: UITableViewCell*
+ *************************************************/
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 	//TODO: NSInteger row = indexPath.row;  ... etc
 	UITableViewCell* cell = nil;
@@ -587,12 +696,24 @@
 	}
 }
 
+/*************************************************
+ * @function: productionOptionAS
+ * @discussion: User clicked the gear on the timeline. This will
+ *              display options to add/copy/delete frames from 
+ *              the timeline.
+ *************************************************/
 - (void)productionOptionsAS{
 	_productionSheet = [[UIActionSheet alloc] initWithTitle:@"Production" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Delete Current Frame", @"Copy Current Frame", @"New Frame", nil];
 	
 	[_productionSheet showFromRect:_productionOptions.frame inView:self.view animated:YES];
 }
 
+/*************************************************
+ * @function: actionSheet __clickedButtonAtIndex
+ * @discussion: User selected an option to edit the frame timeline.
+ * @param: UIActionSheet* actionSheet
+ * @param: NSInteger buttonIndex - indicates which button the user clicked
+ *************************************************/
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if ([actionSheet isEqual:_productionSheet]){
 		//Frame* newFrame = [[Frame alloc] init];

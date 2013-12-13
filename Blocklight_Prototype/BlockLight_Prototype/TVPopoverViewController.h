@@ -2,11 +2,13 @@
 //  TVPopoverViewController.h
 //  Prototype
 //
-//  Created by nang1 on 9/21/13.
+//  A controller class that controls what view will appear in the popover
+//  when the user clicks on a button in the navigation bar in the
+//  stage editor.
+// 
+//  Created by Nicole Ang on 9/21/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
-
-//@class NoteView;
 
 #import <UIKit/UIKit.h>
 #import "Defaults.h"
@@ -28,6 +30,7 @@
     Production* _production;
     
     // Used for popovers that may contain multiple views
+    // i.e. SetPieceView and ViewView
     UINavigationController* _popoverNav;
 }
 

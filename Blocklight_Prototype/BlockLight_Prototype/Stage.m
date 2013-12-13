@@ -2,7 +2,9 @@
 //  Stage.m
 //  Prototype
 //
-//  Created by nang1 on 9/8/13.
+//  A model that holds information about a stage.
+// 
+//  Created by Nicole Ang on 9/8/13.
 //  Copyright (c) 2013 nang1. All rights reserved.
 //
 
@@ -22,6 +24,11 @@
 @synthesize horizontalGrid = _horizontalGrid;
 @synthesize verticalGrid = _verticalGrid;
 
+/*************************************************************
+ * @function: init
+ * @discussion: initializes a Stage object
+ * @return: id to model instance
+ ************************************************************/
 -(id) init{
     self = [super init];
     
